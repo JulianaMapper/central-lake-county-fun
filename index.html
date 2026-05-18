@@ -6,9 +6,44 @@
 <title>Central Lake County Fun — Summer 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-ExtraLight.woff2') format('woff2');
+  font-weight: 200; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-Light.woff2') format('woff2');
+  font-weight: 300; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-Regular.woff2') format('woff2');
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-Medium.woff2') format('woff2');
+  font-weight: 500; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-SemiBold.woff2') format('woff2');
+  font-weight: 600; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-Bold.woff2') format('woff2');
+  font-weight: 700; font-display: swap;
+}
+@font-face {
+  font-family: 'National Park';
+  src: url('fonts/NationalPark-ExtraBold.woff2') format('woff2');
+  font-weight: 800; font-display: swap;
+}
 /* ============================================================
    DESIGN TOKENS — National Parks / WPA Ranger Aesthetic
    ============================================================ */
@@ -78,7 +113,7 @@ body {
   color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.08);
 }
 .hero h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'National Park', sans-serif;
   font-size: clamp(2.2rem, 6vw, 4rem);
   line-height: 1.05;
   color: var(--canvas);
@@ -118,7 +153,7 @@ body {
 .trail-chip-sm.active { background: var(--green); border-color: var(--green); color: white; }
 .hero-about-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'National Park', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.4rem);
   color: var(--gold);
   text-decoration: none;
@@ -286,7 +321,7 @@ body {
   margin-bottom: 1rem;
 }
 .cal-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'National Park', sans-serif;
   font-size: 1.4rem; color: var(--green);
 }
 .ev-count {
@@ -505,7 +540,7 @@ body {
     transparent 40px);
 }
 .basecamp-section h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'National Park', sans-serif;
   font-size: 1.5rem; color: var(--canvas);
   margin-bottom: 0.4rem; position: relative;
 }
@@ -602,7 +637,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
 .cal-grid-view.visible { display: block; }
 .cal-list-view.hidden { display: none; }
 .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
-.month-nav h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--green); }
+.month-nav h3 { font-family: 'National Park', sans-serif; font-size: 1.1rem; color: var(--green); }
 .month-nav-btn {
   background: var(--green); color: var(--canvas);
   border: none; padding: 0.3rem 0.65rem; border-radius: var(--radius);
