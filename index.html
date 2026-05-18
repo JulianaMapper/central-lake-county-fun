@@ -6,7 +6,7 @@
 <title>Central Lake County Fun — Summer 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Big+Shoulders+Stencil+Display:wght@700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @font-face {
@@ -48,19 +48,21 @@
    DESIGN TOKENS — National Parks / WPA Ranger Aesthetic
    ============================================================ */
 :root {
-  --green:      #355C4D;
-  --green-mid:  #2C4D3F;
-  --green-lite: #4E7D6A;
-  --bark:       #1F2D3A;
-  --bark-lite:  #3A4D5C;
-  --canvas:     #F3EBDD;
-  --canvas-mid: #E8DDD0;
+  --green:      #2C3E2A;
+  --green-mid:  #1A2618;
+  --green-lite: #5C6E3A;
+  --bark:       #1F2A1D;
+  --bark-lite:  #5A3A22;
+  --canvas:     #F1E7CF;
+  --canvas-mid: #E8DCBE;
   --sage:       #C8D9CF;
   --sage-dark:  #9BBCAD;
-  --ochre:      #C46A3C;
-  --ochre-lite: #D4845A;
-  --gold:       #D4A64A;
-  --cream:      #F9F4EC;
+  --rust:       #A8472A;
+  --rust-dark:  #7A3320;
+  --gold:       #C39A3F;
+  --cream:      #E8DCBE;
+  --lake:       #486A78;
+  --moss:       #5C6E3A;
   --radius:     4px;
   --radius-md:  8px;
   --stitch:     2px dashed #2D5140;
@@ -127,7 +129,7 @@ body {
   color: #C8DDD0;
   max-width: 540px;
   margin-bottom: 1.5rem;
-  border-left: 3px solid var(--ochre);
+  border-left: 3px solid var(--rust);
   padding-left: 0.75rem;
 }
 .hero-stat-row {
@@ -143,14 +145,14 @@ body {
 .trail-chip-sm {
   display: inline-flex; align-items: center; gap: 0.3rem;
   padding: 0.28rem 0.65rem;
-  font-family: 'Courier Prime', monospace; font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
+  font-family: 'Big Shoulders Stencil Display', sans-serif; font-size: 0.68rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em;
   border: 1.5px solid var(--sage-dark); border-radius: var(--radius);
   background: white; color: var(--bark-lite); cursor: pointer; transition: all 0.12s;
   white-space: nowrap;
 }
 .trail-chip-sm:hover { border-color: var(--green); color: var(--green); }
-.trail-chip-sm.active { background: var(--green); border-color: var(--green); color: white; }
+.trail-chip-sm.active { background: var(--green); border-color: var(--green); color: var(--canvas); }
 .hero-about-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-family: 'National Park', sans-serif;
@@ -163,11 +165,12 @@ body {
 }
 .hero-about-link i { font-size: 1.1rem; }
 .hero-about-link:hover { opacity: 0.8; }
+.hero-shield { display: inline-block; margin-top: 0.75rem; opacity: 0.85; }
 
 /* ── STICKY TRAIL NAV ── */
 .trail-nav {
   background: var(--green);
-  border-bottom: 3px solid var(--ochre);
+  border-bottom: 3px solid var(--rust);
   padding: 0.6rem 1.5rem;
   display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;
   position: sticky; top: 0; z-index: 100;
@@ -175,9 +178,9 @@ body {
 .trail-chip {
   display: inline-flex; align-items: center; gap: 0.35rem;
   padding: 0.35rem 0.85rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-size: 0.72rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.06em;
   border: 1.5px solid rgba(255,255,255,0.25);
   border-radius: var(--radius);
   color: rgba(255,255,255,0.85);
@@ -185,7 +188,7 @@ body {
   background: transparent;
 }
 .trail-chip:hover { border-color: var(--gold); color: var(--gold); }
-.trail-chip.active { background: var(--ochre); border-color: var(--ochre); color: white; border-style: solid; }
+.trail-chip.active { background: var(--green); border-color: var(--green); color: var(--canvas); border-style: solid; }
 .trail-chip i { font-size: 0.85rem; }
 .trail-nav-spacer { flex: 1; }
 .trail-about {
@@ -205,14 +208,14 @@ body {
 .field-note {
   display: flex; gap: 0.75rem;
   background: #FBF6E9;
-  border: var(--stitch); border-color: var(--ochre);
+  border: var(--stitch); border-color: var(--rust);
   border-radius: var(--radius-md);
   padding: 0.85rem 1.1rem;
   font-family: 'Courier Prime', monospace;
   font-size: 0.78rem; color: var(--bark);
   margin-bottom: 1.25rem; line-height: 1.5;
 }
-.field-note i { color: var(--ochre); flex-shrink: 0; margin-top: 1px; font-size: 1rem; }
+.field-note i { color: var(--rust); flex-shrink: 0; margin-top: 1px; font-size: 1rem; }
 .field-note strong { font-weight: 700; }
 
 /* ── RANGER SECTION HEADING ── */
@@ -223,7 +226,7 @@ body {
   display: flex; align-items: center; gap: 0.6rem;
   margin-bottom: 0.25rem;
 }
-.section-heading i { color: var(--ochre); font-size: 1.2rem; }
+.section-heading i { color: var(--rust); font-size: 1.2rem; }
 .section-sub {
   font-family: 'Courier Prime', monospace;
   font-size: 0.75rem; color: var(--bark-lite);
@@ -282,7 +285,7 @@ body {
   cursor: pointer; color: var(--bark-lite); background: transparent; transition: all 0.15s;
   align-self: flex-end;
 }
-.btn-ghost:hover { border-color: var(--ochre); color: var(--ochre); border-style: solid; }
+.btn-ghost:hover { border-color: var(--rust); color: var(--rust); border-style: solid; }
 
 /* ── ACTION TOOLBAR ── */
 .action-toolbar {
@@ -308,7 +311,7 @@ body {
   white-space: nowrap;
 }
 .trail-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.trail-btn.ics { background: var(--ochre); color: white; border-color: var(--ochre); }
+.trail-btn.ics { background: var(--rust); color: white; border-color: var(--rust); }
 .trail-btn.gcal { background: #1967D2; color: white; border-color: #1967D2; }
 .trail-btn.outlook { background: #0078D4; color: white; border-color: #0078D4; }
 .trail-btn.print-btn { background: var(--bark); color: white; border-color: var(--bark); }
@@ -353,6 +356,14 @@ body {
   padding-left: 1.9rem;
 }
 .week-marker i { font-size: 0.8rem; }
+.week-marker { position: relative; }
+.week-marker::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed var(--gold);
+  pointer-events: none;
+}
 
 /* ── DAY BLOCK ── */
 .day-block { margin-bottom: 0.85rem; }
@@ -368,7 +379,7 @@ body {
   color: var(--green); background: var(--sage);
   padding: 0.1rem 0.55rem; border-radius: 50px;
 }
-.day-date-badge.is-today { background: var(--ochre); color: white; }
+.day-date-badge.is-today { background: var(--rust); color: white; }
 
 /* ── EVENT CARDS — PATCH STYLE ── */
 .events-list { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -392,12 +403,12 @@ body {
 }
 .event-card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(31,58,43,0.12); transform: translateY(-1px); }
 .event-card:hover::before { background: var(--green); }
-.event-card.selected { border-color: var(--ochre); background: #FDF6EC; }
-.event-card.selected::before { background: var(--ochre); }
+.event-card.selected { border-color: var(--rust); background: #FDF6EC; }
+.event-card.selected::before { background: var(--rust); }
 
 /* Org type left border colors */
 .event-card[data-type="lib"]::before { background: var(--green); }
-.event-card[data-type="park"]::before { background: var(--ochre); }
+.event-card[data-type="park"]::before { background: var(--rust); }
 .event-card[data-type="forest"]::before { background: #2D6A2D; }
 .event-card[data-type="village"]::before { background: var(--bark); }
 .event-card[data-type="other"]::before { background: var(--sage-dark); }
@@ -405,6 +416,15 @@ body {
 .ev-check { width: 17px; height: 17px; min-width: 17px; accent-color: var(--green); cursor: pointer; margin-top: 3px; }
 .ev-body { flex: 1; min-width: 0; }
 .ev-name { font-family: 'Archivo Narrow', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--bark); line-height: 1.3; margin-bottom: 0.3rem; }
+.ev-meta { display: flex; align-items: center; gap: 8px; }
+.ev-meta::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--rust);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 .ev-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 
 /* PATCH TAGS */
@@ -420,7 +440,9 @@ body {
 .ptag-org { background: #E8F0EB; color: var(--green-mid); }
 .ptag-age { background: #F0EBE5; color: var(--bark); }
 .ptag-free { background: var(--green); color: var(--canvas); font-weight: 800; }
-.ptag-cost { background: #FBEEE4; color: var(--ochre); }
+.tag-free { transform: rotate(-1deg); display: inline-block; }
+.tag-reg { transform: rotate(0.5deg); display: inline-block; }
+.ptag-cost { background: #FBEEE4; color: var(--rust); }
 .ptag-reg { background: #FBF6E9; color: var(--bark-lite); }
 .ptag-drive { background: var(--canvas-mid); color: var(--bark-lite); }
 
@@ -429,9 +451,9 @@ body {
   font-family: 'Courier Prime', monospace;
   font-size: 0.68rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--ochre); text-decoration: none; margin-top: 0.3rem;
+  color: var(--rust); text-decoration: none; margin-top: 0.3rem;
 }
-.ev-link:hover { color: var(--ochre-lite); text-decoration: underline; }
+.ev-link:hover { color: var(--rust-dark); text-decoration: underline; }
 
 /* ── EMPTY STATE ── */
 .empty-trail {
@@ -441,11 +463,14 @@ body {
 .empty-trail i { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; color: var(--sage-dark); }
 .empty-trail p { font-family: 'Archivo Narrow', sans-serif; font-size: 1rem; color: var(--bark-lite); }
 .empty-trail button {
-  background: none; border: none; color: var(--ochre);
+  background: none; border: none; color: var(--rust);
   font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.85rem;
   text-transform: uppercase; letter-spacing: 0.05em;
   cursor: pointer; text-decoration: underline; margin-top: 0.4rem;
 }
+.empty-state { text-align: center; padding: 3rem 1rem; }
+.empty-title { font-family: 'Big Shoulders Stencil Display', sans-serif; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; font-size: 1.1rem; color: var(--green); margin-top: 0.75rem; }
+.empty-sub { font-family: 'Archivo Narrow', sans-serif; font-size: 0.9rem; color: var(--bark); opacity: 0.75; margin-top: 0.35rem; max-width: 32ch; margin-left: auto; margin-right: auto; line-height: 1.5; }
 
 /* ── SECTION BLOCKS ── */
 .trail-section {
@@ -460,30 +485,24 @@ body {
 .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.6rem; }
 .merit-badge {
   display: flex; flex-direction: column; align-items: center;
-  gap: 0.4rem;
-  padding: 0.85rem 0.6rem 0.75rem;
-  background: white;
-  border: var(--stitch); border-color: var(--green-mid);
+  gap: 0.3rem;
+  padding: 0.75rem 0.5rem 0.65rem;
+  background: var(--green);
+  border: 2.5px solid var(--green-mid);
   border-radius: 50%;
   aspect-ratio: 1;
   cursor: pointer; transition: all 0.15s; user-select: none;
   text-align: center;
-  /* Patch/badge shape */
-  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-  background: white;
+  box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px var(--green-mid);
+  outline: 1px dashed var(--gold);
+  outline-offset: 3px;
 }
-/* Hexagon badge — actually use a border+padding approach for legibility */
-.merit-badge {
-  clip-path: none;
-  border-radius: 50%;
-  aspect-ratio: 1;
-}
-.merit-badge:hover { background: var(--sage); border-color: var(--green); transform: scale(1.04) rotate(-2deg); }
-.merit-badge.done { background: var(--green); border-color: var(--green); border-style: solid; }
-.merit-badge i { font-size: 1.4rem; color: var(--green); }
-.merit-badge.done i { color: var(--gold); }
-.merit-badge .badge-text { font-family: 'Archivo Narrow', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--bark); line-height: 1.2; }
-.merit-badge.done .badge-text { color: var(--canvas); }
+.merit-badge:hover { background: var(--green-mid); border-color: var(--gold); transform: scale(1.04) rotate(-2deg); }
+.merit-badge.done { background: var(--rust); border-color: var(--rust-dark); border-style: solid; box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px var(--rust-dark); }
+.merit-badge i { font-size: 1.4rem; color: var(--gold); }
+.merit-badge.done i { color: var(--canvas); }
+.merit-badge .badge-text { font-family: 'Archivo Narrow', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--canvas); line-height: 1.2; }
+.merit-badge.done .badge-text { color: var(--canvas-mid); }
 .merit-badge.done::after { content: '✓'; position: absolute; font-size: 0.7rem; color: var(--gold); top: 4px; right: 4px; font-weight: 900; }
 .merit-badge { position: relative; }
 
@@ -504,7 +523,7 @@ body {
   display: flex; gap: 0.85rem; align-items: flex-start;
   padding: 0.9rem 1rem;
   background: white;
-  border-left: 4px solid var(--ochre);
+  border-left: 4px solid var(--rust);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 .extra-patch {
@@ -517,7 +536,7 @@ body {
 .extra-item p { font-size: 0.8rem; color: var(--bark-lite); line-height: 1.4; }
 .extra-item a {
   font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700; color: var(--ochre);
+  font-size: 0.72rem; font-weight: 700; color: var(--rust);
   text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none;
 }
 .extra-item a:hover { text-decoration: underline; }
@@ -559,7 +578,7 @@ body {
   cursor: pointer; text-decoration: none; transition: all 0.2s; border: none;
 }
 .camp-btn:hover { transform: translateY(-2px); }
-.camp-venmo { background: var(--ochre); color: white; }
+.camp-venmo { background: var(--rust); color: white; }
 .camp-paypal { background: #003087; color: white; }
 
 /* ── FOOTER ── */
@@ -571,7 +590,7 @@ footer {
   border-top: 2px solid var(--canvas-mid);
   margin-top: 3rem;
 }
-footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
+footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
 
 /* ── MODAL ── */
 .modal-overlay {
@@ -602,7 +621,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
   font-family: 'Courier Prime', monospace;
   font-size: 0.75rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--ochre); margin-bottom: 1rem;
+  color: var(--rust); margin-bottom: 1rem;
 }
 .modal-row { display: flex; gap: 0.5rem; font-size: 0.875rem; margin-bottom: 0.4rem; }
 .modal-row i { color: var(--green-lite); flex-shrink: 0; margin-top: 1px; }
@@ -630,7 +649,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
   text-transform: uppercase; letter-spacing: 0.06em;
   cursor: pointer; transition: all 0.12s;
 }
-.btn-outline:hover { border-color: var(--ochre); color: var(--ochre); border-style: solid; }
+.btn-outline:hover { border-color: var(--rust); color: var(--rust); border-style: solid; }
 
 /* ── GRID CAL VIEW ── */
 .cal-grid-view { display: none; }
@@ -649,11 +668,11 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
 .grid-cell { background: white; min-height: 78px; padding: 0.3rem; }
 .grid-cell.other-month { background: var(--canvas); }
 .grid-date { font-family: 'Courier Prime', monospace; font-size: 0.72rem; font-weight: 700; color: var(--bark-lite); margin-bottom: 0.15rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-.grid-cell.is-today .grid-date { background: var(--ochre); color: white; border-radius: 50%; font-weight: 700; }
+.grid-cell.is-today .grid-date { background: var(--rust); color: white; border-radius: 50%; font-weight: 700; }
 .grid-dot { font-size: 0.6rem; padding: 0.08rem 0.3rem; border-radius: 2px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-family: 'Archivo Narrow', sans-serif; font-weight: 600; line-height: 1.35; }
 .grid-dot:hover { opacity: 0.8; }
 .grid-more { font-family: 'Courier Prime', monospace; font-size: 0.6rem; color: var(--bark-lite); font-weight: 700; padding: 0.08rem 0.3rem; cursor: pointer; text-transform: uppercase; }
-.grid-more:hover { color: var(--ochre); }
+.grid-more:hover { color: var(--rust); }
 
 /* ── PRINT ── */
 @media print {
@@ -709,6 +728,13 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
   <div class="hero-inner">
     <h1>Central Lake County<br><span class="h1-accent">Fun</span></h1>
     <p class="hero-tagline">Free &amp; low-cost family events — libraries, parks, and forest preserves all in one place.</p>
+    <div class="hero-shield" aria-hidden="true">
+      <svg width="56" height="64" viewBox="0 0 100 120">
+        <path d="M50 4 L94 18 L94 64 Q94 92 50 116 Q6 92 6 64 L6 18 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+        <path d="M50 12 L86 24 L86 64 Q86 86 50 106 Q14 86 14 64 L14 24 Z" fill="none" stroke="rgba(195,154,63,0.6)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <text x="50" y="70" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="11" fill="rgba(241,231,207,0.8)" letter-spacing="1">2026</text>
+      </svg>
+    </div>
     <a href="about.html" class="hero-about-link"><i class="ti ti-info-circle"></i> About This Site</a>
 
   </div>
@@ -732,7 +758,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
 
   <!-- FILTERS -->
   <div class="filter-panel">
-    <div class="filter-label-row"><i class="ti ti-adjustments-horizontal" style="color:var(--ochre)"></i> Filter Your Trail</div>
+    <div class="filter-label-row"><i class="ti ti-adjustments-horizontal" style="color:var(--rust)"></i> Filter Your Trail</div>
     <div class="filter-grid">
       <div class="fg">
         <label><i class="ti ti-building-community"></i> Organization</label>
@@ -995,7 +1021,15 @@ function renderCal() {
   document.getElementById('resultCount').textContent = `${filteredEvents.length} event${filteredEvents.length!==1?'s':''}`;
   const container = document.getElementById('calContainer');
   if (!filteredEvents.length) {
-    container.innerHTML = '<div class="empty-trail"><i class="ti ti-map-off"></i><p>No events on this trail.</p><button onclick="resetFilters()">Clear Filters</button></div>';
+    container.innerHTML = `<div class="empty-state">
+  <svg width="80" height="80" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#5A3A22" stroke-width="2" stroke-dasharray="4 4"/>
+    <path d="M30 56 L42 44 L52 54 L70 36" fill="none" stroke="#5A3A22" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="70" cy="36" r="4" fill="#A8472A"/>
+  </svg>
+  <div class="empty-title">Trail’s quiet today</div>
+  <div class="empty-sub">No events match these filters. Try widening the age range or peek at next week.</div>
+</div>`;
     return;
   }
   const byDate = {};
