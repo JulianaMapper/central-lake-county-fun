@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Central Lake County Fun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --teal: #0D9488; --teal-light: #CCFBF1; --teal-dark: #0F766E;
+  --slate: #0F172A; --slate-mid: #475569; --slate-light: #94A3B8;
+  --surface: #F8FAFC; --card: #FFFFFF; --border: #E2E8F0;
+  --radius: 12px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--slate); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.hero { background: var(--slate); color: white; padding: 3rem 2rem; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--teal);
+  background: rgba(13,148,136,0.15); padding: 0.3rem 0.75rem; border-radius: 50px;
+  margin-bottom: 1rem; text-decoration: none;
+}
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.1; }
+.hero h1 em { font-style: italic; color: var(--teal); }
+nav.crumb { background: white; border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; font-size: 0.85rem; }
+nav.crumb a { color: var(--teal); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; }
+.page { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.prose p { margin-bottom: 1.1rem; font-size: 1rem; color: var(--slate-mid); }
+.prose p:first-of-type { font-size: 1.1rem; color: var(--slate); font-weight: 500; }
+h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin: 2rem 0 0.75rem; color: var(--slate); }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+.card-item {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: flex; gap: 0.65rem; align-items: flex-start;
+}
+.card-item i { font-size: 1.2rem; color: var(--teal); margin-top: 2px; flex-shrink: 0; }
+.card-item div { font-size: 0.875rem; font-weight: 600; }
+.card-item span { font-size: 0.78rem; color: var(--slate-light); font-weight: 400; }
+.notice { background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 8px; padding: 1rem 1.1rem; font-size: 0.875rem; color: #78350F; margin: 1.5rem 0; display: flex; gap: 0.6rem; }
+.notice i { flex-shrink: 0; margin-top: 1px; }
+footer { text-align: center; padding: 1.5rem; font-size: 0.78rem; color: var(--slate-light); border-top: 1px solid var(--border); }
+footer a { color: var(--teal); font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a href="index.html" class="hero-eyebrow"><i class="ti ti-arrow-left"></i> Back to events</a>
+  <h1>About <em>Central Lake County Fun</em></h1>
+</header>
+
+<nav class="crumb">
+  <a href="index.html"><i class="ti ti-home"></i> Home</a> &rsaquo; About
+</nav>
+
+<div class="page">
+  <div class="prose">
+    <p>Every parent wants their kids to have a great summer. But finding the right events — the free ones, the ones that fit your kid's age, the ones actually happening nearby — takes hours of clicking through library websites, park district calendars, and Facebook groups.</p>
+
+    <p>This site exists to take that invisible load off your plate. We believe every kid in Lake County deserves a summer full of joy, discovery, and connection — and that it shouldn't require a spreadsheet to make that happen.</p>
+
+    <p>We built Central Lake County Fun to be the one place a parent can go to see what's happening this week, plan ahead for the summer, and actually show up. No subscriptions, no login, no ads — just the information you need.</p>
+  </div>
+
+  <h2>What's included</h2>
+  <div class="card-grid">
+    <div class="card-item"><i class="ti ti-book"></i><div>Library Events<span>Storytimes, STEM, crafts, summer reading programs</span></div></div>
+    <div class="card-item"><i class="ti ti-trees"></i><div>Park Districts<span>Free programs, splash pads, nature activities</span></div></div>
+    <div class="card-item"><i class="ti ti-leaf"></i><div>Forest Preserves<span>Nature walks, wildlife programs, outdoor exploration</span></div></div>
+    <div class="card-item"><i class="ti ti-building-community"></i><div>Community Events<span>Festivals, concerts, village programming</span></div></div>
+  </div>
+
+  <h2>How we find events</h2>
+  <div class="prose">
+    <p>Events are collected using web scraping tools that pull directly from library and park district calendars across Central Lake County. We spot-check events for accuracy and remove duplicates, out-of-area listings, and events not relevant to families with young children.</p>
+    <p>We focus on events that are free or low-cost, geared toward children (especially preschool and elementary age), and within a reasonable drive of the Grayslake area.</p>
+  </div>
+
+  <div class="notice">
+    <i class="ti ti-alert-circle"></i>
+    <span><strong>Always verify before you go.</strong> Event details — times, registration requirements, cancellations — can change without notice. We encourage you to click through to the original event page and confirm with the organizer, especially for events requiring registration.</span>
+  </div>
+
+  <h2>Who made this</h2>
+  <div class="prose">
+    <p>This site was made by a Lake County mom who got tired of maintaining a personal spreadsheet of summer events and thought: other families need this too. It's a community resource, not a business — just a neighbor trying to help.</p>
+    <p>If you found it useful, a small contribution helps keep it going. And if you know of events we missed, feel free to reach out!</p>
+  </div>
+
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+    <a href="https://venmo.com/juliana-wilhoit" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:50px;background:#3D95CE;color:white;font-weight:700;font-size:0.875rem;text-decoration:none;"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
+    <a href="https://paypal.me/mcmillanwilhoit" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:50px;background:#003087;color:white;font-weight:700;font-size:0.875rem;text-decoration:none;"><i class="ti ti-brand-paypal"></i> PayPal</a>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html"><i class="ti ti-arrow-left"></i> Back to Central Lake County Fun</a>
+</footer>
+
+</body>
+</html>
