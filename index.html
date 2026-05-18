@@ -119,6 +119,18 @@ body {
   text-transform: uppercase; letter-spacing: 0.06em;
 }
 .hero-stat strong { color: var(--gold); }
+.hero-about-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Alfa Slab One', serif;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--gold);
+  text-decoration: none;
+  text-shadow: 1px 2px 0 rgba(0,0,0,0.3);
+  transition: opacity 0.15s;
+  margin-top: 0.1rem;
+}
+.hero-about-link i { font-size: 1.1rem; }
+.hero-about-link:hover { opacity: 0.8; }
 
 /* ── STICKY TRAIL NAV ── */
 .trail-nav {
@@ -667,16 +679,13 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
     <div>Lake County<br>Illinois</div>
   </div>
   <div class="hero-inner">
-    <div class="hero-badge-row">
-      <span class="ranger-badge"><i class="ti ti-map-pin"></i> Central Lake County</span>
-      <span class="ranger-badge"><i class="ti ti-calendar"></i> Summer 2026</span>
-    </div>
     <h1>Central Lake County<br><span class="h1-accent">Fun</span></h1>
     <p class="hero-tagline">Free &amp; low-cost family events — libraries, parks, and forest preserves all in one place.</p>
     <div class="hero-stat-row">
       <div class="hero-stat"><i class="ti ti-calendar-event"></i> <strong>1,050+</strong> events</div>
       <div class="hero-stat"><i class="ti ti-building-community"></i> <strong>25</strong> organizations</div>
       <div class="hero-stat"><i class="ti ti-coin"></i> Mostly <strong>free</strong></div>
+      <a href="about.html" class="hero-about-link"><i class="ti ti-info-circle"></i> About This Site</a>
     </div>
   </div>
 </header>
@@ -701,7 +710,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
   <!-- Field Note / Disclaimer -->
   <div class="field-note">
     <i class="ti ti-alert-circle"></i>
-    <span><strong>Field Note:</strong> Events are collected from library and park district websites and spot-checked. Details can change. Always verify times, registration, and cancellations directly with the organizer before heading out.</span>
+    <span><strong>Field Note:</strong> Always verify times &amp; registration directly with the organizer — details can change.</span>
   </div>
 
   <!-- FILTERS -->
