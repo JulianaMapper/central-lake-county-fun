@@ -764,7 +764,7 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
 
   <!-- CALENDAR -->
   <div class="cal-bar">
-    <div class="cal-title" id="calTitle">Next 4 Weeks</div>
+    <div class="cal-title" id="calTitle">All Events — Summer 2026</div>
     <div style="display:flex;align-items:center;gap:0.6rem;">
       <div class="ev-count" id="resultCount"></div>
       <div class="view-toggle">
@@ -926,10 +926,10 @@ function applyFilters() {
   const day = document.getElementById('filterDay').value;
   const reg = document.getElementById('filterReg').value;
   const freeOnly = document.getElementById('filterFree').checked;
-  const t = todayDate(), end = addDays(t, 27);
+  const t = todayDate();
   filteredEvents = EVENTS.filter(e => {
     const d = parseDate(e.date);
-    if (d < t || d > end) return false;
+    if (d < t) return false;
     if (org && e.org !== org) return false;
     if (age && classAge(e.age) !== age) return false;
     if (day && e.day !== day) return false;
@@ -940,7 +940,7 @@ function applyFilters() {
     if (activeQuick === 'week') { const we = addDays(t,6); if (d > we) return false; }
     return true;
   });
-  const titles = { today:'Today',week:'This Week',free:'Free Events — Next 4 Weeks',all:'Next 4 Weeks' };
+  const titles = { today:'Today',week:'This Week',free:'Free Events — All Summer',all:'All Events — Summer 2026' };
   document.getElementById('calTitle').textContent = titles[activeQuick]||'Next 4 Weeks';
   renderCal();
   updateToolbar();
@@ -995,7 +995,7 @@ function renderCal() {
         const ot = orgType(e.org);
         const freeBadge = /free/i.test(e.cost) ? '<span class="ptag ptag-free"><i class="ti ti-coin"></i> Free</span>' : `<span class="ptag ptag-cost"><i class="ti ti-coin"></i> ${escHtml(e.cost)}</span>`;
         const regBadge = e.reg && e.reg!=='No' ? `<span class="ptag ptag-reg"><i class="ti ti-clipboard-check"></i> Reg: ${escHtml(e.reg)}</span>` : '';
-        const driveBadge = e.driveMin ? `<span class="ptag ptag-drive"><i class="ti ti-car"></i> ${e.driveMin}min</span>` : '';
+        const driveBadge = '';
         const ageBadge = e.age ? `<span class="ptag ptag-age"><i class="ti ti-users"></i> ${escHtml(trunc(e.age,26))}</span>` : '';
         html += `<div class="event-card${sel}" data-type="${ot}" onclick="openModal(${e.id})">
           <input type="checkbox" class="ev-check" data-id="${e.id}" ${selectedIds.has(e.id)?'checked':''} onclick="toggleSel(event,${e.id})">
@@ -1092,7 +1092,7 @@ function openModal(id) {
     e.age&&`<div class="modal-row"><i class="ti ti-users"></i><span>${escHtml(e.age)}</span></div>`,
     `<div class="modal-row"><i class="ti ti-coin"></i><span>${escHtml(e.cost)}</span></div>`,
     e.reg&&e.reg!=='No'&&`<div class="modal-row"><i class="ti ti-clipboard-check"></i><span>Registration: ${escHtml(e.reg)}</span></div>`,
-    e.driveMin&&`<div class="modal-row"><i class="ti ti-car"></i><span>~${e.driveMin} min from Grayslake</span></div>`,
+
     e.notes&&`<div class="modal-row"><i class="ti ti-notes"></i><span>${escHtml(e.notes)}</span></div>`,
   ].filter(Boolean).join('');
   const sel=selectedIds.has(id);
