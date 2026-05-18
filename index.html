@@ -716,6 +716,148 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
   .modal-overlay { align-items: flex-end; }
   .trail-section { padding: 1.1rem; }
 }
+
+/* ─── TAB NAV ─── */
+.tab-nav {
+  display: flex; gap: 0;
+  border-bottom: 3px solid var(--green);
+  margin: 0; padding: 0 1.5rem;
+  background: var(--canvas-mid);
+}
+.tab-btn {
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-weight: 800; font-size: 0.9rem;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 0.8rem 1.5rem; border: none; background: none;
+  color: var(--bark-lite); cursor: pointer;
+  border-bottom: 3px solid transparent; margin-bottom: -3px;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: color 0.15s;
+}
+.tab-btn:hover { color: var(--green); }
+.tab-btn.active { color: var(--green); border-bottom-color: var(--green); background: var(--canvas); }
+.tab-btn i { font-size: 1rem; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ─── BUCKET LIST TAB ─── */
+.bucket-tab-wrap { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
+.bucket-tab-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+.bucket-tab-title { font-family: 'National Park', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--green); line-height: 1.1; }
+.bucket-tab-sub { font-family: 'Archivo Narrow', sans-serif; font-size: 0.875rem; color: var(--bark-lite); margin-top: 0.3rem; }
+.bucket-print-bar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.bucket-select-all {
+  font-family: 'Courier Prime', monospace; font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 0.4rem 0.9rem; border: 1.5px solid var(--green);
+  background: none; color: var(--green); cursor: pointer; border-radius: 2px;
+}
+.bucket-select-all:hover { background: var(--green); color: var(--canvas); }
+.bucket-print-btn {
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-weight: 800; font-size: 0.85rem; letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.2rem; background: var(--green); color: var(--canvas);
+  border: 2px solid var(--green-mid); border-radius: 2px; cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: opacity 0.15s;
+}
+.bucket-print-btn:hover { opacity: 0.85; }
+.bucket-print-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.bucket-select-count {
+  font-family: 'Courier Prime', monospace; font-size: 0.75rem;
+  color: var(--bark-lite); text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* selectable merit badges for bucket tab */
+.bucket-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+.bb-item {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: 1rem 0.75rem 0.75rem;
+  border: 2px solid var(--canvas-mid); border-radius: 4px;
+  background: var(--cream); cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative; text-align: center;
+  user-select: none;
+}
+.bb-item:hover { border-color: var(--green-lite); background: white; }
+.bb-item.selected { border-color: var(--green); background: white; box-shadow: 0 0 0 2px var(--green); }
+.bb-item.selected::after {
+  content: '✓'; position: absolute; top: 5px; right: 7px;
+  font-size: 0.75rem; font-weight: 900; color: var(--green);
+}
+.bb-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--green); border: 2.5px solid var(--green-mid);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 2px var(--canvas-mid), 0 0 0 4px var(--green);
+  transition: background 0.15s;
+}
+.bb-item.selected .bb-icon { background: var(--rust); box-shadow: 0 0 0 2px var(--canvas-mid), 0 0 0 4px var(--rust); }
+.bb-icon i { font-size: 1.5rem; color: var(--gold); }
+.bb-item.selected .bb-icon i { color: var(--canvas); }
+.bb-label {
+  font-family: 'Archivo Narrow', sans-serif; font-size: 0.75rem;
+  font-weight: 700; color: var(--bark); line-height: 1.25; text-align: center;
+}
+
+/* ─── PRINTABLE SHEET ─── */
+@media print {
+  body * { visibility: hidden !important; }
+  #printSheet, #printSheet * { visibility: visible !important; }
+  #printSheet {
+    position: fixed; inset: 0; background: white;
+    padding: 0.5in; z-index: 9999;
+  }
+}
+#printSheet { display: none; }
+
+.ps-header { text-align: center; margin-bottom: 0.5in; }
+.ps-title {
+  font-family: 'National Park', sans-serif; font-weight: 800;
+  font-size: 28pt; color: #2C3E2A; line-height: 1;
+}
+.ps-sub {
+  font-family: 'Courier Prime', monospace; font-size: 10pt;
+  color: #5A3A22; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-top: 6pt;
+}
+.ps-rule { border: 0; border-top: 2px solid #2C3E2A; margin: 10pt 0; }
+.ps-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 14pt;
+}
+.ps-badge {
+  display: flex; flex-direction: column; align-items: center; gap: 6pt;
+  text-align: center;
+}
+.ps-circle {
+  width: 72pt; height: 72pt; border-radius: 50%;
+  background: #2C3E2A; border: 2.5pt solid #1A2618;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 2pt white, 0 0 0 4pt #2C3E2A;
+  flex-shrink: 0;
+}
+.ps-circle i { font-size: 22pt; color: #C39A3F; }
+.ps-circle.earned { background: #A8472A; border-color: #7A3320; }
+.ps-circle.earned i { color: white; }
+.ps-name {
+  font-family: 'Archivo Narrow', sans-serif; font-size: 7.5pt;
+  font-weight: 700; color: #1F2A1D; line-height: 1.2;
+}
+.ps-check {
+  width: 18pt; height: 18pt; border: 1.5pt solid #2C3E2A;
+  border-radius: 2pt; margin-top: 3pt; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12pt; color: #2C3E2A;
+}
+.ps-footer {
+  margin-top: 0.3in; text-align: center;
+  font-family: 'Courier Prime', monospace; font-size: 8pt;
+  color: #5A3A22; letter-spacing: 0.12em; text-transform: uppercase;
+  border-top: 1px solid #C39A3F; padding-top: 8pt;
+}
+
 </style>
 </head>
 <body>
@@ -804,6 +946,19 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
     </div>
   </div>
 
+  <!-- TAB NAV -->
+  <nav class="tab-nav" role="tablist">
+    <button class="tab-btn active" id="tab-events" role="tab" aria-selected="true" onclick="switchTab('events')">
+      <i class="ti ti-calendar-event"></i> Events
+    </button>
+    <button class="tab-btn" id="tab-bucket" role="tab" aria-selected="false" onclick="switchTab('bucket')">
+      <i class="ti ti-award"></i> Summer Bucket List
+    </button>
+  </nav>
+
+  <!-- EVENTS PANEL -->
+  <div class="tab-panel active" id="panel-events">
+
   <!-- ACTION TOOLBAR -->
   <div class="action-toolbar">
     <span class="sel-count" id="selectedCount">0 Selected</span>
@@ -828,16 +983,34 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
   <div id="calContainer" class="cal-list-view"></div>
   <div id="calGridContainer" class="cal-grid-view"></div>
 
-  <!-- SUMMER BUCKET LIST -->
-  <div class="trail-section">
-    <div class="section-heading"><i class="ti ti-award"></i> Merit Badge Bucket List</div>
-    <div class="section-sub">Earn your summer badges — saved automatically in your browser</div>
-    <div class="badge-grid" id="bucketGrid"></div>
-    <div class="trail-progress">
-      <div class="trail-progress-label" id="bucketLabel">0 of 25 badges earned</div>
-      <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
+  </div><!-- /panel-events -->
+
+  <!-- BUCKET LIST PANEL -->
+  <div class="tab-panel" id="panel-bucket">
+    <div class="bucket-tab-wrap">
+      <div class="bucket-tab-header">
+        <div>
+          <div class="bucket-tab-title">Summer Bucket List</div>
+          <div class="bucket-tab-sub">Pick your adventures — then print your family's custom badge sheet.</div>
+        </div>
+        <div class="bucket-print-bar">
+          <span class="bucket-select-count" id="bucketSelCount">0 selected</span>
+          <button class="bucket-select-all" onclick="bucketSelectAll()">Select All</button>
+          <button class="bucket-print-btn" id="bucketPrintBtn" onclick="printBucket()" disabled>
+            <i class="ti ti-printer"></i> Print Badge Sheet
+          </button>
+        </div>
+      </div>
+      <div class="bucket-badge-grid" id="bucketTabGrid"></div>
+      <div class="trail-progress" style="margin-top:1.5rem">
+        <div class="trail-progress-label" id="bucketLabel">0 of 25 badges earned</div>
+        <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
+      </div>
     </div>
-  </div>
+  </div><!-- /panel-bucket -->
+
+  <!-- PRINTABLE SHEET (hidden, shown on print) -->
+  <div id="printSheet"></div>
 
   <!-- FUN EXTRAS -->
   <div class="trail-section">
@@ -1177,6 +1350,94 @@ function modalSaveOne(id) {
 }
 
 // ── BUCKET LIST ──
+// ── TABS ──
+function switchTab(tab) {
+  ['events','bucket'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t).setAttribute('aria-selected', t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab==='bucket') initBucketTab();
+}
+
+// ── BUCKET TAB ──
+let bucketPrintSel = new Set(JSON.parse(localStorage.getItem('bucket_print_sel')||'[]'));
+
+function initBucketTab() {
+  const done = JSON.parse(localStorage.getItem('bucket_done')||'[]');
+  const grid = document.getElementById('bucketTabGrid');
+  if (!grid) return;
+  grid.innerHTML = BUCKET.map((item,i) => {
+    const isDone = done.includes(i);
+    const isSel = bucketPrintSel.has(i);
+    return `<div class="bb-item${isSel?' selected':''}" onclick="toggleBucketSel(${i})" id="bb-${i}">
+      <div class="bb-icon${isDone?' earned':''}"><i class="ti ${item.icon}"></i></div>
+      <div class="bb-label">${item.text}</div>
+    </div>`;
+  }).join('');
+  updateBucketSelCount();
+  updateBucket(done.length);
+}
+
+function toggleBucketSel(i) {
+  if (bucketPrintSel.has(i)) bucketPrintSel.delete(i);
+  else bucketPrintSel.add(i);
+  localStorage.setItem('bucket_print_sel', JSON.stringify([...bucketPrintSel]));
+  const el = document.getElementById('bb-'+i);
+  if (el) el.classList.toggle('selected', bucketPrintSel.has(i));
+  updateBucketSelCount();
+}
+
+function bucketSelectAll() {
+  const allSel = bucketPrintSel.size === BUCKET.length;
+  if (allSel) {
+    bucketPrintSel.clear();
+  } else {
+    BUCKET.forEach((_,i) => bucketPrintSel.add(i));
+  }
+  localStorage.setItem('bucket_print_sel', JSON.stringify([...bucketPrintSel]));
+  document.querySelectorAll('.bb-item').forEach((el,i) => el.classList.toggle('selected', bucketPrintSel.has(i)));
+  document.querySelector('.bucket-select-all').textContent = allSel ? 'Select All' : 'Deselect All';
+  updateBucketSelCount();
+}
+
+function updateBucketSelCount() {
+  const n = bucketPrintSel.size;
+  const el = document.getElementById('bucketSelCount');
+  if (el) el.textContent = n === 0 ? 'None selected' : `${n} selected`;
+  const btn = document.getElementById('bucketPrintBtn');
+  if (btn) btn.disabled = n === 0;
+}
+
+function printBucket() {
+  const done = JSON.parse(localStorage.getItem('bucket_done')||'[]');
+  const items = [...bucketPrintSel].sort((a,b)=>a-b).map(i => {
+    const item = BUCKET[i];
+    const earned = done.includes(i);
+    return `<div class="ps-badge">
+      <div class="ps-circle${earned?' earned':''}"><i class="ti ${item.icon}"></i></div>
+      <div class="ps-name">${item.text}</div>
+      <div class="ps-check">${earned ? '✓' : ''}</div>
+    </div>`;
+  }).join('');
+  const sheet = document.getElementById('printSheet');
+  sheet.innerHTML = `
+    <div class="ps-header">
+      <div class="ps-title">Summer Bucket List</div>
+      <div class="ps-sub">Central Lake County · Summer 2026</div>
+      <hr class="ps-rule">
+    </div>
+    <div class="ps-grid">${items}</div>
+    <div class="ps-footer">
+      <span>___ of ${bucketPrintSel.size} adventures completed</span>
+      &nbsp;·&nbsp;
+      <span>Family Field Guide · Lake County, Illinois</span>
+    </div>`;
+  sheet.style.display = 'block';
+  window.print();
+  sheet.style.display = 'none';
+}
+
 function initBucket() {
   const done=JSON.parse(localStorage.getItem('bucket_done')||'[]');
   document.getElementById('bucketGrid').innerHTML=BUCKET.map((item,i)=>
