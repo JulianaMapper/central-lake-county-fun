@@ -105,6 +105,17 @@ body {
   text-transform: uppercase; letter-spacing: 0.06em;
 }
 .hero-stat strong { color: var(--gold); }
+.trail-chip-sm {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  font-family: 'Courier Prime', monospace; font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  border: 1.5px solid var(--sage-dark); border-radius: var(--radius);
+  background: white; color: var(--bark-lite); cursor: pointer; transition: all 0.12s;
+  white-space: nowrap;
+}
+.trail-chip-sm:hover { border-color: var(--green); color: var(--green); }
+.trail-chip-sm.active { background: var(--green); border-color: var(--green); color: white; }
 .hero-about-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-family: 'Alfa Slab One', serif;
@@ -663,26 +674,15 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
   <div class="hero-inner">
     <h1>Central Lake County<br><span class="h1-accent">Fun</span></h1>
     <p class="hero-tagline">Free &amp; low-cost family events — libraries, parks, and forest preserves all in one place.</p>
-    <div class="hero-stat-row">
-      <div class="hero-stat"><i class="ti ti-calendar-event"></i> <strong>1,050+</strong> events</div>
-      <div class="hero-stat"><i class="ti ti-building-community"></i> <strong>25</strong> organizations</div>
-      <div class="hero-stat"><i class="ti ti-coin"></i> Mostly <strong>free</strong></div>
-      <a href="about.html" class="hero-about-link"><i class="ti ti-info-circle"></i> About This Site</a>
-    </div>
+    <a href="about.html" class="hero-about-link"><i class="ti ti-info-circle"></i> About This Site</a>
+
   </div>
 </header>
 
 <!-- ═══════════════════════════════════════
      STICKY NAV
 ═══════════════════════════════════════ -->
-<nav class="trail-nav">
-  <button class="trail-chip all active" onclick="quickFilter('all',this)"><i class="ti ti-layout-grid"></i> All Events</button>
-  <button class="trail-chip" onclick="quickFilter('today',this)"><i class="ti ti-sun"></i> Today</button>
-  <button class="trail-chip" onclick="quickFilter('week',this)"><i class="ti ti-calendar-week"></i> This Week</button>
-  <button class="trail-chip" onclick="quickFilter('free',this)"><i class="ti ti-coin"></i> Free Only</button>
-  <div class="trail-nav-spacer"></div>
-  <a href="about.html" class="trail-about"><i class="ti ti-info-circle"></i> About</a>
-</nav>
+
 
 <!-- ═══════════════════════════════════════
      MAIN
@@ -1189,8 +1189,8 @@ function shiftMonth(dir) {
 }
 function showDayEvents(dateStr) {
   activeQuick='all';
-  document.querySelectorAll('.trail-chip').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.trail-chip.all').classList.add('active');
+  document.querySelectorAll('.trail-chip-sm').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.trail-chip-sm.all').classList.add('active');
   setView('list',document.getElementById('btnListView'));
   filteredEvents=EVENTS.filter(e=>e.date===dateStr);
   document.getElementById('calTitle').textContent=parseDate(dateStr).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
