@@ -755,14 +755,14 @@ footer a { color: var(--ochre); text-decoration: none; font-weight: 700; }
 
   <!-- CALENDAR -->
   <div class="cal-bar">
-    <div class="cal-title" id="calTitle">All Events — Summer 2026</div>
-    <div style="display:flex;align-items:center;gap:0.6rem;">
-      <div class="ev-count" id="resultCount"></div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
       <div class="view-toggle">
         <button class="view-btn active" id="btnListView" onclick="setView('list',this)" title="List view"><i class="ti ti-list"></i></button>
         <button class="view-btn" id="btnCalView" onclick="setView('cal',this)" title="Month view"><i class="ti ti-calendar-month"></i></button>
       </div>
+      <div class="cal-title" id="calTitle">All Events — Summer 2026</div>
     </div>
+    <div class="ev-count" id="resultCount"></div>
   </div>
   <div id="calContainer" class="cal-list-view"></div>
   <div id="calGridContainer" class="cal-grid-view"></div>
