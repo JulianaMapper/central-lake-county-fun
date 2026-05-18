@@ -6,96 +6,237 @@
 <title>About — Central Lake County Fun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Patua+One&family=Nunito:wght@400;600;700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 :root {
-  --teal: #0D9488; --teal-light: #CCFBF1; --teal-dark: #0F766E;
-  --slate: #0F172A; --slate-mid: #475569; --slate-light: #94A3B8;
-  --surface: #F8FAFC; --card: #FFFFFF; --border: #E2E8F0;
-  --radius: 12px;
+  --green:      #1F3A2B;
+  --green-mid:  #2D5140;
+  --green-lite: #4A7C5E;
+  --bark:       #422F25;
+  --bark-lite:  #6B4C3B;
+  --canvas:     #F8F6F0;
+  --canvas-mid: #EDE9DF;
+  --sage:       #D3E2D7;
+  --sage-dark:  #A8C4B0;
+  --brown:      #6B3F2A;
+  --brown-lite: #8B5240;
+  --gold:       #F1A81A;
+  --cream:      #FDF9F0;
+  --radius:     4px;
+  --radius-md:  8px;
+  --stitch:     2px dashed #2D5140;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--slate); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-.hero { background: var(--slate); color: white; padding: 3rem 2rem; }
-.hero-eyebrow {
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--canvas);
+  color: var(--bark);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HERO */
+.hero {
+  background-color: var(--green);
+  background-image:
+    repeating-radial-gradient(ellipse 140% 60% at 70% 40%,
+      transparent 0px, transparent 28px, rgba(255,255,255,0.04) 29px,
+      transparent 30px, transparent 58px, rgba(255,255,255,0.035) 59px,
+      transparent 60px);
+  color: var(--canvas);
+  padding: 2.5rem 2rem 2rem;
+  border-bottom: 3px solid var(--brown);
+}
+.back-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--teal);
-  background: rgba(13,148,136,0.15); padding: 0.3rem 0.75rem; border-radius: 50px;
-  margin-bottom: 1rem; text-decoration: none;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  padding: 0.25rem 0.75rem; border-radius: var(--radius);
+  margin-bottom: 1.25rem; display: inline-flex;
+  transition: color 0.15s;
 }
-.hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.1; }
-.hero h1 em { font-style: italic; color: var(--teal); }
-nav.crumb { background: white; border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; font-size: 0.85rem; }
-nav.crumb a { color: var(--teal); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; }
-.page { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-.prose p { margin-bottom: 1.1rem; font-size: 1rem; color: var(--slate-mid); }
-.prose p:first-of-type { font-size: 1.1rem; color: var(--slate); font-weight: 500; }
-h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin: 2rem 0 0.75rem; color: var(--slate); }
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
-.card-item {
-  background: white; border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 1rem 1.1rem; display: flex; gap: 0.65rem; align-items: flex-start;
+.back-link:hover { color: var(--gold); border-color: rgba(241,168,26,0.5); }
+.hero h1 {
+  font-family: 'Alfa Slab One', serif;
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  line-height: 1.1; color: var(--canvas);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.25);
 }
-.card-item i { font-size: 1.2rem; color: var(--teal); margin-top: 2px; flex-shrink: 0; }
-.card-item div { font-size: 0.875rem; font-weight: 600; }
-.card-item span { font-size: 0.78rem; color: var(--slate-light); font-weight: 400; }
-.notice { background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 8px; padding: 1rem 1.1rem; font-size: 0.875rem; color: #78350F; margin: 1.5rem 0; display: flex; gap: 0.6rem; }
-.notice i { flex-shrink: 0; margin-top: 1px; }
-footer { text-align: center; padding: 1.5rem; font-size: 0.78rem; color: var(--slate-light); border-top: 1px solid var(--border); }
-footer a { color: var(--teal); font-weight: 600; text-decoration: none; }
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.55); margin-top: 0.5rem;
+}
+
+/* CONTENT */
+.page { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+h2 {
+  font-family: 'Patua One', serif;
+  font-size: 1.25rem; color: var(--green);
+  margin: 2.25rem 0 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  border-bottom: var(--stitch); border-color: var(--sage-dark);
+  padding-bottom: 0.5rem;
+}
+h2 i { color: var(--brown); font-size: 1.1rem; }
+
+p { font-size: 0.975rem; color: var(--bark); margin-bottom: 1rem; }
+p.lead { font-size: 1.05rem; font-weight: 600; color: var(--green); line-height: 1.6; }
+
+.callout {
+  background: var(--cream);
+  border: var(--stitch); border-color: var(--green);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+.callout p { margin: 0; font-size: 0.9rem; }
+.callout-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--brown); margin-bottom: 0.4rem;
+  display: flex; align-items: center; gap: 0.3rem;
+}
+
+.source-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
+.source-item {
+  background: white; border: 1.5px solid var(--canvas-mid);
+  border-radius: var(--radius); padding: 0.75rem 0.9rem;
+  display: flex; gap: 0.6rem; align-items: flex-start;
+}
+.source-item i { color: var(--green-lite); font-size: 1.1rem; margin-top: 1px; flex-shrink: 0; }
+.source-item div { font-size: 0.825rem; font-weight: 700; color: var(--bark); line-height: 1.3; }
+.source-item span { font-size: 0.75rem; font-weight: 400; color: var(--bark-lite); }
+
+.age-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--green); color: var(--canvas);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  padding: 0.3rem 0.8rem; border-radius: 50px;
+  margin: 0.25rem 0 0.75rem;
+  display: inline-flex;
+}
+
+.field-note {
+  display: flex; gap: 0.75rem;
+  background: #FBF6E9;
+  border: var(--stitch); border-color: var(--brown);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.78rem; color: var(--bark); line-height: 1.5;
+  margin: 1.5rem 0;
+}
+.field-note i { color: var(--brown); flex-shrink: 0; margin-top: 1px; }
+
+/* COFFEE */
+.coffee-block {
+  background: var(--green); border-radius: var(--radius-md);
+  padding: 1.75rem; text-align: center; margin-top: 2.5rem;
+}
+.coffee-block h3 { font-family: 'Alfa Slab One', serif; font-size: 1.3rem; color: var(--canvas); margin-bottom: 0.4rem; }
+.coffee-block p { font-size: 0.875rem; color: var(--sage); margin-bottom: 1.1rem; }
+.coffee-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.c-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.55rem 1.2rem; border-radius: var(--radius);
+  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.78rem;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  cursor: pointer; text-decoration: none; border: none; transition: opacity 0.15s;
+}
+.c-btn:hover { opacity: 0.85; }
+.c-venmo { background: #3D95CE; color: white; }
+.c-paypal { background: #003087; color: white; }
+
+footer {
+  text-align: center; padding: 1.5rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem; color: var(--bark-lite);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border-top: 2px solid var(--canvas-mid); margin-top: 3rem;
+}
+footer a { color: var(--brown); text-decoration: none; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .hero { padding: 1.75rem 1.25rem 1.5rem; }
+  .page { padding: 1.5rem 1rem 3rem; }
+  .source-grid { grid-template-columns: 1fr 1fr; }
+  .coffee-btns { flex-direction: column; align-items: center; }
+  .c-btn { width: 100%; max-width: 220px; justify-content: center; }
+}
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <a href="index.html" class="hero-eyebrow"><i class="ti ti-arrow-left"></i> Back to events</a>
-  <h1>About <em>Central Lake County Fun</em></h1>
+  <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> Back to Events</a>
+  <h1>About <em>Central Lake<br>County Fun</em></h1>
+  <div class="hero-sub">Central Lake County, Illinois &bull; Summer 2026</div>
 </header>
 
-<nav class="crumb">
-  <a href="index.html"><i class="ti ti-home"></i> Home</a> &rsaquo; About
-</nav>
-
 <div class="page">
-  <div class="prose">
-    <p>Every parent wants their kids to have a great summer. But finding the right events — the free ones, the ones that fit your kid's age, the ones actually happening nearby — takes hours of clicking through library websites, park district calendars, and Facebook groups.</p>
 
-    <p>This site exists to take that invisible load off your plate. We believe every kid in Lake County deserves a summer full of joy, discovery, and connection — and that it shouldn't require a spreadsheet to make that happen.</p>
+  <p class="lead">This site exists because coordinating a fun summer for little kids is genuinely hard work — and most parents are doing it alone, one library website at a time.</p>
 
-    <p>We built Central Lake County Fun to be the one place a parent can go to see what's happening this week, plan ahead for the summer, and actually show up. No subscriptions, no login, no ads — just the information you need.</p>
+  <p>I'm a Lake County mom with young kids, and every spring I found myself spending hours clicking through library calendars, park district pages, and Facebook groups just to figure out what was happening that week. I started keeping a spreadsheet for myself. Then I thought: other families need this too.</p>
+
+  <p>Central Lake County Fun is my attempt to take that invisible coordination load off your plate — so you can spend less time searching and more time actually doing the thing.</p>
+
+  <h2><i class="ti ti-baby-carriage"></i> Who This Is For</h2>
+
+  <div class="age-badge"><i class="ti ti-users"></i> Primarily ages 0–8 &bull; Babies, Toddlers & Early Elementary</div>
+
+  <p>This site is built with <strong>families of young children in mind</strong> — babies, toddlers, and kids in the preschool and early elementary years. Most of the events highlighted are storytimes, nature programs, free play, crafts, and community festivals that work best for the under-8 crowd.</p>
+
+  <p>That said, many events are open to all ages and families, and you'll find things worth doing at every stage. Use the age filter to zero in on what fits your kids right now.</p>
+
+  <h2><i class="ti ti-map-pin"></i> What's Covered</h2>
+
+  <p>We focus on <strong>Central Lake County, Illinois</strong> — events within a reasonable drive of the Grayslake area. That means libraries, park districts, and forest preserves across the communities you're already in.</p>
+
+  <div class="source-grid">
+    <div class="source-item"><i class="ti ti-book"></i><div>Public Libraries<span>Storytimes, STEM, crafts, summer reading</span></div></div>
+    <div class="source-item"><i class="ti ti-trees"></i><div>Park Districts<span>Free programs, splash pads, nature play</span></div></div>
+    <div class="source-item"><i class="ti ti-leaf"></i><div>Forest Preserves<span>Nature walks, wildlife programs, trails</span></div></div>
+    <div class="source-item"><i class="ti ti-confetti"></i><div>Community Events<span>Festivals, concerts, village programming</span></div></div>
   </div>
 
-  <h2>What's included</h2>
-  <div class="card-grid">
-    <div class="card-item"><i class="ti ti-book"></i><div>Library Events<span>Storytimes, STEM, crafts, summer reading programs</span></div></div>
-    <div class="card-item"><i class="ti ti-trees"></i><div>Park Districts<span>Free programs, splash pads, nature activities</span></div></div>
-    <div class="card-item"><i class="ti ti-leaf"></i><div>Forest Preserves<span>Nature walks, wildlife programs, outdoor exploration</span></div></div>
-    <div class="card-item"><i class="ti ti-building-community"></i><div>Community Events<span>Festivals, concerts, village programming</span></div></div>
-  </div>
+  <h2><i class="ti ti-search"></i> How Events Are Found</h2>
 
-  <h2>How we find events</h2>
-  <div class="prose">
-    <p>Events are collected using web scraping tools that pull directly from library and park district calendars across Central Lake County. We spot-check events for accuracy and remove duplicates, out-of-area listings, and events not relevant to families with young children.</p>
-    <p>We focus on events that are free or low-cost, geared toward children (especially preschool and elementary age), and within a reasonable drive of the Grayslake area.</p>
-  </div>
+  <p>Events are collected using web scraping tools that pull directly from library and park district calendars, then filtered and spot-checked. We look for events that are free or low-cost, family-friendly, and geared toward young children — and we remove duplicates and out-of-area listings.</p>
 
-  <div class="notice">
+  <p>We don't include everything. Events that require grade 3+ or are primarily for adults, teens, or older kids are generally filtered out. When in doubt, we err on the side of including something and letting families decide.</p>
+
+  <div class="field-note">
     <i class="ti ti-alert-circle"></i>
-    <span><strong>Always verify before you go.</strong> Event details — times, registration requirements, cancellations — can change without notice. We encourage you to click through to the original event page and confirm with the organizer, especially for events requiring registration.</span>
+    <span><strong>Always verify before you go.</strong> Event details — times, registration, cancellations — can change without notice. We encourage you to click through to the original event page and confirm with the organizer, especially for anything requiring registration. We've done our best; please do a quick double-check before you load up the car.</span>
   </div>
 
-  <h2>Who made this</h2>
-  <div class="prose">
-    <p>This site was made by a Lake County mom who got tired of maintaining a personal spreadsheet of summer events and thought: other families need this too. It's a community resource, not a business — just a neighbor trying to help.</p>
-    <p>If you found it useful, a small contribution helps keep it going. And if you know of events we missed, feel free to reach out!</p>
+  <div class="callout">
+    <div class="callout-label"><i class="ti ti-calendar-event"></i> Data freshness</div>
+    <p>This site reflects events collected in May 2026. Some events run through September. We recommend checking back as the summer progresses — and always clicking through to the event page for the most current details.</p>
   </div>
 
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
-    <a href="https://venmo.com/juliana-wilhoit" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:50px;background:#3D95CE;color:white;font-weight:700;font-size:0.875rem;text-decoration:none;"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
-    <a href="https://paypal.me/mcmillanwilhoit" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.1rem;border-radius:50px;background:#003087;color:white;font-weight:700;font-size:0.875rem;text-decoration:none;"><i class="ti ti-brand-paypal"></i> PayPal</a>
+  <div class="coffee-block">
+    <h3>Find This Helpful?</h3>
+    <p>This is a free community resource. If it saved you some searching, a small contribution is always appreciated.</p>
+    <div class="coffee-btns">
+      <a href="https://venmo.com/juliana-wilhoit" target="_blank" class="c-btn c-venmo"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
+      <a href="https://paypal.me/mcmillanwilhoit" target="_blank" class="c-btn c-paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+    </div>
   </div>
+
 </div>
 
 <footer>

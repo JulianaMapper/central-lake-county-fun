@@ -22,8 +22,8 @@
   --canvas-mid: #EDE9DF;
   --sage:       #D3E2D7;
   --sage-dark:  #A8C4B0;
-  --ochre:      #C66917;
-  --ochre-lite: #E8842A;
+  --ochre:      #6B3F2A;
+  --ochre-lite: #8B5240;
   --gold:       #F1A81A;
   --cream:      #FDF9F0;
   --radius:     4px;
@@ -61,7 +61,7 @@ body {
 }
 /* Park service arrowhead shape at top */
 .hero-arrowhead {
-  background: var(--ochre);
+  background: #5C3D2E;
   clip-path: polygon(50% 0%, 100% 30%, 100% 100%, 0% 100%, 0% 30%);
   width: 120px; height: 140px;
   position: absolute; top: -10px; right: 40px;
@@ -87,9 +87,9 @@ body {
   font-family: 'Courier Prime', monospace;
   font-size: 0.7rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.1em;
-  border: var(--stitch); border-color: rgba(255,255,255,0.4);
+  border: 1.5px solid rgba(255,255,255,0.55);
   padding: 0.25rem 0.75rem; border-radius: 50px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.08);
 }
 .hero h1 {
   font-family: 'Alfa Slab One', serif;
@@ -103,7 +103,7 @@ body {
 .hero-tagline {
   font-family: 'Patua One', serif;
   font-size: clamp(0.95rem, 2vw, 1.15rem);
-  color: var(--sage);
+  color: #C8DDD0;
   max-width: 540px;
   margin-bottom: 1.5rem;
   border-left: 3px solid var(--ochre);
@@ -134,9 +134,9 @@ body {
   font-family: 'Courier Prime', monospace;
   font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.08em;
-  border: var(--stitch); border-color: rgba(255,255,255,0.3);
+  border: 1.5px solid rgba(255,255,255,0.25);
   border-radius: var(--radius);
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.85);
   cursor: pointer; transition: all 0.15s; white-space: nowrap;
   background: transparent;
 }
