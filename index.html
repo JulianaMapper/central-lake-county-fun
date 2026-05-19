@@ -1377,6 +1377,9 @@ const BUCKET = [
   { icon: "ti-sunglasses", text: "Perfect the summer picnic spread", cat: "Explorer Missions", size: "sm" },
 ];
 
+// Assign stable numeric IDs to events
+EVENTS.forEach((e, i) => e.id = i + 1);
+
 // ── STATE ──
 let selectedIds = new Set();
 let filteredEvents = [];
