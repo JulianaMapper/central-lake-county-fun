@@ -1412,6 +1412,15 @@ function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function trunc(s,n) { return s&&s.length>n ? s.slice(0,n)+'…' : (s||''); }
 
 // ── FILTERS ──
+function timeToMin(t) {
+  if (!t) return 9999;
+  const m = t.match(/(\d+):?(\d*)\s*(AM|PM)/i);
+  if (!m) return 9999;
+  let h = parseInt(m[1]), min = parseInt(m[2]||'0'), ampm = m[3].toUpperCase();
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  return h * 60 + min;
+}
 function applyFilters() {
   const org = document.getElementById('filterOrg').value;
   const age = document.getElementById('filterAge').value;
@@ -1437,7 +1446,7 @@ function applyFilters() {
     return true;
   }).sort((a, b) => {
     if (a.date !== b.date) return a.date < b.date ? -1 : 1;
-    return (a.time || '').localeCompare(b.time || '');
+    return timeToMin(a.time) - timeToMin(b.time);
   });
   const titles = { today:'Today',week:'This Week',free:'Free Events — All Summer',all:'All Events — Summer 2026' };
   document.getElementById('calTitle').textContent = titles[activeQuick]||'Next 4 Weeks';
