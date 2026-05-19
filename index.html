@@ -1555,7 +1555,11 @@ function toggleSel(ev, id) {
 function updateToolbar() {
   const n = selectedIds.size;
   document.getElementById('selectedCount').textContent = n===0 ? '0 Selected' : `${n} Event${n!==1?'s':''} Selected`;
-  ['btnICS','btnGCal','btnOutlook'].forEach(id => document.getElementById(id).disabled = n===0);
+  document.getElementById('btnICS').disabled = n===0;
+  document.getElementById('btnOutlook').disabled = n===0;
+  const gcal = document.getElementById('btnGCal');
+  gcal.disabled = n===0;
+  gcal.title = n>1 ? 'Google Calendar only supports 1 event — use .ICS for multiple' : '';
 }
 function selectAllVisible() { filteredEvents.forEach(e=>selectedIds.add(e.id)); renderCal(); updateToolbar(); }
 
@@ -1577,6 +1581,43 @@ function icsDate(d,allDay) {
   const p=n=>String(n).padStart(2,'0');
   return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}T${p(d.getHours())}${p(d.getMinutes())}00`;
 }
+const ORG_ADDRESSES = {
+  'Antioch Public Library District':       'Antioch Public Library District, 757 N Main St, Antioch, IL 60002',
+  'Barrington Area Library':               'Barrington Area Library, 505 N Northwest Hwy, Barrington, IL 60010',
+  'Cook Memorial Public Library District': 'Cook Memorial Public Library, 413 N Milwaukee Ave, Libertyville, IL 60048',
+  'Deerfield Public Library':              'Deerfield Public Library, 920 Waukegan Rd, Deerfield, IL 60015',
+  'Ela Area Public Library':               'Ela Area Public Library, 275 Mohawk Trail, Lake Zurich, IL 60047',
+  'Fox Lake District Library':             'Fox Lake District Library, 255 E Grand Ave, Fox Lake, IL 60020',
+  'Fremont Public Library':                'Fremont Public Library, 1170 N Midlothian Rd, Mundelein, IL 60060',
+  'Grayslake Area Public Library District':'Grayslake Area Public Library, 100 Library Lane, Grayslake, IL 60030',
+  'Grayslake Park District':               'Grayslake Park District, 25 Casey Rd, Grayslake, IL 60030',
+  'Gurnee Park District':                  'Gurnee Park District, 4374 Old Grand Ave, Gurnee, IL 60031',
+  'Highland Park Public Library':          'Highland Park Public Library, 494 Laurel Ave, Highland Park, IL 60035',
+  'Lake County Forest Preserves':          'Lake County Forest Preserves, 1899 W Winchester Rd, Libertyville, IL 60048',
+  'Lake Forest Library':                   'Lake Forest Library, 360 E Deerpath Rd, Lake Forest, IL 60045',
+  'Lake Villa District Library':           'Lake Villa District Library, 1001 E Grand Ave, Lake Villa, IL 60046',
+  'Lindenhurst Park District':             'Lindenhurst Park District, 2200 Linden Dr, Lindenhurst, IL 60046',
+  'Mundelein Park & Recreation District':  'Mundelein Park & Recreation District, 1401 N Midlothian Rd, Mundelein, IL 60060',
+  'Round Lake Area Park District':         'Round Lake Area Park District, 814 Hart Rd, Round Lake, IL 60073',
+  'Round Lake Area Public Library':        'Round Lake Area Public Library, 906 Hart Rd, Round Lake, IL 60073',
+  'Vernon Area Public Library':            'Vernon Area Public Library, 300 Olde Half Day Rd, Lincolnshire, IL 60069',
+  'Vernon Hills Park District':            'Vernon Hills Park District, 635 N Aspen Dr, Vernon Hills, IL 60061',
+  'Village of Grayslake / Heritage Center / Festivals': 'Heritage Center, 163 Hawley St, Grayslake, IL 60030',
+  'Village of Libertyville':               'Village of Libertyville, 118 W Cook Ave, Libertyville, IL 60048',
+  'Village of Mundelein':                  'Village of Mundelein, 440 E Hawley St, Mundelein, IL 60060',
+  'Warren-Newport Public Library':         'Warren-Newport Public Library, 224 N O\'Plaine Rd, Gurnee, IL 60031',
+  'Wauconda Area Public Library':          'Wauconda Area Public Library, 801 N Main St, Wauconda, IL 60084',
+  'Wauconda Park District':                'Wauconda Park District, 107 N Main St, Wauconda, IL 60084',
+  'Waukegan Park District':                'Waukegan Park District, 2000 Belvidere Rd, Waukegan, IL 60085',
+  'Waukegan Public Library':               'Waukegan Public Library, 128 N County St, Waukegan, IL 60085',
+  'Wildwood Park District':                'Wildwood Park District, 20255 W Washington St, Grayslake, IL 60030',
+  'Zion-Benton Public Library District':   'Zion-Benton Public Library, 2400 Gabriel Ave, Zion, IL 60099',
+};
+function orgLocation(e) {
+  const base = ORG_ADDRESSES[e.org] || e.org || '';
+  const room = e.location && e.location !== e.org ? e.location + ', ' : '';
+  return room + base;
+}
 function buildICS(evs) {
   let s=`BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Central Lake County Fun//EN\r\nCALSCALE:GREGORIAN\r\nX-WR-CALNAME:Central Lake County Fun\r\nX-WR-TIMEZONE:America/Chicago\r\n`;
   evs.forEach((e,i)=>{
@@ -1584,7 +1625,7 @@ function buildICS(evs) {
     const ds=t.allDay?`DTSTART;VALUE=DATE:${icsDate(t.start,true)}`:`DTSTART;TZID=America/Chicago:${icsDate(t.start,false)}`;
     const de=t.allDay?`DTEND;VALUE=DATE:${icsDate(t.end,true)}`:`DTEND;TZID=America/Chicago:${icsDate(t.end,false)}`;
     const desc=[e.org&&`Organization: ${e.org}`,e.location&&`Location: ${e.location}`,e.age&&`Ages: ${e.age}`,e.cost&&`Cost: ${e.cost}`,e.reg&&`Registration: ${e.reg}`,e.url&&`Details: ${e.url}`].filter(Boolean).join('\\n');
-    s+=`BEGIN:VEVENT\r\nUID:clcf-${e.id}-${Date.now()+i}\r\n${ds}\r\n${de}\r\nSUMMARY:${e.name}\r\nLOCATION:${e.location||''}\r\nDESCRIPTION:${desc}\r\n${e.url?'URL:'+e.url+'\r\n':''}STATUS:CONFIRMED\r\nEND:VEVENT\r\n`;
+    s+=`BEGIN:VEVENT\r\nUID:clcf-${e.id}-${Date.now()+i}\r\n${ds}\r\n${de}\r\nSUMMARY:${e.name}\r\nLOCATION:${orgLocation(e)}\r\nDESCRIPTION:${desc}\r\n${e.url?'URL:'+e.url+'\r\n':''}STATUS:CONFIRMED\r\nEND:VEVENT\r\n`;
   });
   return s+'END:VCALENDAR';
 }
@@ -1600,13 +1641,12 @@ function addToOutlook() {
 }
 function addToGCal() {
   const evs=EVENTS.filter(e=>selectedIds.has(e.id));
-  evs.slice(0,5).forEach((e,i)=>{
-    const t=parseTime(e); if(t.allDay)return;
-    const fmt=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
-    const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${fmt(t.start)}/${fmt(t.end)}&details=${encodeURIComponent((e.org||'')+'\n'+(e.url||''))}&location=${encodeURIComponent(e.location||'')}`;
-    setTimeout(()=>window.open(url,'_blank'),i*300);
-  });
-  if(evs.length>5)alert(`Opened first 5 of ${evs.length} events. For all events use .ICS download.`);
+  if(evs.length>1){alert(`Google Calendar only supports adding one event at a time. Use the .ICS download to add all ${evs.length} events at once.`);return;}
+  if(!evs.length)return;
+  const e=evs[0]; const t=parseTime(e); if(t.allDay)return;
+  const fmt=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${fmt(t.start)}/${fmt(t.end)}&details=${encodeURIComponent((e.org||'')+'\n'+(e.url||''))}&location=${encodeURIComponent(orgLocation(e))}`;
+  window.open(url,'_blank');
 }
 
 // ── MODAL ──
