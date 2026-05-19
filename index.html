@@ -1870,7 +1870,7 @@ function initParksMap() {
     const badges = (p.isTop ? '<span class="pp-badge top">&#9733; Top Pick</span>' : '') + (p.isNew ? '<span class="pp-badge new">New 2025</span>' : '');
     const amenityList = p.amenities ? '<div class="pp-amenities">' + p.amenities.split(',').slice(0,4).map(a => '<span>' + a.trim() + '</span>').join('') + '</div>' : '';
     const agesLine = p.ages ? '<div class="pp-ages"><i class="ti ti-users"></i> ' + p.ages + '</div>' : '';
-    const ratingLine = p.rating ? '<div class="pp-rating">&#9733; ' + p.rating + '</div>' : '';
+    const ratingLine = '';
     const noteLine = p.notes ? '<div class="pp-note">' + p.notes + '</div>' : '';
     const popup = '<div class="park-popup">' +
       '<div class="pp-header">' +
