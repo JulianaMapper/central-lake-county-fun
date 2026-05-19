@@ -6,44 +6,17 @@
 <title>About — Central Lake County Fun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Big+Shoulders+Stencil+Display:wght@700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-ExtraLight.woff2') format('woff2');
-  font-weight: 200; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Light.woff2') format('woff2');
-  font-weight: 300; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Regular.woff2') format('woff2');
-  font-weight: 400; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Medium.woff2') format('woff2');
-  font-weight: 500; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-SemiBold.woff2') format('woff2');
-  font-weight: 600; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Bold.woff2') format('woff2');
-  font-weight: 700; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-ExtraBold.woff2') format('woff2');
-  font-weight: 800; font-display: swap;
-}
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-ExtraLight.woff2') format('woff2'); font-weight: 200; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'National Park'; src: url('fonts/NationalPark-ExtraBold.woff2') format('woff2'); font-weight: 800; font-display: swap; }
+
 :root {
   --green:      #2C3E2A;
   --green-mid:  #1A2618;
@@ -52,16 +25,14 @@
   --bark-lite:  #5A3A22;
   --canvas:     #F1E7CF;
   --canvas-mid: #E8DCBE;
+  --paper:      #FBF6E9;
   --sage:       #D3E2D7;
   --sage-dark:  #A8C4B0;
   --rust:       #A8472A;
   --rust-dark:  #7A3320;
   --gold:       #C39A3F;
-  --cream:      #E8DCBE;
+  --gold-lite:  #E8C77A;
   --lake:       #486A78;
-  --moss:       #5C6E3A;
-  --brown:      #5A3A22;
-  --brown-lite: #7A3320;
   --radius:     4px;
   --radius-md:  8px;
   --stitch:     2px dashed #2D5140;
@@ -74,165 +45,403 @@ body {
   color: var(--bark);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(168,71,42,0.025) 0px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(44,62,42,0.03) 0px, transparent 1px),
+    radial-gradient(circle at 60% 20%, rgba(90,58,34,0.025) 0px, transparent 1px);
+  background-size: 24px 24px, 32px 32px, 18px 18px;
 }
 
-/* HERO */
+/* ========== HERO ========== */
 .hero {
+  position: relative;
   background-color: var(--green);
   background-image:
     repeating-radial-gradient(ellipse 140% 60% at 70% 40%,
       transparent 0px, transparent 28px, rgba(255,255,255,0.04) 29px,
       transparent 30px, transparent 58px, rgba(255,255,255,0.035) 59px,
-      transparent 60px);
+      transparent 60px),
+    linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 30%);
   color: var(--canvas);
-  padding: 2.5rem 2rem 2rem;
-  border-bottom: 3px solid var(--brown);
+  padding: 2rem 2rem 3.5rem;
+  border-bottom: 6px double var(--brown-lite, #5A3A22);
+  overflow: hidden;
 }
+.hero::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(195,154,63,0.08) 49%, rgba(195,154,63,0.08) 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(195,154,63,0.06) 49%, rgba(195,154,63,0.06) 51%, transparent 52%);
+  background-size: 40px 40px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+.hero-inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 2; }
 .back-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-family: 'Courier Prime', monospace;
   font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.09em;
-  color: rgba(255,255,255,0.65); text-decoration: none;
+  color: rgba(255,255,255,0.7); text-decoration: none;
   border: 1.5px solid rgba(255,255,255,0.25);
-  padding: 0.25rem 0.75rem; border-radius: var(--radius);
-  margin-bottom: 1.25rem; display: inline-flex;
-  transition: color 0.15s;
+  padding: 0.3rem 0.85rem; border-radius: 50px;
+  margin-bottom: 1.75rem;
+  transition: all 0.2s;
 }
-.back-link:hover { color: var(--gold); border-color: rgba(241,168,26,0.5); }
+.back-link:hover { color: var(--gold-lite); border-color: var(--gold); transform: translateX(-2px); }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-weight: 800; font-size: 0.95rem;
+  color: var(--gold-lite); letter-spacing: 0.18em;
+  margin-bottom: 0.85rem;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ""; height: 2px; width: 28px; background: var(--gold);
+}
+
 .hero h1 {
   font-family: 'National Park', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.75rem);
-  line-height: 1.1; color: var(--canvas);
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.25);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 6vw, 3.75rem);
+  line-height: 1.02;
+  color: var(--canvas);
+  letter-spacing: -0.01em;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+  margin-bottom: 1rem;
 }
-.hero h1 em { font-style: italic; color: var(--gold); }
-.hero-sub {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.78rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.09em;
-  color: rgba(255,255,255,0.55); margin-top: 0.5rem;
-}
-
-/* CONTENT */
-.page { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-
-h2 {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: 1.25rem; color: var(--green);
-  margin: 2.25rem 0 0.6rem;
-  display: flex; align-items: center; gap: 0.5rem;
-  border-bottom: var(--stitch); border-color: var(--sage-dark);
-  padding-bottom: 0.5rem;
-}
-h2 i { color: var(--brown); font-size: 1.1rem; }
-
-p { font-size: 0.975rem; color: var(--bark); margin-bottom: 1rem; }
-p.lead { font-size: 1.05rem; font-weight: 600; color: var(--green); line-height: 1.6; }
-
-.callout {
-  background: var(--cream);
-  border: var(--stitch); border-color: var(--green);
-  border-radius: var(--radius-md);
-  padding: 1.1rem 1.25rem;
-  margin: 1.5rem 0;
-}
-.callout p { margin: 0; font-size: 0.9rem; }
-.callout-label {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--brown); margin-bottom: 0.4rem;
-  display: flex; align-items: center; gap: 0.3rem;
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold-lite);
+  display: block;
+  font-weight: 700;
 }
 
-.source-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
-.source-item {
-  background: white; border: 1.5px solid var(--canvas-mid);
-  border-radius: var(--radius); padding: 0.75rem 0.9rem;
-  display: flex; gap: 0.6rem; align-items: flex-start;
-}
-.source-item i { color: var(--green-lite); font-size: 1.1rem; margin-top: 1px; flex-shrink: 0; }
-.source-item div { font-size: 0.825rem; font-weight: 700; color: var(--bark); line-height: 1.3; }
-.source-item span { font-size: 0.75rem; font-weight: 400; color: var(--bark-lite); }
-
-.age-badge {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  background: var(--green); color: var(--canvas);
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px dashed rgba(255,255,255,0.2);
   font-family: 'Courier Prime', monospace;
   font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  padding: 0.3rem 0.8rem; border-radius: 50px;
-  margin: 0.25rem 0 0.75rem;
-  display: inline-flex;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.hero-meta i { color: var(--gold-lite); font-size: 0.95rem; }
+
+/* Postage-stamp badge in corner */
+.hero-stamp {
+  position: absolute;
+  top: 1.75rem; right: 1.75rem;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  background: var(--rust);
+  border: 3px solid var(--canvas);
+  box-shadow:
+    0 0 0 2px var(--rust),
+    0 0 0 4px var(--gold),
+    0 4px 18px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transform: rotate(-8deg);
+  z-index: 3;
+}
+.hero-stamp::before {
+  content: ""; position: absolute; inset: 6px;
+  border: 1.5px dashed rgba(255,255,255,0.45);
+  border-radius: 50%;
+}
+.hero-stamp .stamp-est {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem; font-weight: 700;
+  color: var(--gold-lite); letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hero-stamp .stamp-yr {
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-weight: 900; font-size: 1.5rem;
+  color: var(--canvas); line-height: 1;
+  margin: 2px 0;
+}
+.hero-stamp .stamp-lbl {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.5rem; font-weight: 700;
+  color: var(--canvas); letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.field-note {
-  display: flex; gap: 0.75rem;
-  background: #FBF6E9;
-  border: var(--stitch); border-color: var(--brown);
+/* ========== CONTENT ========== */
+.page { max-width: 720px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+/* Big merit badge ornament at top of content */
+.crest-row {
+  display: flex; justify-content: center;
+  margin: -2.5rem 0 2rem;
+  position: relative; z-index: 5;
+}
+.crest {
+  width: 110px; height: 110px;
+  background: var(--canvas);
+  border: 4px solid var(--green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+}
+.crest::before {
+  content: ""; position: absolute; inset: 6px;
+  border: 2px dashed var(--gold);
+  border-radius: 50%;
+}
+.crest i { font-size: 3rem; color: var(--green); }
+
+/* Section heading: divider + stencil label */
+h2 {
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 2.75rem 0 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  position: relative;
+}
+h2 .h2-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: var(--green); color: var(--canvas);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+h2 .h2-icon i { font-size: 1.05rem; }
+h2::after {
+  content: ""; flex: 1; height: 0;
+  border-bottom: 2px dashed var(--sage-dark);
+  margin-left: 0.3rem;
+}
+
+p { font-size: 1rem; color: var(--bark); margin-bottom: 1rem; }
+p.lead {
+  font-family: 'National Park', sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--green);
+  border-left: 4px solid var(--rust);
+  padding: 0.4rem 0 0.4rem 1.1rem;
+  margin: 2rem 0;
+}
+
+strong { color: var(--green); font-weight: 700; }
+
+/* Callout boxes */
+.callout {
+  background: var(--paper);
+  border: var(--stitch);
+  border-color: var(--green);
   border-radius: var(--radius-md);
-  padding: 0.9rem 1.1rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.78rem; color: var(--bark); line-height: 1.5;
-  margin: 1.5rem 0;
+  padding: 1.25rem 1.4rem;
+  margin: 1.75rem 0;
+  position: relative;
 }
-.field-note i { color: var(--brown); flex-shrink: 0; margin-top: 1px; }
+.callout p { margin: 0; font-size: 0.95rem; }
+.callout-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--rust-dark); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
 
-/* COFFEE */
+/* Age badge */
+.age-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--green); color: var(--canvas);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.74rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.4rem 0.95rem; border-radius: 50px;
+  margin: 0.5rem 0 1rem;
+  border: 2px solid var(--green);
+  box-shadow: 3px 3px 0 var(--gold);
+}
+
+/* Source grid */
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.source-item {
+  background: white;
+  border: 2px solid var(--canvas-mid);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  transition: all 0.2s;
+  position: relative;
+}
+.source-item::before {
+  content: ""; position: absolute; top: -1px; left: -1px; right: -1px;
+  height: 4px;
+  background: var(--green-lite);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.source-item:nth-child(2)::before { background: var(--rust); }
+.source-item:nth-child(3)::before { background: var(--moss, #5C6E3A); }
+.source-item:nth-child(4)::before { background: var(--gold); }
+.source-item:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+.source-item i {
+  color: var(--green); font-size: 1.4rem;
+  margin-top: 2px; flex-shrink: 0;
+}
+.source-item div { font-size: 0.9rem; font-weight: 700; color: var(--bark); line-height: 1.3; }
+.source-item span {
+  display: block;
+  font-size: 0.78rem; font-weight: 400;
+  color: var(--bark-lite); margin-top: 0.2rem;
+}
+
+/* Field note */
+.field-note {
+  display: flex; gap: 0.85rem;
+  background: var(--paper);
+  border: var(--stitch); border-color: var(--rust);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.82rem; color: var(--bark); line-height: 1.55;
+  margin: 1.75rem 0;
+  position: relative;
+}
+.field-note::before {
+  content: "FIELD NOTE";
+  position: absolute; top: -10px; left: 1rem;
+  background: var(--paper);
+  padding: 0 0.5rem;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.15em; color: var(--rust);
+}
+.field-note i { color: var(--rust); flex-shrink: 0; margin-top: 1px; font-size: 1.1rem; }
+
+/* ========== COFFEE BLOCK (postcard style) ========== */
 .coffee-block {
-  background: var(--green); border-radius: var(--radius-md);
-  padding: 1.75rem; text-align: center; margin-top: 2.5rem;
+  background: var(--green);
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent 0px, transparent 12px,
+      rgba(255,255,255,0.025) 12px, rgba(255,255,255,0.025) 13px);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.75rem;
+  text-align: center;
+  margin: 2rem 0 2.5rem;
+  position: relative;
+  border: 3px solid var(--bark-lite);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
-.coffee-block h3 { font-family: 'National Park', sans-serif; font-size: 1.3rem; color: var(--canvas); margin-bottom: 0.4rem; }
-.coffee-block p { font-size: 0.875rem; color: var(--sage); margin-bottom: 1.1rem; }
-.coffee-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-.c-btn {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.55rem 1.2rem; border-radius: var(--radius);
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.78rem;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  cursor: pointer; text-decoration: none; border: none; transition: opacity 0.15s;
+.coffee-block::before {
+  content: ""; position: absolute; inset: 8px;
+  border: 1.5px dashed rgba(255,255,255,0.2);
+  border-radius: 4px;
+  pointer-events: none;
 }
-.c-btn:hover { opacity: 0.85; }
-.c-venmo { background: #3D95CE; color: white; }
-.c-paypal { background: #003087; color: white; }
-
-footer {
-  text-align: center; padding: 1.5rem;
+.coffee-eyebrow {
   font-family: 'Courier Prime', monospace;
-  font-size: 0.7rem; color: var(--bark-lite);
-  text-transform: uppercase; letter-spacing: 0.06em;
-  border-top: 2px solid var(--canvas-mid); margin-top: 3rem;
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--gold-lite); letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
-footer a { color: var(--brown); text-decoration: none; font-weight: 700; }
+.coffee-block h3 {
+  font-family: 'National Park', sans-serif;
+  font-weight: 700;
+  font-size: 1.55rem;
+  color: var(--canvas);
+  margin-bottom: 0.5rem;
+}
+.coffee-block p {
+  font-size: 0.92rem;
+  color: var(--sage);
+  margin-bottom: 1.25rem;
+  max-width: 420px;
+  margin-left: auto; margin-right: auto;
+}
+.coffee-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+.c-btn {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.65rem 1.3rem; border-radius: 50px;
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700; font-size: 0.78rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  cursor: pointer; text-decoration: none;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+.c-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+.c-venmo { background: #3D95CE; color: white; border-color: #2c7aa8; }
+.c-paypal { background: var(--canvas); color: #003087; border-color: var(--gold); }
+
+/* Footer */
+footer {
+  text-align: center; padding: 2rem 1.5rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem; color: var(--bark-lite);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  border-top: 2px dashed var(--sage-dark);
+  margin-top: 3rem;
+}
+footer a {
+  color: var(--green); text-decoration: none; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--sage-dark);
+  border-radius: 50px;
+  transition: all 0.2s;
+}
+footer a:hover { background: var(--green); color: var(--canvas); border-color: var(--green); }
 
 @media (max-width: 640px) {
-  .hero { padding: 1.75rem 1.25rem 1.5rem; }
-  .page { padding: 1.5rem 1rem 3rem; }
-  .source-grid { grid-template-columns: 1fr 1fr; }
-  .coffee-btns { flex-direction: column; align-items: center; }
-  .c-btn { width: 100%; max-width: 220px; justify-content: center; }
+  .hero { padding: 1.5rem 1.25rem 3rem; }
+  .hero-stamp { width: 76px; height: 76px; top: 1.25rem; right: 1.25rem; }
+  .hero-stamp .stamp-yr { font-size: 1.2rem; }
+  .page { padding: 0 1rem 3rem; }
+  .source-grid { grid-template-columns: 1fr; }
+  .coffee-btns { flex-direction: column; align-items: stretch; }
+  .c-btn { justify-content: center; }
+  h2 { font-size: 1.15rem; }
+  p.lead { font-size: 1.05rem; }
 }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> Back to Events</a>
-  <h1>About <em>Central Lake<br>County Fun</em></h1>
-  <div class="hero-sub">Central Lake County, Illinois &bull; Summer 2026</div>
+  <div class="hero-stamp">
+    <span class="stamp-est">Est.</span>
+    <span class="stamp-yr">2026</span>
+    <span class="stamp-lbl">Lake Co.</span>
+  </div>
+  <div class="hero-inner">
+    <a href="index.html" class="back-link"><i class="ti ti-arrow-left"></i> Back to Events</a>
+    <div class="hero-eyebrow">Field Guide</div>
+    <h1>About <em>Central Lake County Fun</em></h1>
+    <div class="hero-meta">
+      <span><i class="ti ti-map-pin"></i> Central Lake County, IL</span>
+      <span><i class="ti ti-sun"></i> Summer 2026</span>
+      <span><i class="ti ti-heart"></i> Made by a local mom</span>
+    </div>
+  </div>
 </header>
 
 <div class="page">
 
-  <div class="coffee-block">
-    <h3>Find This Helpful?</h3>
-    <p>This is a free community resource. If it saved you some searching, a small contribution is always appreciated.</p>
-    <div class="coffee-btns">
-      <a href="https://venmo.com/juliana-wilhoit" target="_blank" class="c-btn c-venmo"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
-      <a href="https://paypal.me/mcmillanwilhoit" target="_blank" class="c-btn c-paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
-    </div>
+  <div class="crest-row">
+    <div class="crest"><i class="ti ti-compass"></i></div>
   </div>
 
   <p class="lead">This site exists because coordinating a fun summer for little kids is genuinely hard work — and most parents are doing it alone, one library website at a time.</p>
@@ -241,15 +450,25 @@ footer a { color: var(--brown); text-decoration: none; font-weight: 700; }
 
   <p>Central Lake County Fun is my attempt to take that invisible coordination load off your plate — so you can spend less time searching and more time actually doing the thing.</p>
 
-  <h2><i class="ti ti-baby-carriage"></i> Who This Is For</h2>
+  <div class="coffee-block">
+    <div class="coffee-eyebrow">★ Trail Tip ★</div>
+    <h3>Find This Helpful?</h3>
+    <p>This is a free community resource. If it saved you some searching, a small contribution toward server costs and coffee is always appreciated.</p>
+    <div class="coffee-btns">
+      <a href="https://venmo.com/juliana-wilhoit" target="_blank" class="c-btn c-venmo"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
+      <a href="https://paypal.me/mcmillanwilhoit" target="_blank" class="c-btn c-paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+    </div>
+  </div>
 
-  <div class="age-badge"><i class="ti ti-users"></i> Primarily ages 0–8 &bull; Babies, Toddlers & Early Elementary</div>
+  <h2><span class="h2-icon"><i class="ti ti-baby-carriage"></i></span> Who This Is For</h2>
+
+  <div class="age-badge"><i class="ti ti-users"></i> Primarily ages 0–8</div>
 
   <p>This site is built with <strong>families of young children in mind</strong> — babies, toddlers, and kids in the preschool and early elementary years. Most of the events highlighted are storytimes, nature programs, free play, crafts, and community festivals that work best for the under-8 crowd.</p>
 
   <p>That said, many events are open to all ages and families, and you'll find things worth doing at every stage. Use the age filter to zero in on what fits your kids right now.</p>
 
-  <h2><i class="ti ti-map-pin"></i> What's Covered</h2>
+  <h2><span class="h2-icon"><i class="ti ti-map-pin"></i></span> What's Covered</h2>
 
   <p>We focus on <strong>Central Lake County, Illinois</strong> — events within a reasonable drive of the Grayslake area. That means libraries, park districts, and forest preserves across the communities you're already in.</p>
 
@@ -260,7 +479,7 @@ footer a { color: var(--brown); text-decoration: none; font-weight: 700; }
     <div class="source-item"><i class="ti ti-confetti"></i><div>Community Events<span>Festivals, concerts, village programming</span></div></div>
   </div>
 
-  <h2><i class="ti ti-search"></i> How Events Are Found</h2>
+  <h2><span class="h2-icon"><i class="ti ti-search"></i></span> How Events Are Found</h2>
 
   <p>Events are collected using web scraping tools that pull directly from library and park district calendars, then filtered and spot-checked. We look for events that are free or low-cost, family-friendly, and geared toward young children — and we remove duplicates and out-of-area listings.</p>
 
@@ -268,11 +487,11 @@ footer a { color: var(--brown); text-decoration: none; font-weight: 700; }
 
   <div class="field-note">
     <i class="ti ti-alert-circle"></i>
-    <span><strong>Always verify before you go.</strong> Event details — times, registration, cancellations — can change without notice. We encourage you to click through to the original event page and confirm with the organizer, especially for anything requiring registration. We've done our best; please do a quick double-check before you load up the car.</span>
+    <span><strong>Always verify before you go.</strong> Event details — times, registration, cancellations — can change without notice. Click through to the original event page and confirm with the organizer, especially for anything requiring registration. We've done our best; please do a quick double-check before you load up the car.</span>
   </div>
 
   <div class="callout">
-    <div class="callout-label"><i class="ti ti-calendar-event"></i> Data freshness</div>
+    <div class="callout-label"><i class="ti ti-calendar-event"></i> Data Freshness</div>
     <p>This site reflects events collected in May 2026. Some events run through September. We recommend checking back as the summer progresses — and always clicking through to the event page for the most current details.</p>
   </div>
 
