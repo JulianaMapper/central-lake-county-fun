@@ -1166,6 +1166,16 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
           <option value="Evening">Evening</option>
         </select>
       </div>
+      <div class="fg">
+        <label><i class="ti ti-car"></i> Drive Time</label>
+        <select id="filterDrive" onchange="applyFilters()">
+          <option value="">Any Distance</option>
+          <option value="10">Within 10 min</option>
+          <option value="15">Within 15 min</option>
+          <option value="20">Within 20 min</option>
+          <option value="30">Within 30 min</option>
+        </select>
+      </div>
       <div class="fg" style="justify-content:flex-end;">
         <label>&nbsp;</label>
         <label class="toggle-label">
@@ -1437,11 +1447,13 @@ function applyFilters() {
   const freeOnly = document.getElementById('filterFree').checked;
   const evType = document.getElementById('filterType')?.value || '';
   const timeOfDay = document.getElementById('filterTime')?.value || '';
+  const maxDrive = parseInt(document.getElementById('filterDrive')?.value || '0');
   const t = todayDate();
   filteredEvents = EVENTS.filter(e => {
     const d = parseDate(e.date);
     if (d < t) return false;
     if (org && e.org !== org) return false;
+    if (maxDrive && (ORG_DRIVE[e.org] || 99) > maxDrive) return false;
     if (age && classAge(e.age) !== age) return false;
     if (day && e.day !== day) return false;
     if (freeOnly && !/free/i.test(e.cost)) return false;
@@ -1476,6 +1488,7 @@ function resetFilters() {
   document.getElementById('filterFree').checked = false;
   const ft=document.getElementById('filterType'); if(ft)ft.value='';
   const ftd=document.getElementById('filterTime'); if(ftd)ftd.value='';
+  const fdr=document.getElementById('filterDrive'); if(fdr)fdr.value='';
   activeQuick = 'all';
   document.querySelectorAll('.trail-chip').forEach(b => b.classList.remove('active'));
   document.querySelector('.trail-chip.all').classList.add('active');
@@ -1612,6 +1625,40 @@ const ORG_ADDRESSES = {
   'Waukegan Public Library':               'Waukegan Public Library, 128 N County St, Waukegan, IL 60085',
   'Wildwood Park District':                'Wildwood Park District, 20255 W Washington St, Grayslake, IL 60030',
   'Zion-Benton Public Library District':   'Zion-Benton Public Library, 2400 Gabriel Ave, Zion, IL 60099',
+};
+const ORG_DRIVE = {
+  'Antioch Public Library District': 22,
+  'Barrington Area Library': 25,
+  'Cook Memorial Public Library District': 12,
+  'Deerfield Public Library': 30,
+  'Ela Area Public Library': 22,
+  'Fox Lake District Library': 18,
+  'Fremont Public Library': 20,
+  'Glen Ellyn Public Library': 50,
+  'Grayslake Area Public Library District': 4,
+  'Grayslake Park District': 4,
+  'Gurnee Park District': 15,
+  'Highland Park Public Library': 30,
+  'Lake County Forest Preserves': 15,
+  'Lake Forest Library': 25,
+  'Lake Villa District Library': 10,
+  'Lindenhurst Park District': 10,
+  'Mundelein Park & Recreation District': 20,
+  'Round Lake Area Park District': 10,
+  'Round Lake Area Public Library': 10,
+  'Vernon Area Public Library': 22,
+  'Vernon Hills Park District': 22,
+  'Village of Grayslake / Heritage Center / Festivals': 4,
+  'Village of Libertyville': 12,
+  'Village of Mundelein': 20,
+  'Warren-Newport Public Library': 15,
+  'Wauconda Area Public Library': 18,
+  'Wauconda Park District': 18,
+  'Waukegan Park District': 22,
+  'Waukegan Public Library': 22,
+  'Wheaton Public Library': 55,
+  'Wildwood Park District': 8,
+  'Zion-Benton Public Library District': 25
 };
 function orgLocation(e) {
   const base = ORG_ADDRESSES[e.org] || e.org || '';
