@@ -3,337 +3,262 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Central Lake County Fun — Summer 2026</title>
+<title>Free Summer Fun — Central Lake County 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Big+Shoulders+Stencil+Display:wght@700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Special+Elite&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-ExtraLight.woff2') format('woff2');
-  font-weight: 200; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Light.woff2') format('woff2');
-  font-weight: 300; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Regular.woff2') format('woff2');
-  font-weight: 400; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Medium.woff2') format('woff2');
-  font-weight: 500; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-SemiBold.woff2') format('woff2');
-  font-weight: 600; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-Bold.woff2') format('woff2');
-  font-weight: 700; font-display: swap;
-}
-@font-face {
-  font-family: 'National Park';
-  src: url('fonts/NationalPark-ExtraBold.woff2') format('woff2');
-  font-weight: 800; font-display: swap;
-}
 /* ============================================================
-   DESIGN TOKENS — National Parks / WPA Ranger Aesthetic
+   DESIGN TOKENS — Mixtape Zine v2
    ============================================================ */
 :root {
-  --green:      #2C3E2A;
-  --green-mid:  #1A2618;
-  --green-lite: #5C6E3A;
-  --bark:       #1F2A1D;
-  --bark-lite:  #5A3A22;
-  --canvas:     #F1E7CF;
-  --canvas-mid: #E8DCBE;
-  --sage:       #C8D9CF;
-  --sage-dark:  #9BBCAD;
-  --rust:       #A8472A;
-  --rust-dark:  #7A3320;
-  --gold:       #C39A3F;
-  --cream:      #E8DCBE;
-  --lake:       #486A78;
-  --moss:       #5C6E3A;
-  --radius:     4px;
-  --radius-md:  8px;
-  --stitch:     2px dashed #2D5140;
+  --paper:      #f0e6d0;
+  --paper-deep: #e6dabd;
+  --paper-light:#f7efdc;
+  --ink:        #1a1612;
+  --ink-soft:   #4a4034;
+  --red:        #c1342a;
+  --red-deep:   #8a1f17;
+  --blue:       #1f3a6b;
+  --sun:        #e8a92c;
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
 body {
-  font-family: 'Archivo Narrow', sans-serif;
-  background: var(--canvas);
-  color: var(--bark);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Public Sans", system-ui, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ── TOPOGRAPHIC HERO ── */
-.hero {
-  background-color: var(--green);
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background-image:
-    repeating-radial-gradient(ellipse 140% 60% at 70% 40%,
-      transparent 0px, transparent 28px, rgba(255,255,255,0.04) 29px,
-      transparent 30px, transparent 58px, rgba(255,255,255,0.035) 59px,
-      transparent 60px, transparent 88px, rgba(255,255,255,0.03) 89px,
-      transparent 90px, transparent 118px, rgba(255,255,255,0.025) 119px,
-      transparent 120px),
-    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 35%);
-  color: var(--canvas);
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 6px double #5A3A22;
+    radial-gradient(circle at 12% 18%, rgba(0,0,0,0.04) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 67% 73%, rgba(0,0,0,0.05) 0 1px, transparent 1.5px);
+  background-size: 11px 11px, 17px 17px;
+  mix-blend-mode: multiply;
 }
-.hero::before {
-  content: ""; position: absolute; inset: 0;
-  background-image:
-    linear-gradient(45deg, transparent 48%, rgba(195,154,63,0.07) 49%, rgba(195,154,63,0.07) 51%, transparent 52%),
-    linear-gradient(-45deg, transparent 48%, rgba(195,154,63,0.05) 49%, rgba(195,154,63,0.05) 51%, transparent 52%);
-  background-size: 44px 44px;
-  pointer-events: none;
-  opacity: 0.5;
+
+/* ── MASTHEAD ── */
+.fsf-masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 18px 56px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 32px;
+  background: var(--paper);
+  position: relative; z-index: 10;
 }
-.hero-arrowhead .arrow-year { font-size: 1rem; font-weight: bold; letter-spacing: 0; }
-.hero-inner {
-  max-width: 900px;
-  padding: 2.5rem 2rem 3.25rem;
-  position: relative; z-index: 2;
+.mast-meta {
+  font-family: "Special Elite", monospace;
+  font-size: 11.5px; letter-spacing: 0.16em;
+  text-transform: uppercase; line-height: 1.6;
 }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-weight: 800; font-size: 0.95rem;
-  color: #E8C77A; letter-spacing: 0.2em;
-  margin-bottom: 0.85rem; text-transform: uppercase;
+.mast-meta-r { text-align: right; }
+.mast-lockup { display: flex; align-items: center; gap: 14px; justify-content: center; }
+.mast-word {
+  font-family: "DM Serif Display", serif;
+  font-size: 38px; line-height: 0.95;
+  letter-spacing: -0.015em;
 }
-.hero-eyebrow::before, .hero-eyebrow::after {
-  content: ""; height: 2px; width: 30px; background: var(--gold);
-}
-.hero-stamp {
-  position: absolute;
-  top: 1.75rem; right: 1.75rem;
-  width: 104px; height: 104px;
-  border-radius: 50%;
-  background: var(--rust);
-  border: 3px solid var(--canvas);
-  box-shadow:
-    0 0 0 2px var(--rust),
-    0 0 0 4px var(--gold),
-    0 5px 22px rgba(0,0,0,0.35);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transform: rotate(-8deg);
-  z-index: 3;
-}
-.hero-stamp::before {
-  content: ""; position: absolute; inset: 7px;
-  border: 1.5px dashed rgba(255,255,255,0.5);
-  border-radius: 50%;
-}
-.hero-stamp .stamp-est {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.58rem; font-weight: 700;
-  color: #E8C77A; letter-spacing: 0.12em;
+.mast-word em { font-style: normal; color: var(--red); }
+
+/* ── TAGBAND ── */
+.tagband {
+  border-bottom: 2px solid var(--ink);
+  padding: 9px 56px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.22em;
   text-transform: uppercase;
+  background: var(--ink); color: var(--paper);
+  position: relative; z-index: 10;
 }
-.hero-stamp .stamp-yr {
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-weight: 900; font-size: 1.65rem;
-  color: var(--canvas); line-height: 1;
-  margin: 2px 0;
+.tagband .dot { color: var(--sun); margin: 0 14px; }
+
+/* ── HERO ── */
+.fsf-hero {
+  padding: 64px 56px 60px;
+  position: relative; z-index: 5;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
 }
-.hero-stamp .stamp-lbl {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.52rem; font-weight: 700;
-  color: var(--canvas); letter-spacing: 0.1em;
+.hero-issue {
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.2em;
   text-transform: uppercase;
+  display: flex; gap: 16px; align-items: center;
+  margin-bottom: 28px;
 }
-.hero-badge-row {
-  display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;
+.hero-issue b { color: var(--red); }
+.hero-h1 {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(60px, 8vw, 120px);
+  line-height: 0.9; letter-spacing: -0.038em;
+  margin: 0 0 28px; font-weight: 400;
 }
-.ranger-badge {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  border: 1.5px solid rgba(255,255,255,0.55);
-  padding: 0.25rem 0.75rem; border-radius: 50px;
-  color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.08);
+.hero-h1 .red { color: var(--red); }
+.hero-h1 .blue { color: var(--blue); }
+.hero-lede {
+  max-width: 700px;
+  font-family: "DM Serif Display", serif;
+  font-size: 22px; line-height: 1.4;
+  color: var(--ink-soft); margin: 0 0 36px;
+  font-weight: 400;
 }
-.hero h1 {
-  font-family: 'National Park', sans-serif;
-  font-weight: 800;
-  font-size: clamp(2.4rem, 6.5vw, 4.5rem);
-  line-height: 1.0;
-  color: var(--canvas);
-  letter-spacing: -0.01em;
-  text-shadow: 3px 3px 0px rgba(0,0,0,0.32);
-  margin-bottom: 0.85rem;
-  max-width: 14ch;
+.hero-lede em { color: var(--red); font-style: italic; }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 18px 0; max-width: 1000px;
 }
-.hero h1 .h1-accent {
-  color: #E8C77A;
-  font-style: italic;
-  font-weight: 700;
-  display: inline-block;
+.hero-stats > div {
+  padding: 0 20px;
+  border-right: 1px dashed rgba(0,0,0,0.25);
 }
-.hero-tagline {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: #D6E4D9;
-  max-width: 540px;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid var(--rust);
-  padding: 0.3rem 0 0.3rem 0.95rem;
-  line-height: 1.55;
+.hero-stats > div:first-child { padding-left: 0; }
+.hero-stats > div:last-child { border-right: none; }
+.stat-n {
+  font-family: "DM Serif Display", serif;
+  font-size: 52px; line-height: 1; margin-bottom: 6px;
 }
-.hero-meta-row {
-  display: flex; flex-wrap: wrap; gap: 1.5rem;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1.5px dashed rgba(255,255,255,0.22);
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.74rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.6);
+.stat-n.red { color: var(--red); }
+.stat-n.blue { color: var(--blue); }
+.stat-l {
+  font-family: "Special Elite", monospace;
+  font-size: 11.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-soft);
 }
-.hero-meta-row span { display: inline-flex; align-items: center; gap: 0.4rem; }
-.hero-meta-row i { color: #E8C77A; font-size: 1rem; }
-.hero-meta-row strong { color: #E8C77A; font-weight: 700; }
-.hero-meta-row a {
-  color: rgba(255,255,255,0.7); text-decoration: none;
-  border-bottom: 1px dashed rgba(255,255,255,0.3);
-  transition: all 0.2s;
-}
-.hero-meta-row a:hover { color: #E8C77A; border-color: #E8C77A; }
-.hero-stat-row {
-  display: flex; gap: 1.5rem; flex-wrap: wrap;
-}
-.hero-stat {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.78rem; color: rgba(255,255,255,0.65);
-  display: flex; align-items: center; gap: 0.3rem;
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.hero-stat strong { color: var(--gold); }
-.trail-chip-sm {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.28rem 0.65rem;
-  font-family: 'Big Shoulders Stencil Display', sans-serif; font-size: 0.68rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  border: 1.5px solid var(--sage-dark); border-radius: var(--radius);
-  background: white; color: var(--bark-lite); cursor: pointer; transition: all 0.12s;
-  white-space: nowrap;
-}
-.trail-chip-sm:hover { border-color: var(--green); color: var(--green); }
-.trail-chip-sm.active { background: var(--green); border-color: var(--green); color: var(--canvas); }
-.hero-about-link {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  font-family: 'National Park', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
-  color: var(--gold);
-  text-decoration: none;
-  text-shadow: 1px 2px 0 rgba(0,0,0,0.3);
-  transition: opacity 0.15s;
-  margin-top: 0.1rem;
-}
-.hero-about-link i { font-size: 1.1rem; }
-.hero-about-link:hover { opacity: 0.8; }
-.hero-shield { display: inline-block; margin-top: 0.75rem; opacity: 0.85; }
 
-/* ── STICKY TRAIL NAV ── */
-.trail-nav {
-  background: var(--green);
-  border-bottom: 3px solid var(--rust);
-  padding: 0.6rem 1.5rem;
-  display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;
-  position: sticky; top: 0; z-index: 100;
+/* ── TICKER ── */
+.fsf-ticker {
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 16px 0;
+  font-family: "Special Elite", monospace;
+  font-size: 17px; letter-spacing: 0.24em;
+  text-transform: uppercase; white-space: nowrap; overflow: hidden;
+  position: relative; z-index: 5;
 }
-.trail-chip {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.35rem 0.85rem;
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-size: 0.72rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  border: 1.5px solid rgba(255,255,255,0.25);
-  border-radius: var(--radius);
-  color: rgba(255,255,255,0.85);
-  cursor: pointer; transition: all 0.15s; white-space: nowrap;
-  background: transparent;
+.fsf-ticker span { display: inline-block; animation: fsf-scroll 35s linear infinite; }
+.sun-dot {
+  display: inline-block; width: 12px; height: 12px;
+  background: var(--sun); border-radius: 50%;
+  margin: 0 18px; vertical-align: middle;
+  border: 1px solid var(--ink);
 }
-.trail-chip:hover { border-color: var(--gold); color: var(--gold); }
-.trail-chip.active { background: var(--green); border-color: var(--green); color: var(--canvas); border-style: solid; }
-.trail-chip i { font-size: 0.85rem; }
-.trail-nav-spacer { flex: 1; }
-.trail-about {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.5);
-  text-decoration: none; display: flex; align-items: center; gap: 0.3rem;
-  transition: color 0.15s;
-}
-.trail-about:hover { color: var(--gold); }
+@keyframes fsf-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-/* ── PAGE WRAPPER ── */
-.page { max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+/* ── PILLARS ── */
+.fsf-pillars {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-bottom: 2px solid var(--ink);
+  position: relative; z-index: 5;
+}
+.pillar {
+  padding: 32px 28px;
+  border-right: 2px solid var(--ink);
+  background: var(--paper);
+}
+.pillar:last-child { border-right: none; }
+.pillar-mk {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  border: 2px solid var(--ink); border-radius: 50%;
+  background: var(--paper-light); margin-bottom: 14px;
+  font-family: "DM Serif Display", serif; font-size: 22px;
+}
+.pillar h3 { font-family: "DM Serif Display", serif; font-size: 24px; margin: 0 0 8px; line-height: 1.1; }
+.pillar p { font-size: 14px; line-height: 1.5; margin: 0; color: var(--ink-soft); }
 
-/* ── FIELD NOTE (DISCLAIMER) ── */
+/* ── SUNBURST DIVIDER ── */
+.sunburst-divider {
+  height: 56px;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 14px, transparent 14px 28px);
+  background-size: 100% 2px; background-repeat: no-repeat; background-position: center;
+  position: relative; z-index: 5;
+}
+.sunburst-divider::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: 70px; height: 70px;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 50%;
+}
+.sunburst-divider::after {
+  content: "★"; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  font-family: "DM Serif Display", serif; font-size: 32px;
+  color: var(--red); line-height: 1;
+}
+
+/* ── FIELD NOTE ── */
 .field-note {
   display: flex; gap: 0.75rem;
-  background: #FBF6E9;
-  border: var(--stitch); border-color: var(--rust);
-  border-radius: var(--radius-md);
+  background: var(--paper-light);
+  border: 1.5px solid var(--ink);
   padding: 0.85rem 1.1rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.78rem; color: var(--bark);
-  margin-bottom: 1.25rem; line-height: 1.5;
+  margin-bottom: 0;
+  font-family: "Public Sans", sans-serif;
+  font-size: 0.875rem;
+  color: var(--ink); line-height: 1.5;
 }
-.field-note i { color: var(--rust); flex-shrink: 0; margin-top: 1px; font-size: 1rem; }
+.field-note i { color: var(--red); flex-shrink: 0; margin-top: 1px; }
 .field-note strong { font-weight: 700; }
 
-/* ── RANGER SECTION HEADING ── */
-.section-heading {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: 1.3rem;
-  color: var(--green);
-  display: flex; align-items: center; gap: 0.6rem;
-  margin-bottom: 0.25rem;
+/* ── TAB NAV ── */
+.fsf-tab-nav {
+  display: flex;
+  border-bottom: 3px solid var(--ink);
+  background: var(--paper);
+  padding: 0 56px; gap: 0;
+  position: sticky; top: 0; z-index: 100;
 }
-.section-heading i { color: var(--rust); font-size: 1.2rem; }
-.section-sub {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem; color: var(--bark-lite);
-  text-transform: uppercase; letter-spacing: 0.07em;
-  margin-bottom: 1.1rem;
+.fsf-tab {
+  display: flex; align-items: center; gap: 12px;
+  padding: 20px 28px;
+  font-family: "Special Elite", monospace;
+  font-size: 13px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none; background: none;
+  color: var(--ink-soft); cursor: pointer;
+  border-bottom: 3px solid transparent; margin-bottom: -3px;
+  transition: color 0.15s;
 }
+.fsf-tab .tab-num {
+  font-family: "DM Serif Display", serif;
+  font-size: 28px; color: var(--red); line-height: 1;
+}
+.fsf-tab.active {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+  background: var(--paper-light);
+}
+.fsf-tab:hover { color: var(--ink); }
 
 /* ── FILTER PANEL ── */
 .filter-panel {
-  background: var(--cream);
-  border: var(--stitch); border-color: var(--green);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
+  background: var(--paper-light);
+  border-bottom: 2px solid var(--ink);
+  padding: 20px 56px;
 }
 .filter-label-row {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: 0.9rem; color: var(--green);
-  margin-bottom: 0.75rem;
-  display: flex; align-items: center; gap: 0.4rem;
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 14px;
+  color: var(--ink); display: flex; align-items: center; gap: 0.4rem;
 }
+.filter-label-row i { color: var(--red); }
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -341,444 +266,572 @@ body {
 }
 .fg { display: flex; flex-direction: column; gap: 0.25rem; }
 .fg label {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.09em; color: var(--bark-lite);
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-soft);
   display: flex; align-items: center; gap: 0.25rem;
 }
-.fg select {
-  padding: 0.45rem 0.75rem;
-  border: 1.5px solid var(--sage-dark);
-  border-radius: var(--radius);
-  font-family: 'Archivo Narrow', sans-serif; font-size: 0.875rem; font-weight: 600;
-  background: white; color: var(--bark); cursor: pointer;
+.fg select, .fg input[type=text] {
+  font-family: "Special Elite", monospace;
+  font-size: 12px; background: var(--paper);
+  border: 1.5px solid var(--ink); color: var(--ink);
+  padding: 8px 10px; letter-spacing: 0.06em; width: 100%;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A7C5E' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a1612' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 0.6rem center;
   padding-right: 2rem;
 }
-.fg select:focus { outline: none; border-color: var(--green); }
+.fg select:focus { outline: none; border-color: var(--red); }
 .toggle-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding-top: 0.4rem; }
-.toggle-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
-.toggle-label span { font-family: 'Archivo Narrow', sans-serif; font-size: 0.875rem; font-weight: 700; }
+.toggle-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--ink); cursor: pointer; }
+.toggle-label span { font-family: "Special Elite", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ── BUTTONS ── */
 .btn-ghost {
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 8px 16px;
+  border: 1.5px solid var(--ink); background: var(--paper);
+  color: var(--ink); cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
   display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.45rem 0.9rem;
-  border: var(--stitch); border-color: var(--bark-lite);
-  border-radius: var(--radius);
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.75rem;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  cursor: pointer; color: var(--bark-lite); background: transparent; transition: all 0.15s;
-  align-self: flex-end;
 }
-.btn-ghost:hover { border-color: var(--rust); color: var(--rust); border-style: solid; }
+.btn-ghost:hover { background: var(--ink); color: var(--paper); }
 
 /* ── ACTION TOOLBAR ── */
 .action-toolbar {
   display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
-  padding: 0.7rem 1rem;
-  background: var(--green);
-  border-radius: var(--radius-md);
-  margin-bottom: 1.25rem;
+  padding: 14px 56px;
+  background: var(--paper-deep);
+  border-bottom: 2px solid var(--ink);
 }
 .sel-count {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--sage); margin-right: 0.25rem; white-space: nowrap;
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-soft);
+  margin-right: 0.25rem; white-space: nowrap;
 }
 .trail-btn {
   display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.38rem 0.85rem;
-  border-radius: var(--radius);
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.72rem;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  cursor: pointer; border: 1.5px solid transparent; transition: all 0.15s;
-  white-space: nowrap;
+  padding: 7px 14px;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer;
+  border: 1.5px solid var(--ink);
+  transition: all 0.15s; white-space: nowrap;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
 }
-.trail-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.trail-btn.ics { background: var(--rust); color: white; border-color: var(--rust); }
-.trail-btn.gcal { background: #1967D2; color: white; border-color: #1967D2; }
-.trail-btn.outlook { background: #0078D4; color: white; border-color: #0078D4; }
-.trail-btn.print-btn { background: var(--bark); color: white; border-color: var(--bark); }
-.trail-btn.ghost { background: transparent; color: var(--sage); border-color: rgba(255,255,255,0.25); }
+.trail-btn:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+.trail-btn.ics { background: var(--red); color: #fff; border-color: var(--red-deep); }
+.trail-btn.gcal { background: #1967D2; color: white; border-color: #0f4da0; }
+.trail-btn.outlook { background: #0078D4; color: white; border-color: #005a9e; }
+.trail-btn.print-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.trail-btn.ghost { background: var(--paper); color: var(--ink); border-color: var(--ink); }
 .trail-btn:not(:disabled):hover { opacity: 0.85; transform: translateY(-1px); }
 
-/* ── CALENDAR HEADER ── */
+/* ── SECTION HEADING ── */
+.fsf-sec-head {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 32px 56px 20px;
+  border-bottom: 3px double var(--ink);
+}
+.fsf-sec-num {
+  font-family: "DM Serif Display", serif;
+  font-size: 56px; line-height: 0.85; color: var(--red);
+}
+.fsf-sec-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 44px; line-height: 0.92; margin: 0;
+  font-weight: 400; letter-spacing: -0.02em;
+}
+
+/* ── CALENDAR / VIEW TOGGLE ── */
 .cal-bar {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1rem;
+  padding: 16px 56px;
+  border-bottom: 1px solid var(--paper-deep);
 }
 .cal-title {
-  font-family: 'National Park', sans-serif;
-  font-size: 1.4rem; color: var(--green);
+  font-family: "DM Serif Display", serif;
+  font-size: 24px; color: var(--ink);
 }
 .ev-count {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem; color: var(--bark-lite);
-  text-transform: uppercase; letter-spacing: 0.06em;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; color: var(--ink-soft);
+  letter-spacing: 0.12em; text-transform: uppercase;
 }
-.view-toggle { display: flex; border: 1.5px solid var(--sage-dark); border-radius: var(--radius); overflow: hidden; }
+.view-toggle { display: flex; border: 1.5px solid var(--ink); overflow: hidden; }
 .view-btn {
-  background: white; border: none; padding: 0.3rem 0.55rem;
-  cursor: pointer; color: var(--bark-lite); font-size: 1rem; transition: all 0.12s;
+  background: var(--paper); border: none; padding: 0.3rem 0.55rem;
+  cursor: pointer; color: var(--ink-soft); font-size: 1rem;
+  transition: all 0.12s;
 }
-.view-btn.active { background: var(--green); color: white; }
-.view-btn:hover:not(.active) { background: var(--sage); color: var(--green); }
+.view-btn.active { background: var(--ink); color: var(--paper); }
+.view-btn:hover:not(.active) { background: var(--paper-deep); }
+
+/* ── EVENT LIST ── */
+.cal-list-view { padding: 0 56px 48px; }
+.cal-grid-view { padding: 0 56px 48px; display: none; }
+.cal-grid-view.visible { display: block; }
+.cal-list-view.hidden { display: none; }
 
 /* ── WEEK GROUP ── */
-.week-group { margin-bottom: 1.75rem; }
+.week-group { margin-bottom: 2rem; }
 .week-marker {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--canvas);
-  background: var(--green-mid);
+  font-family: "Special Elite", monospace;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
   display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.25rem 0.85rem 0.25rem 0.6rem;
-  border-radius: 0 50px 50px 0;
-  margin-bottom: 0.85rem;
-  margin-left: -1.5rem; /* bleed left */
-  padding-left: 1.9rem;
-}
-.week-marker i { font-size: 0.8rem; }
-.week-marker { position: relative; }
-.week-marker::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border: 1px dashed var(--gold);
-  pointer-events: none;
+  padding: 8px 56px 8px 56px;
+  margin-left: -56px;
+  margin-bottom: 12px;
+  width: calc(100% + 112px);
 }
 
-/* ── DAY BLOCK ── */
+/* ── DATE GROUP ── */
 .day-block { margin-bottom: 0.85rem; }
-.day-label { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.day-label { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; padding-top: 12px; }
 .day-name {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--bark-lite);
+  font-family: "DM Serif Display", serif;
+  font-size: 28px; color: var(--red); line-height: 1;
 }
 .day-date-badge {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700;
-  color: var(--green); background: var(--sage);
-  padding: 0.1rem 0.55rem; border-radius: 50px;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; color: var(--ink-soft);
+  letter-spacing: 0.12em; text-transform: uppercase;
 }
-.day-date-badge.is-today { background: var(--rust); color: white; }
+.day-date-badge.is-today {
+  background: var(--red); color: white;
+  padding: 2px 8px;
+}
 
-/* ── EVENT CARDS — PATCH STYLE ── */
-.events-list { display: flex; flex-direction: column; gap: 0.4rem; }
+/* ── EVENT CARDS — ZINE STYLE ── */
+.events-list { display: flex; flex-direction: column; gap: 6px; }
 .event-card {
   display: flex; align-items: flex-start; gap: 0.7rem;
   background: white;
-  border: 1.5px solid var(--canvas-mid);
-  border-radius: var(--radius-md);
-  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--ink);
+  padding: 10px 14px;
   cursor: pointer;
-  transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+  transition: box-shadow 0.12s, transform 0.12s;
   position: relative;
+  box-shadow: 3px 3px 0 var(--ink);
 }
-.event-card::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0;
-  width: 4px;
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
-  background: var(--sage-dark);
-  transition: background 0.12s;
-}
-.event-card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(31,58,43,0.12); transform: translateY(-1px); }
-.event-card:hover::before { background: var(--green); }
-.event-card.selected { border-color: var(--rust); background: #FDF6EC; }
-.event-card.selected::before { background: var(--rust); }
-
-/* Org type left border colors */
-.event-card[data-type="lib"]::before { background: var(--green); }
-.event-card[data-type="park"]::before { background: var(--rust); }
-.event-card[data-type="forest"]::before { background: #2D6A2D; }
-.event-card[data-type="village"]::before { background: var(--bark); }
-.event-card[data-type="other"]::before { background: var(--sage-dark); }
-
-.ev-check { width: 17px; height: 17px; min-width: 17px; accent-color: var(--green); cursor: pointer; margin-top: 3px; }
+.event-card:hover { transform: translateY(-2px); box-shadow: 4px 5px 0 var(--ink); }
+.event-card.selected { background: #fff8f0; border-color: var(--red); box-shadow: 3px 3px 0 var(--red); }
+.ev-check { width: 17px; height: 17px; min-width: 17px; accent-color: var(--red); cursor: pointer; margin-top: 3px; }
 .ev-body { flex: 1; min-width: 0; }
-.ev-name { font-family: 'Archivo Narrow', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--bark); line-height: 1.3; margin-bottom: 0.3rem; }
-.ev-meta { display: flex; align-items: center; gap: 8px; }
-.ev-meta::before {
-  content: '';
-  display: inline-block;
-  width: 6px; height: 6px;
-  background: var(--rust);
-  border-radius: 50%;
-  flex-shrink: 0;
+.ev-name {
+  font-family: "DM Serif Display", serif;
+  font-size: 18px; color: var(--ink); line-height: 1.2; margin-bottom: 4px;
 }
-.ev-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.ev-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ev-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 
 /* PATCH TAGS */
 .ptag {
   display: inline-flex; align-items: center; gap: 0.2rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.63rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.04em;
-  padding: 0.12rem 0.45rem; border-radius: 3px;
+  font-family: "Special Elite", monospace;
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 2px 8px;
+  border: 1.5px solid var(--ink);
 }
 .ptag i { font-size: 0.7rem; }
-.ptag-time { background: var(--sage); color: var(--green); }
-.ptag-org { background: #E8F0EB; color: var(--green-mid); }
-.ptag-age { background: #F0EBE5; color: var(--bark); }
-.ptag-free { background: var(--green); color: var(--canvas); font-weight: 800; }
-.tag-free { transform: rotate(-1deg); display: inline-block; }
-.tag-reg { transform: rotate(0.5deg); display: inline-block; }
-.ptag-cost { background: #FBEEE4; color: var(--rust); }
-.ptag-reg { background: #FBF6E9; color: var(--bark-lite); }
-.ptag-drive { background: var(--canvas-mid); color: var(--bark-lite); }
-
+.ptag-time { background: var(--paper); color: var(--ink); }
+.ptag-org { background: var(--paper-deep); color: var(--ink-soft); }
+.ptag-age { background: var(--paper-light); color: var(--ink); }
+.ptag-free { background: var(--ink); color: var(--paper); font-weight: 400; border-color: var(--ink); }
+.tag-free { display: inline-block; }
+.tag-reg { display: inline-block; }
+.ptag-cost { background: var(--red); color: white; border-color: var(--red-deep); }
+.ptag-reg { background: var(--paper-light); color: var(--ink-soft); }
+.ptag-drive { background: var(--paper-deep); color: var(--ink-soft); }
 .ev-link {
   display: inline-flex; align-items: center; gap: 0.2rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--rust); text-decoration: none; margin-top: 0.3rem;
+  font-family: "Special Elite", monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red); text-decoration: none; margin-top: 4px;
 }
-.ev-link:hover { color: var(--rust-dark); text-decoration: underline; }
+.ev-link:hover { text-decoration: underline; color: var(--red-deep); }
 
 /* ── EMPTY STATE ── */
 .empty-trail {
   text-align: center; padding: 3rem 1rem;
-  color: var(--sage-dark);
+  color: var(--ink-soft);
 }
-.empty-trail i { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; color: var(--sage-dark); }
-.empty-trail p { font-family: 'Archivo Narrow', sans-serif; font-size: 1rem; color: var(--bark-lite); }
+.empty-trail i { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+.empty-trail p { font-family: "Public Sans", sans-serif; font-size: 1rem; color: var(--ink-soft); }
 .empty-trail button {
-  background: none; border: none; color: var(--rust);
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.85rem;
-  text-transform: uppercase; letter-spacing: 0.05em;
+  background: none; border: none; color: var(--red);
+  font-family: "Special Elite", monospace; font-size: 0.85rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
   cursor: pointer; text-decoration: underline; margin-top: 0.4rem;
 }
 .empty-state { text-align: center; padding: 3rem 1rem; }
-.empty-title { font-family: 'Big Shoulders Stencil Display', sans-serif; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; font-size: 1.1rem; color: var(--green); margin-top: 0.75rem; }
-.empty-sub { font-family: 'Archivo Narrow', sans-serif; font-size: 0.9rem; color: var(--bark); opacity: 0.75; margin-top: 0.35rem; max-width: 32ch; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.empty-title { font-family: "DM Serif Display", serif; font-size: 1.5rem; color: var(--red); margin-top: 0.75rem; }
+.empty-sub { font-family: "Public Sans", sans-serif; font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.35rem; max-width: 32ch; margin-left: auto; margin-right: auto; line-height: 1.5; }
 
-/* ── SECTION BLOCKS ── */
-.trail-section {
-  background: var(--cream);
-  border: var(--stitch); border-color: var(--green);
-  border-radius: var(--radius-md);
-  padding: 1.4rem 1.5rem;
-  margin-top: 2rem;
+/* ── TRAIL CHIPS (quick filter) ── */
+.trail-chip {
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 6px 14px;
+  border: 1.5px solid var(--ink); background: var(--paper);
+  color: var(--ink); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  white-space: nowrap;
+}
+.trail-chip:hover { background: var(--paper-deep); }
+.trail-chip.active { background: var(--ink); color: var(--paper); }
+.trail-chip i { font-size: 0.85rem; }
+
+/* ── CALENDAR GRID VIEW ── */
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.month-nav h3 { font-family: "DM Serif Display", serif; font-size: 1.3rem; color: var(--ink); }
+.month-nav-btn {
+  background: var(--ink); color: var(--paper);
+  border: none; padding: 0.3rem 0.65rem;
+  cursor: pointer; font-size: 0.875rem; transition: opacity 0.15s;
+}
+.month-nav-btn:hover { opacity: 0.8; }
+.month-grid {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  gap: 1px; background: var(--ink);
+  border: 2px solid var(--ink); overflow: hidden; margin-bottom: 1.5rem;
+}
+.grid-dow {
+  background: var(--ink); color: var(--paper);
+  font-family: "Special Elite", monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 0.4rem 0; text-align: center;
+}
+.grid-cell { background: white; min-height: 78px; padding: 0.3rem; }
+.grid-cell.other-month { background: var(--paper-deep); }
+.grid-date {
+  font-family: "Special Elite", monospace;
+  font-size: 11px; color: var(--ink-soft);
+  margin-bottom: 0.15rem; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+.grid-cell.is-today .grid-date { background: var(--red); color: white; border-radius: 50%; }
+.grid-dot {
+  font-size: 0.6rem; padding: 0.08rem 0.3rem;
+  margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  cursor: pointer; font-family: "Public Sans", sans-serif; line-height: 1.35;
+}
+.grid-dot:hover { opacity: 0.8; }
+.grid-more {
+  font-family: "Special Elite", monospace; font-size: 10px;
+  color: var(--ink-soft); padding: 0.08rem 0.3rem;
+  cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.grid-more:hover { color: var(--red); }
+
+/* ── BUCKET LIST ── */
+.bucket-tab-wrap { max-width: 900px; margin: 0 auto; padding: 1.5rem 56px 3rem; }
+.bb-cat-header {
+  font-family: "DM Serif Display", serif;
+  font-size: 28px; color: var(--ink);
+  margin: 1.75rem 0 0.85rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--ink);
+  font-weight: 400;
+}
+.bb-cat-header:first-child { margin-top: 0; }
+.bb-cat-header span {
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.1em;
+  background: var(--ink); color: var(--paper);
+  padding: 3px 10px;
+}
+.bb-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.65rem;
+}
+#bucketTabGrid { display: block; }
+.bb-item.size-wide { grid-column: span 2; flex-direction: row; text-align: left; padding: 0.85rem 1rem; }
+.bb-item.size-wide .bb-label { text-align: left; }
+.bb-item.size-lg .bb-icon { width: 72px; height: 72px; }
+.bb-item.size-lg .bb-icon i { font-size: 1.75rem; }
+.bb-item.size-sm .bb-icon { width: 48px; height: 48px; }
+.bb-item.size-sm .bb-icon i { font-size: 1.1rem; }
+.bb-item.size-sm .bb-label { font-size: 0.7rem; }
+
+.bucket-tab-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+}
+.bucket-tab-title { font-family: "DM Serif Display", serif; font-size: 1.8rem; color: var(--ink); line-height: 1.1; font-weight: 400; }
+.bucket-tab-sub { font-family: "Public Sans", sans-serif; font-size: 0.875rem; color: var(--ink-soft); margin-top: 0.3rem; }
+.bucket-print-bar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.bucket-select-all {
+  font-family: "Special Elite", monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 6px 14px; border: 1.5px solid var(--ink);
+  background: none; color: var(--ink); cursor: pointer;
+}
+.bucket-select-all:hover { background: var(--ink); color: var(--paper); }
+.bucket-print-btn {
+  font-family: "Special Elite", monospace; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 7px 16px; background: var(--ink); color: var(--paper);
+  border: 1.5px solid var(--ink); cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: opacity 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.bucket-print-btn:hover { opacity: 0.85; }
+.bucket-print-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+.bucket-select-count {
+  font-family: "Special Elite", monospace; font-size: 11px;
+  color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.bucket-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+.bb-item {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: 1rem 0.75rem 0.75rem;
+  border: 1.5px solid var(--ink);
+  background: var(--paper); cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  position: relative; text-align: center; user-select: none;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.bb-item:hover { background: white; transform: translateY(-2px); }
+.bb-item.selected { border-color: var(--red); background: white; box-shadow: 3px 3px 0 var(--red); }
+.bb-item.selected::after {
+  content: '✓'; position: absolute; top: 5px; right: 7px;
+  font-size: 0.75rem; color: var(--red); font-weight: 700;
+}
+.bb-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--ink); border: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.bb-item.selected .bb-icon { background: var(--red); border-color: var(--red-deep); }
+.bb-icon i { font-size: 1.5rem; color: var(--sun); }
+.bb-item.selected .bb-icon i { color: white; }
+.bb-label {
+  font-family: "Public Sans", sans-serif; font-size: 0.75rem;
+  font-weight: 700; color: var(--ink); line-height: 1.25; text-align: center;
 }
 
-/* ── MERIT BADGE BUCKET LIST ── */
-.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.6rem; }
-.merit-badge {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.3rem;
-  padding: 0.75rem 0.5rem 0.65rem;
-  background: var(--green);
-  border: 2.5px solid var(--green-mid);
-  border-radius: 50%;
-  aspect-ratio: 1;
-  cursor: pointer; transition: all 0.15s; user-select: none;
-  text-align: center;
-  box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px var(--green-mid);
-  outline: 1px dashed var(--gold);
-  outline-offset: 3px;
-}
-.merit-badge:hover { background: var(--green-mid); border-color: var(--gold); transform: scale(1.04) rotate(-2deg); }
-.merit-badge.done { background: var(--rust); border-color: var(--rust-dark); border-style: solid; box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px var(--rust-dark); }
-.merit-badge i { font-size: 1.4rem; color: var(--gold); }
-.merit-badge.done i { color: var(--canvas); }
-.merit-badge .badge-text { font-family: 'Archivo Narrow', sans-serif; font-size: 0.65rem; font-weight: 700; color: var(--canvas); line-height: 1.2; }
-.merit-badge.done .badge-text { color: var(--canvas-mid); }
-.merit-badge.done::after { content: '✓'; position: absolute; font-size: 0.7rem; color: var(--gold); top: 4px; right: 4px; font-weight: 900; }
-.merit-badge { position: relative; }
-
-/* Progress trail */
+/* Trail progress */
 .trail-progress { margin-top: 1.1rem; }
 .trail-progress-label {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--bark-lite); margin-bottom: 0.4rem;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.4rem;
 }
-.trail-track { height: 8px; background: var(--canvas-mid); border-radius: 4px; overflow: hidden; border: 1px solid var(--sage-dark); }
-.trail-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-lite), var(--gold)); border-radius: 4px; transition: width 0.4s ease; }
+.trail-track { height: 8px; background: var(--paper-deep); border: 1px solid var(--ink); overflow: hidden; }
+.trail-fill { height: 100%; background: linear-gradient(90deg, var(--red), var(--sun)); transition: width 0.4s ease; }
 
-/* ── FUN EXTRAS ── */
-.extras-list { display: flex; flex-direction: column; gap: 0.65rem; }
-.extra-item {
-  display: flex; gap: 0.85rem; align-items: flex-start;
-  padding: 0.9rem 1rem;
-  background: white;
-  border-left: 4px solid var(--rust);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+/* ── PRINTABLE SHEET ── */
+@media print {
+  body * { visibility: hidden !important; }
+  #printSheet, #printSheet * { visibility: visible !important; }
+  #printSheet {
+    position: fixed; inset: 0; background: white;
+    padding: 0.5in; z-index: 9999;
+  }
 }
-.extra-patch {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--sage); border: var(--stitch); border-color: var(--green);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.extra-patch i { font-size: 1.1rem; color: var(--green); }
-.extra-item h4 { font-family: 'Archivo Narrow', sans-serif; font-size: 0.95rem; color: var(--green); margin-bottom: 0.15rem; }
-.extra-item p { font-size: 0.8rem; color: var(--bark-lite); line-height: 1.4; }
-.extra-item a {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700; color: var(--rust);
-  text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none;
-}
-.extra-item a:hover { text-decoration: underline; }
+#printSheet { display: none; }
+.ps-header { text-align: center; margin-bottom: 0.5in; }
+.ps-title { font-family: "DM Serif Display", serif; font-weight: 400; font-size: 28pt; color: #1a1612; line-height: 1; }
+.ps-sub { font-family: "Special Elite", monospace; font-size: 10pt; color: #4a4034; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6pt; }
+.ps-rule { border: 0; border-top: 2px solid #1a1612; margin: 10pt 0; }
+.ps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14pt; }
+.ps-badge { display: flex; flex-direction: column; align-items: center; gap: 6pt; text-align: center; }
+.ps-circle { width: 72pt; height: 72pt; border-radius: 50%; background: #1a1612; border: 2.5pt solid #1a1612; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ps-circle i { font-size: 22pt; color: #e8a92c; }
+.ps-circle.earned { background: #c1342a; border-color: #8a1f17; }
+.ps-circle.earned i { color: white; }
+.ps-name { font-family: "Public Sans", sans-serif; font-size: 7.5pt; font-weight: 700; color: #1a1612; line-height: 1.2; }
+.ps-check { width: 18pt; height: 18pt; border: 1.5pt solid #1a1612; margin-top: 3pt; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12pt; color: #1a1612; }
+.ps-footer { margin-top: 0.3in; text-align: center; font-family: "Special Elite", monospace; font-size: 8pt; color: #4a4034; letter-spacing: 0.12em; text-transform: uppercase; border-top: 1px solid #e8a92c; padding-top: 8pt; }
 
-/* ── COFFEE SECTION ── */
+/* ── MAP TAB ── */
+.map-tab-wrap { padding: 1rem 56px 2rem; }
+.map-frame-outer { position: relative; margin-top: 12px; }
+.map-corner { position: absolute; width: 22px; height: 22px; border: 2px solid var(--ink); background: var(--paper); z-index: 1000; }
+.map-corner.tl { top: -10px; left: -10px; }
+.map-corner.tr { top: -10px; right: -10px; }
+.map-corner.bl { bottom: -10px; left: -10px; }
+.map-corner.br { bottom: -10px; right: -10px; }
+.map-legend-row {
+  display: flex; gap: 1.25rem; flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink);
+}
+.map-leg-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+.map-leg-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.2); }
+.map-leg-dot.playground { background: #2C3E2A; }
+.map-leg-dot.splash     { background: #1f3a6b; }
+.map-leg-dot.beach      { background: #e8a92c; }
+.map-leg-dot.eastern    { background: #7B5EA7; }
+.map-leg-dot.nature     { background: #4A7C59; }
+.map-leg-dot.farm       { background: #C27C3C; }
+.map-leg-dot.forest     { background: #3D6B4F; }
+.map-leg-dot.daytrip    { background: #8B4B6B; }
+.map-leg-dot.home       { background: #c1342a; }
+.map-note { font-family: "Special Elite", monospace; font-size: 11px; color: var(--ink-soft); margin-top: 10px; display: flex; align-items: center; gap: 0.35rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.map-filter-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
+.map-filter-group, .map-drive-group { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.map-filter-label { font-family: "Special Elite", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
+.map-filter-btn, .map-drive-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: "Special Elite", monospace; font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 12px; border: 1.5px solid var(--ink);
+  background: var(--paper); color: var(--ink); cursor: pointer;
+  transition: all 0.15s;
+}
+.map-filter-btn:hover, .map-drive-btn:hover { background: var(--paper-deep); }
+.map-filter-btn.active, .map-drive-btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.leaflet-popup-content-wrapper { font-family: "Public Sans", sans-serif !important; border-radius: 2px !important; box-shadow: 4px 4px 0 rgba(0,0,0,0.2) !important; }
+.park-popup { font-family: "Public Sans", sans-serif; min-width: 220px; }
+.pp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.25rem; }
+.pp-name { font-family: "DM Serif Display", serif; font-size: 1.05rem; color: var(--ink); line-height: 1.2; }
+.pp-meta { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.35rem; }
+.pp-type { display: inline-block; background: var(--paper); border: 1.5px solid var(--ink); font-size: 0.68rem; font-family: "Special Elite", monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; margin-bottom: 0.5rem; color: var(--ink); }
+.pp-ages { font-size: 0.78rem; color: var(--ink); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.3rem; }
+.pp-amenities { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.4rem; }
+.pp-amenities span { background: var(--paper-deep); font-size: 0.67rem; padding: 2px 6px; color: var(--ink); font-weight: 600; }
+.pp-rating { font-size: 0.78rem; font-weight: 700; color: var(--sun); margin-bottom: 0.3rem; }
+.pp-note { font-family: "Special Elite", monospace; font-size: 0.68rem; color: var(--ink-soft); line-height: 1.45; border-top: 1px dashed var(--paper-deep); padding-top: 0.35rem; margin-top: 0.25rem; }
+.pp-badge { display: inline-block; font-size: 0.62rem; font-family: "Special Elite", monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; white-space: nowrap; }
+.pp-badge.top { background: var(--sun); color: var(--ink); }
+.pp-badge.new { background: var(--ink); color: var(--paper); }
+
+/* ── COFFEE / SUPPORT SECTION ── */
 .basecamp-section {
-  background: var(--green);
-  background-image:
-    repeating-linear-gradient(45deg,
-      transparent 0px, transparent 12px,
-      rgba(255,255,255,0.025) 12px, rgba(255,255,255,0.025) 13px);
-  border-radius: var(--radius-md);
-  padding: 2.25rem 1.75rem;
-  margin-top: 2.5rem;
+  background: var(--ink);
+  border-top: 2px solid var(--ink);
+  padding: 48px 56px;
   text-align: center;
   position: relative;
-  border: 3px solid #5A3A22;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.15);
 }
 .basecamp-section::before {
-  content: ""; position: absolute; inset: 8px;
-  border: 1.5px dashed rgba(255,255,255,0.22);
-  border-radius: 4px;
+  content: ""; position: absolute; inset: 10px;
+  border: 1px dashed rgba(255,255,255,0.2);
   pointer-events: none;
 }
 .basecamp-eyebrow {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700;
-  color: #E8C77A; letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 0.55rem;
-  position: relative;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; color: var(--sun);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.55rem; position: relative;
 }
 .basecamp-section h3 {
-  font-family: 'National Park', sans-serif;
-  font-weight: 700;
-  font-size: 1.65rem; color: var(--canvas);
-  margin-bottom: 0.5rem; position: relative;
+  font-family: "DM Serif Display", serif;
+  font-size: 2rem; color: var(--paper);
+  margin-bottom: 0.5rem; position: relative; font-weight: 400;
 }
 .basecamp-section p {
-  font-size: 0.95rem; color: var(--sage);
-  max-width: 440px; margin: 0 auto 1.35rem;
-  position: relative;
+  font-size: 0.95rem; color: rgba(240,230,208,0.75);
+  max-width: 440px; margin: 0 auto 1.35rem; position: relative;
+  font-family: "Public Sans", sans-serif;
 }
 .basecamp-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; position: relative; }
 .camp-btn {
   display: inline-flex; align-items: center; gap: 0.45rem;
-  padding: 0.7rem 1.4rem;
-  border-radius: 50px;
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.78rem;
-  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 10px 24px;
+  font-family: "Special Elite", monospace; font-size: 12px;
+  letter-spacing: 0.12em; text-transform: uppercase;
   cursor: pointer; text-decoration: none; transition: all 0.2s;
-  border: 2px solid transparent;
+  border: 1.5px solid transparent;
+  box-shadow: 3px 3px 0 rgba(255,255,255,0.15);
 }
-.camp-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(0,0,0,0.28); }
+.camp-btn:hover { transform: translateY(-2px); }
 .camp-venmo { background: #3D95CE; color: white; border-color: #2c7aa8; }
-.camp-paypal { background: var(--canvas); color: #003087; border-color: var(--gold); }
+.camp-paypal { background: var(--paper); color: var(--ink); border-color: var(--sun); }
 
 /* ── FOOTER ── */
-footer {
-  text-align: center; padding: 1.5rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; color: var(--bark-lite);
-  text-transform: uppercase; letter-spacing: 0.06em;
-  border-top: 2px solid var(--canvas-mid);
-  margin-top: 3rem;
+.fsf-footer {
+  padding: 28px 56px;
+  border-top: 2px solid var(--ink);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; background: var(--paper);
 }
-footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
+.footer-l { display: flex; align-items: center; gap: 14px; }
+.footer-word { font-family: "DM Serif Display", serif; font-size: 22px; letter-spacing: -0.015em; text-transform: none; }
+.footer-word em { font-style: normal; color: var(--red); }
+.fsf-footer a { color: var(--red); text-decoration: none; }
+.fsf-footer a:hover { text-decoration: underline; }
 
 /* ── MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
-  background: rgba(15,23,10,0.7); backdrop-filter: blur(2px);
+  background: rgba(26,22,18,0.75); backdrop-filter: blur(2px);
   z-index: 200; align-items: flex-end; justify-content: center; padding: 1rem;
 }
 .modal-overlay.open { display: flex; }
 @media (min-width: 600px) { .modal-overlay { align-items: center; } }
 .modal {
-  background: var(--cream);
-  border: var(--stitch); border-color: var(--green);
-  border-radius: var(--radius-md);
+  background: var(--paper-light);
+  border: 2px solid var(--ink);
   padding: 1.5rem; width: 100%; max-width: 520px;
   max-height: 88vh; overflow-y: auto;
   animation: modal-in 0.2s ease;
+  box-shadow: 5px 5px 0 var(--ink);
 }
 .modal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
 .modal-close {
   background: none; border: none; font-size: 1.4rem;
-  cursor: pointer; color: var(--bark-lite); line-height: 1; padding: 0.1rem;
+  cursor: pointer; color: var(--ink-soft); line-height: 1; padding: 0.1rem;
 }
 .modal h3 {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: 1.15rem; color: var(--green); padding-right: 1rem; line-height: 1.3;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.4rem; color: var(--ink); padding-right: 1rem; line-height: 1.3; font-weight: 400;
 }
 .modal-when {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--rust); margin-bottom: 1rem;
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 1rem;
 }
 .modal-row { display: flex; gap: 0.5rem; font-size: 0.875rem; margin-bottom: 0.4rem; }
-.modal-row i { color: var(--green-lite); flex-shrink: 0; margin-top: 1px; }
-.modal-row span { color: var(--bark); }
+.modal-row i { color: var(--ink-soft); flex-shrink: 0; margin-top: 1px; }
+.modal-row span { color: var(--ink); }
 .modal-actions {
   display: flex; gap: 0.5rem; flex-wrap: wrap;
   margin-top: 1.25rem; padding-top: 1rem;
-  border-top: var(--stitch); border-color: var(--sage-dark);
+  border-top: 1px dashed var(--ink-soft);
 }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.5rem 1rem; border-radius: var(--radius);
-  background: var(--green); color: var(--canvas); border: none;
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.75rem;
-  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 8px 16px;
+  background: var(--ink); color: var(--paper); border: 1.5px solid var(--ink);
+  font-family: "Special Elite", monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em;
   cursor: pointer; text-decoration: none; transition: opacity 0.15s;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
 }
 .btn-primary:hover { opacity: 0.85; }
 .btn-outline {
   display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.5rem 1rem; border-radius: var(--radius);
-  background: transparent; color: var(--bark);
-  border: var(--stitch); border-color: var(--bark-lite);
-  font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.75rem;
-  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 8px 16px;
+  background: transparent; color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-family: "Special Elite", monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em;
   cursor: pointer; transition: all 0.12s;
 }
-.btn-outline:hover { border-color: var(--rust); color: var(--rust); border-style: solid; }
-
-/* ── GRID CAL VIEW ── */
-.cal-grid-view { display: none; }
-.cal-grid-view.visible { display: block; }
-.cal-list-view.hidden { display: none; }
-.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
-.month-nav h3 { font-family: 'National Park', sans-serif; font-size: 1.1rem; color: var(--green); }
-.month-nav-btn {
-  background: var(--green); color: var(--canvas);
-  border: none; padding: 0.3rem 0.65rem; border-radius: var(--radius);
-  cursor: pointer; font-size: 0.875rem; transition: opacity 0.15s;
-}
-.month-nav-btn:hover { opacity: 0.8; }
-.month-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 1px; background: var(--canvas-mid); border: 2px solid var(--green); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; }
-.grid-dow { background: var(--green); color: rgba(255,255,255,0.7); font-family: 'Courier Prime', monospace; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.4rem 0; text-align: center; }
-.grid-cell { background: white; min-height: 78px; padding: 0.3rem; }
-.grid-cell.other-month { background: var(--canvas); }
-.grid-date { font-family: 'Courier Prime', monospace; font-size: 0.72rem; font-weight: 700; color: var(--bark-lite); margin-bottom: 0.15rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-.grid-cell.is-today .grid-date { background: var(--rust); color: white; border-radius: 50%; font-weight: 700; }
-.grid-dot { font-size: 0.6rem; padding: 0.08rem 0.3rem; border-radius: 2px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; font-family: 'Archivo Narrow', sans-serif; font-weight: 600; line-height: 1.35; }
-.grid-dot:hover { opacity: 0.8; }
-.grid-more { font-family: 'Courier Prime', monospace; font-size: 0.6rem; color: var(--bark-lite); font-weight: 700; padding: 0.08rem 0.3rem; cursor: pointer; text-transform: uppercase; }
-.grid-more:hover { color: var(--rust); }
+.btn-outline:hover { background: var(--ink); color: var(--paper); }
 
 /* ── PRINT ── */
 @media print {
-  .trail-nav, .filter-panel, .action-toolbar, .trail-section,
-  .basecamp-section, footer, .ev-check, .modal-overlay { display: none !important; }
-  .hero { background: white !important; color: black !important; padding: 1rem 0; }
+  .fsf-tab-nav, .filter-panel, .action-toolbar,
+  .basecamp-section, .fsf-footer, .ev-check, .modal-overlay,
+  .fsf-masthead, .tagband, .fsf-hero, .fsf-ticker, .fsf-pillars, .sunburst-divider { display: none !important; }
   .event-card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 4pt; box-shadow: none; }
   .week-marker { background: #eee !important; color: black !important; }
 }
@@ -790,415 +843,269 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
 }
 
 /* ── MOBILE ── */
-@media (max-width: 640px) {
-  .hero-inner { padding: 1.75rem 1.25rem 2.25rem; }
-  .hero-arrowhead { display: none; }
-  .hero-stamp { width: 78px; height: 78px; top: 1rem; right: 1rem; }
-  .hero-stamp .stamp-yr { font-size: 1.25rem; }
-  .hero-stamp .stamp-est { font-size: 0.5rem; }
-  .hero-stamp .stamp-lbl { font-size: 0.45rem; }
-  .hero-meta-row { gap: 0.9rem; font-size: 0.68rem; }
-  .hero h1 { max-width: 11ch; }
-  .page { padding: 1rem 1rem 3rem; }
-  .trail-nav { padding: 0.5rem 0.85rem; overflow-x: auto; flex-wrap: nowrap; gap: 0.35rem; -webkit-overflow-scrolling: touch; }
-  .trail-nav::-webkit-scrollbar { display: none; }
-  .trail-chip { font-size: 0.65rem; padding: 0.3rem 0.65rem; }
+@media (max-width: 768px) {
+  .fsf-masthead { padding: 14px 24px; gap: 16px; }
+  .mast-word { font-size: 26px; }
+  .tagband { padding: 8px 24px; font-size: 10px; flex-wrap: wrap; gap: 6px; }
+  .fsf-hero { padding: 40px 24px 36px; }
+  .hero-h1 { font-size: clamp(48px, 12vw, 80px); }
+  .hero-lede { font-size: 18px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats > div:nth-child(2) { border-right: none; }
+  .hero-stats > div:nth-child(3) { border-right: 1px dashed rgba(0,0,0,0.25); }
+  .fsf-pillars { grid-template-columns: repeat(2, 1fr); }
+  .pillar:nth-child(2) { border-right: none; }
+  .pillar:nth-child(3) { border-right: 2px solid var(--ink); border-top: 2px solid var(--ink); }
+  .pillar:nth-child(4) { border-top: 2px solid var(--ink); }
+  .fsf-tab-nav { padding: 0 12px; overflow-x: auto; }
+  .fsf-tab { padding: 14px 16px; font-size: 11px; }
+  .filter-panel { padding: 16px 24px; }
+  .action-toolbar { padding: 10px 24px; }
+  .cal-bar { padding: 12px 24px; }
+  .cal-list-view { padding: 0 24px 32px; }
+  .cal-grid-view { padding: 0 24px 32px; }
+  .map-tab-wrap { padding: 1rem 24px 2rem; }
+  .bucket-tab-wrap { padding: 1.5rem 24px 3rem; }
+  .fsf-footer { padding: 20px 24px; flex-wrap: wrap; gap: 12px; font-size: 10px; }
+  .basecamp-section { padding: 36px 24px; }
+  .fsf-sec-head { padding: 24px 24px 16px; }
   .filter-grid { grid-template-columns: 1fr 1fr; }
+  .week-marker { margin-left: -24px; padding-left: 24px; width: calc(100% + 48px); }
 }
 @media (max-width: 480px) {
   .filter-grid { grid-template-columns: 1fr; }
-  .action-toolbar { gap: 0.4rem; padding: 0.6rem 0.85rem; }
-  .trail-btn { font-size: 0.65rem; padding: 0.35rem 0.6rem; }
-  .sel-count { width: 100%; }
-  .event-card { padding: 0.6rem 0.75rem; gap: 0.5rem; }
-  .ev-name { font-size: 0.85rem; }
-  .ptag { font-size: 0.58rem; padding: 0.1rem 0.35rem; }
-  .badge-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
-  .merit-badge { padding: 0.6rem 0.4rem 0.5rem; }
-  .merit-badge i { font-size: 1.1rem; }
-  .merit-badge .badge-text { font-size: 0.55rem; }
-  .week-marker { margin-left: -1rem; padding-left: 1.35rem; }
-  .basecamp-section { padding: 1.5rem 1.25rem; }
-  .basecamp-btns { flex-direction: column; align-items: center; }
-  .camp-btn { width: 100%; max-width: 240px; justify-content: center; }
-  .modal { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .stat-n { font-size: 38px; }
+  .badge-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .modal { border-radius: 0; }
   .modal-overlay { align-items: flex-end; }
-  .trail-section { padding: 1.1rem; }
+  .bb-cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .bucket-badge-grid { grid-template-columns: repeat(3, 1fr); gap: 0.65rem; }
+  .bb-icon { width: 48px; height: 48px; }
+  .bb-icon i { font-size: 1.1rem; }
+  .bb-label { font-size: 0.65rem; }
+  .trail-btn { font-size: 10px; padding: 6px 10px; }
 }
-
-/* ─── TAB NAV ─── */
-.tab-nav {
-  display: flex; gap: 0;
-  border-bottom: 3px solid var(--green);
-  margin: 0; padding: 0 1.5rem;
-  background: var(--canvas-mid);
-}
-.tab-btn {
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-weight: 800; font-size: 0.9rem;
-  letter-spacing: 0.07em; text-transform: uppercase;
-  padding: 0.8rem 1.5rem; border: none; background: none;
-  color: var(--bark-lite); cursor: pointer;
-  border-bottom: 3px solid transparent; margin-bottom: -3px;
-  display: flex; align-items: center; gap: 0.4rem;
-  transition: color 0.15s;
-}
-.tab-btn:hover { color: var(--green); }
-.tab-btn.active { color: var(--green); border-bottom-color: var(--green); background: var(--canvas); }
-.tab-btn i { font-size: 1rem; }
-
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* ─── BUCKET LIST TAB ─── */
-.bucket-tab-wrap { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
-.bb-cat-header {
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-weight: 800; font-size: 1.05rem;
-  color: var(--green); letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 1.75rem 0 0.85rem;
-  display: flex; align-items: center; gap: 0.6rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px dashed var(--sage-dark);
-}
-.bb-cat-header:first-child { margin-top: 0; }
-.bb-cat-header span {
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.62rem; font-weight: 700;
-  background: var(--green); color: var(--canvas);
-  padding: 0.15rem 0.5rem; border-radius: 50px;
-  letter-spacing: 0.05em;
-}
-.bb-cat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 0.65rem;
-}
-#bucketTabGrid { display: block; }
-/* size variants */
-.bb-item.size-wide { grid-column: span 2; flex-direction: row; text-align: left; padding: 0.85rem 1rem; }
-.bb-item.size-wide .bb-label { text-align: left; }
-.bb-item.size-lg .bb-icon { width: 72px; height: 72px; }
-.bb-item.size-lg .bb-icon i { font-size: 1.75rem; }
-.bb-item.size-sm .bb-icon { width: 48px; height: 48px; box-shadow: 0 0 0 2px var(--canvas-mid), 0 0 0 3px var(--green); }
-.bb-item.size-sm .bb-icon i { font-size: 1.1rem; }
-.bb-item.size-sm .bb-label { font-size: 0.7rem; }
-.bucket-tab-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
-.bucket-tab-title { font-family: 'National Park', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--green); line-height: 1.1; }
-.bucket-tab-sub { font-family: 'Archivo Narrow', sans-serif; font-size: 0.875rem; color: var(--bark-lite); margin-top: 0.3rem; }
-.bucket-print-bar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-.bucket-select-all {
-  font-family: 'Courier Prime', monospace; font-size: 0.72rem;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  padding: 0.4rem 0.9rem; border: 1.5px solid var(--green);
-  background: none; color: var(--green); cursor: pointer; border-radius: 2px;
-}
-.bucket-select-all:hover { background: var(--green); color: var(--canvas); }
-.bucket-print-btn {
-  font-family: 'Big Shoulders Stencil Display', sans-serif;
-  font-weight: 800; font-size: 0.85rem; letter-spacing: 0.07em;
-  text-transform: uppercase;
-  padding: 0.5rem 1.2rem; background: var(--green); color: var(--canvas);
-  border: 2px solid var(--green-mid); border-radius: 2px; cursor: pointer;
-  display: flex; align-items: center; gap: 0.4rem;
-  transition: opacity 0.15s;
-}
-.bucket-print-btn:hover { opacity: 0.85; }
-.bucket-print-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.bucket-select-count {
-  font-family: 'Courier Prime', monospace; font-size: 0.75rem;
-  color: var(--bark-lite); text-transform: uppercase; letter-spacing: 0.08em;
-}
-
-/* selectable merit badges for bucket tab */
-.bucket-badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
-.bb-item {
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  padding: 1rem 0.75rem 0.75rem;
-  border: 2px solid var(--canvas-mid); border-radius: 4px;
-  background: var(--cream); cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  position: relative; text-align: center;
-  user-select: none;
-}
-.bb-item:hover { border-color: var(--green-lite); background: white; }
-.bb-item.selected { border-color: var(--green); background: white; box-shadow: 0 0 0 2px var(--green); }
-.bb-item.selected::after {
-  content: '✓'; position: absolute; top: 5px; right: 7px;
-  font-size: 0.75rem; font-weight: 900; color: var(--green);
-}
-.bb-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: var(--green); border: 2.5px solid var(--green-mid);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 2px var(--canvas-mid), 0 0 0 4px var(--green);
-  transition: background 0.15s;
-}
-.bb-item.selected .bb-icon { background: var(--rust); box-shadow: 0 0 0 2px var(--canvas-mid), 0 0 0 4px var(--rust); }
-.bb-icon i { font-size: 1.5rem; color: var(--gold); }
-.bb-item.selected .bb-icon i { color: var(--canvas); }
-.bb-label {
-  font-family: 'Archivo Narrow', sans-serif; font-size: 0.75rem;
-  font-weight: 700; color: var(--bark); line-height: 1.25; text-align: center;
-}
-
-/* ─── PRINTABLE SHEET ─── */
-@media print {
-  body * { visibility: hidden !important; }
-  #printSheet, #printSheet * { visibility: visible !important; }
-  #printSheet {
-    position: fixed; inset: 0; background: white;
-    padding: 0.5in; z-index: 9999;
-  }
-}
-#printSheet { display: none; }
-
-.ps-header { text-align: center; margin-bottom: 0.5in; }
-.ps-title {
-  font-family: 'National Park', sans-serif; font-weight: 800;
-  font-size: 28pt; color: #2C3E2A; line-height: 1;
-}
-.ps-sub {
-  font-family: 'Courier Prime', monospace; font-size: 10pt;
-  color: #5A3A22; letter-spacing: 0.15em; text-transform: uppercase;
-  margin-top: 6pt;
-}
-.ps-rule { border: 0; border-top: 2px solid #2C3E2A; margin: 10pt 0; }
-.ps-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 14pt;
-}
-.ps-badge {
-  display: flex; flex-direction: column; align-items: center; gap: 6pt;
-  text-align: center;
-}
-.ps-circle {
-  width: 72pt; height: 72pt; border-radius: 50%;
-  background: #2C3E2A; border: 2.5pt solid #1A2618;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 2pt white, 0 0 0 4pt #2C3E2A;
-  flex-shrink: 0;
-}
-.ps-circle i { font-size: 22pt; color: #C39A3F; }
-.ps-circle.earned { background: #A8472A; border-color: #7A3320; }
-.ps-circle.earned i { color: white; }
-.ps-name {
-  font-family: 'Archivo Narrow', sans-serif; font-size: 7.5pt;
-  font-weight: 700; color: #1F2A1D; line-height: 1.2;
-}
-.ps-check {
-  width: 18pt; height: 18pt; border: 1.5pt solid #2C3E2A;
-  border-radius: 2pt; margin-top: 3pt; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12pt; color: #2C3E2A;
-}
-.ps-footer {
-  margin-top: 0.3in; text-align: center;
-  font-family: 'Courier Prime', monospace; font-size: 8pt;
-  color: #5A3A22; letter-spacing: 0.12em; text-transform: uppercase;
-  border-top: 1px solid #C39A3F; padding-top: 8pt;
-}
-
-/* ── PARKS MAP TAB ── */
-.map-tab-wrap { padding: 1rem 0 2rem; }
-.map-legend-row {
-  display: flex; gap: 1.25rem; flex-wrap: wrap;
-  margin-bottom: 0.85rem;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--bark);
-}
-.map-leg-item { display: inline-flex; align-items: center; gap: 0.4rem; }
-.map-leg-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.2); }
-.map-leg-dot.playground { background: #2C3E2A; }
-.map-leg-dot.splash     { background: #486A78; }
-.map-leg-dot.beach      { background: #C39A3F; }
-.map-leg-dot.eastern    { background: #7B5EA7; }
-.map-leg-dot.nature     { background: #4A7C59; }
-.map-leg-dot.farm       { background: #C27C3C; }
-.map-leg-dot.forest     { background: #3D6B4F; }
-.map-leg-dot.daytrip    { background: #8B4B6B; }
-.map-leg-dot.home       { background: #A8472A; }
-.map-note { font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: var(--bark-lite); margin-top: 0.6rem; display: flex; align-items: center; gap: 0.35rem; }
-.map-filter-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
-.map-filter-group, .map-drive-group { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
-.map-filter-label { font-family: 'Courier Prime', monospace; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--bark-lite); display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
-.map-filter-btn, .map-drive-btn {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  font-family: 'Courier Prime', monospace; font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  padding: 0.3rem 0.75rem; border: 1.5px solid var(--canvas-mid);
-  border-radius: 50px; background: white; color: var(--bark); cursor: pointer;
-  transition: all 0.15s;
-}
-.map-filter-btn:hover, .map-drive-btn:hover { border-color: var(--green); color: var(--green); }
-.map-filter-btn.active, .map-drive-btn.active { background: var(--green); border-color: var(--green); color: var(--canvas); }
-.map-filter-btn.active .map-leg-dot { border-color: rgba(255,255,255,0.5); }
-.leaflet-popup-content-wrapper { font-family: 'Archivo Narrow', sans-serif !important; border-radius: 6px !important; box-shadow: 0 4px 14px rgba(0,0,0,0.15) !important; }
-.park-popup { font-family: 'Archivo Narrow', sans-serif; min-width: 220px; }
-.pp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.25rem; }
-.pp-name { font-family: 'National Park', sans-serif; font-weight: 700; font-size: 1.05rem; color: #2C3E2A; line-height: 1.2; }
-.pp-meta { font-size: 0.78rem; color: #5A3A22; margin-bottom: 0.35rem; }
-.pp-type { display: inline-block; background: #F1E7CF; border: 1.5px solid #A8C4B0; border-radius: 3px; font-size: 0.68rem; font-weight: 700; font-family: 'Courier Prime',monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.5rem; margin-bottom: 0.5rem; color: #1F2A1D; }
-.pp-ages { font-size: 0.78rem; color: #1F2A1D; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.3rem; }
-.pp-amenities { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.4rem; }
-.pp-amenities span { background: #D3E2D7; border-radius: 3px; font-size: 0.67rem; padding: 0.1rem 0.4rem; color: #1F2A1D; font-weight: 600; }
-.pp-rating { font-size: 0.78rem; font-weight: 700; color: #C39A3F; margin-bottom: 0.3rem; }
-.pp-note { font-family: 'Courier Prime', monospace; font-size: 0.7rem; color: #5A3A22; line-height: 1.45; border-top: 1px dashed #E8DCBE; padding-top: 0.35rem; margin-top: 0.25rem; }
-.pp-badge { display: inline-block; font-size: 0.62rem; font-weight: 700; font-family: 'Courier Prime',monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.5rem; border-radius: 50px; white-space: nowrap; }
-.pp-badge.top { background: #C39A3F; color: white; }
-.pp-badge.new { background: #2C3E2A; color: #F1E7CF; }
-
 </style>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════
-     HERO
+     MASTHEAD
 ═══════════════════════════════════════ -->
-<header class="hero">
-  <div class="hero-stamp" aria-hidden="true">
-    <span class="stamp-est">Est.</span>
-    <span class="stamp-yr">2026</span>
-    <span class="stamp-lbl">Lake Co.</span>
+<header class="fsf-masthead">
+  <div class="mast-meta">Vol. I · No. 03<br>Summer Issue 2026</div>
+  <div class="mast-lockup">
+    <svg viewBox="0 0 100 100" width="56" height="56" aria-hidden="true" focusable="false">
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5"/>
+      <line x1="74" y1="7"  x2="69" y2="16"  stroke="#1a1612" stroke-width="2.5" transform="rotate(30 50 50)"/>
+      <line x1="74" y1="7"  x2="69" y2="16"  stroke="#1a1612" stroke-width="2.5" transform="rotate(60 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(90 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(120 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(150 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(180 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(210 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(240 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(270 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(300 50 50)"/>
+      <line x1="50" y1="2"  x2="50" y2="12"  stroke="#1a1612" stroke-width="2.5" transform="rotate(330 50 50)"/>
+      <circle cx="50" cy="50" r="34" fill="#e8a92c" stroke="#1a1612" stroke-width="3"/>
+      <text x="50" y="58" text-anchor="middle" font-family="DM Serif Display, serif" font-size="26" fill="#1a1612" letter-spacing="-0.02em">FSF</text>
+      <circle cx="50" cy="50" r="34" fill="none" stroke="#1a1612" stroke-width="1" stroke-dasharray="2 3" opacity="0.4"/>
+    </svg>
+    <div class="mast-word"><em>Free</em> Summer Fun</div>
   </div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow">Your Summer Companion &middot; Grayslake &amp; Central Lake County</div>
-    <h1>Central Lake County <span class="h1-accent">Fun</span></h1>
-    <p class="hero-tagline">One mom. 1,000+ events. Every free library program, park splash pad, farm visit, and forest preserve within 30 minutes &mdash; already found for you.</p>
-    <div class="hero-meta-row">
-      <span><i class="ti ti-map-pin"></i> Ages 0&ndash;8 &middot; Central Lake County</span>
-      <span><i class="ti ti-sun"></i> Summer 2026</span>
-      <span><i class="ti ti-calendar-event"></i> <strong id="heroCount">1,000+</strong>&nbsp;events</span>
-      <span><i class="ti ti-info-circle"></i> <a href="about.html">About this site</a></span>
-    </div>
-  </div>
+  <div class="mast-meta mast-meta-r">Central Lake County, IL<br>Updated weekly</div>
 </header>
 
+<div class="tagband">
+  <span>Free.<span class="dot">●</span>Close to home.<span class="dot">●</span>Outside.<span class="dot">●</span>For little kids.</span>
+  <span>Est. 2026</span>
+  <span>★ A field guide for parents ★</span>
+</div>
+
 <!-- ═══════════════════════════════════════
-     STICKY NAV
+     HERO
 ═══════════════════════════════════════ -->
-
-
-<!-- ═══════════════════════════════════════
-     MAIN
-═══════════════════════════════════════ -->
-<div class="page">
-
-  <!-- Intro blurb -->
-  <div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;">
-    <p style="margin:0;"><strong>Built for ages 0&ndash;8 in central Lake County.</strong> This guide pulls together events from libraries, park districts, and forest preserves that would otherwise take hours to find &mdash; filtered, sorted, and ready to plan from. Three tools inside: a searchable event calendar, a summer bucket list you can work through with your kids, and a map of 95 outdoor destinations with notes on what makes each one worth the drive.</p>
-    <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Always confirm times &amp; registration directly with the organizer &mdash; details can change.</p>
+<section class="fsf-hero">
+  <div class="hero-issue">Cover Story <b>★</b> Summer No. 03</div>
+  <h1 class="hero-h1">
+    Let's give our kids<br>
+    a <span class="red">1990s</span> <span class="blue">summer.</span>
+  </h1>
+  <p class="hero-lede">
+    Bike rides 'til the streetlights. Splash pads on Tuesdays. <em>Library storytime on Mondays.</em>
+    Firefly walks on Fridays. A field guide to the free, close-to-home, outside summer your kids deserve.
+  </p>
+  <div class="hero-stats">
+    <div><div class="stat-n" id="heroCount">1,793</div><div class="stat-l">Free events this summer</div></div>
+    <div><div class="stat-n red">105</div><div class="stat-l">Parks &amp; nature spots</div></div>
+    <div><div class="stat-n blue">58</div><div class="stat-l">Bucket-list adventures</div></div>
+    <div><div class="stat-n">45<span style="font-size:0.5em"> min</span></div><div class="stat-l">Max drive from Grayslake</div></div>
   </div>
+</section>
 
-  <!-- TAB NAV -->
-  <nav class="tab-nav" role="tablist">
-    <button class="tab-btn active" id="tab-events" role="tab" aria-selected="true" onclick="switchTab('events')">
-      <i class="ti ti-calendar-event"></i> Events
-    </button>
-    <button class="tab-btn" id="tab-bucket" role="tab" aria-selected="false" onclick="switchTab('bucket')">
-      <i class="ti ti-award"></i> Summer Bucket List
-    </button>
-    <button class="tab-btn" id="tab-map" role="tab" aria-selected="false" onclick="switchTab('map')">
-      <i class="ti ti-map-2"></i> Parks Map
-    </button>
-  </nav>
+<!-- ═══════════════════════════════════════
+     TICKER
+═══════════════════════════════════════ -->
+<div class="fsf-ticker" aria-hidden="true">
+  <span>🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits <span class="sun-dot"></span> 🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits</span>
+</div>
 
-  <!-- FILTERS (events tab only) -->
-  <div class="filter-panel" id="filterPanel">
-    <div class="filter-label-row"><i class="ti ti-adjustments-horizontal" style="color:var(--rust)"></i> Filter Your Trail</div>
-    <div class="filter-grid">
-      <div class="fg">
-        <label><i class="ti ti-building-community"></i> Organization</label>
-        <select id="filterOrg" onchange="applyFilters()"><option value="">All Organizations</option></select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-users"></i> Age Group</label>
-        <select id="filterAge" onchange="applyFilters()">
-          <option value="">All Ages</option>
-          <option value="baby">Babies &amp; Toddlers</option>
-          <option value="preschool">Preschool (3–5)</option>
-          <option value="elementary">Elementary</option>
-          <option value="family">Family / All Ages</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-calendar"></i> Day of Week</label>
-        <select id="filterDay" onchange="applyFilters()">
-          <option value="">Any Day</option>
-          <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
-          <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-clipboard-check"></i> Registration</label>
-        <select id="filterReg" onchange="applyFilters()">
-          <option value="">Any</option>
-          <option value="no">No registration needed</option>
-          <option value="yes">Registration required</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-category"></i> Event Type</label>
-        <select id="filterType" onchange="applyFilters()">
-          <option value="">All Types</option>
-          <option value="Storytime">Storytime</option>
-          <option value="Craft/Art">Craft / Art</option>
-          <option value="Nature/Hike">Nature / Hike</option>
-          <option value="Drop-in/Play">Drop-in / Play</option>
-          <option value="Concert/Music">Concert / Music</option>
-          <option value="Movie/Show">Movie / Show</option>
-          <option value="Festival/Fair">Festival / Fair</option>
-          <option value="Animals">Animals</option>
-          <option value="Free Meal">Free Meal</option>
-          <option value="Class/Education">Class</option>
-          <option value="Fishing">Fishing</option>
-          <option value="Family Fun">Family Fun</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-clock"></i> Time of Day</label>
-        <select id="filterTime" onchange="applyFilters()">
-          <option value="">Any Time</option>
-          <option value="Morning">Morning</option>
-          <option value="Afternoon">Afternoon</option>
-          <option value="Evening">Evening</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label><i class="ti ti-car"></i> Drive Time</label>
-        <select id="filterDrive" onchange="applyFilters()">
-          <option value="">Any Distance</option>
-          <option value="10">Within 10 min</option>
-          <option value="15">Within 15 min</option>
-          <option value="20">Within 20 min</option>
-          <option value="30">Within 30 min</option>
-        </select>
-      </div>
-      <div class="fg" style="justify-content:flex-end;">
-        <label>&nbsp;</label>
-        <label class="toggle-label">
-          <input type="checkbox" id="filterFree" onchange="applyFilters()">
-          <span>Free events only</span>
-        </label>
-      </div>
-      <div class="fg" style="justify-content:flex-end;">
-        <label>&nbsp;</label>
-        <label class="toggle-label">
-          <input type="checkbox" id="filterLakeCounty" onchange="applyFilters()" checked>
-          <span>Lake County only</span>
-        </label>
-      </div>
-      <div class="fg" style="justify-content:flex-end;">
-        <label>&nbsp;</label>
-        <button class="btn-ghost" onclick="resetFilters()"><i class="ti ti-refresh"></i> Reset</button>
-      </div>
+<!-- ═══════════════════════════════════════
+     BRAND PILLARS
+═══════════════════════════════════════ -->
+<div class="fsf-pillars">
+  <div class="pillar">
+    <div class="pillar-mk">$</div>
+    <h3>Free, mostly.</h3>
+    <p>Every event is free or a few bucks. We mark the ones that cost money in red. No fine print.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-mk">↻</div>
+    <h3>Close to home.</h3>
+    <p>All within 45 minutes of Grayslake. Most within 20. Built for the way little kids actually travel.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-mk">☀</div>
+    <h3>Outside, ideally.</h3>
+    <p>Sun on faces, grass on knees. The library backup plan exists, but we lead with the prairie.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-mk">★</div>
+    <h3>For little kids.</h3>
+    <p>Ages 0 to 8, with notes on what's stroller-friendly, what needs a kid who can read, and what's worth the nap-skip.</p>
+  </div>
+</div>
+
+<div class="sunburst-divider" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════
+     INTRO NOTE
+═══════════════════════════════════════ -->
+<div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;">
+  <p style="margin:0;"><strong>Built for ages 0–8 in central Lake County.</strong> This guide pulls together events from libraries, park districts, and forest preserves that would otherwise take hours to find — filtered, sorted, and ready to plan from. Three tools inside: a searchable event calendar, a summer bucket list you can work through with your kids, and a map of 95 outdoor destinations with notes on what makes each one worth the drive.</p>
+  <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Always confirm times &amp; registration directly with the organizer — details can change.</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB NAV
+═══════════════════════════════════════ -->
+<nav class="fsf-tab-nav" role="tablist">
+  <button class="fsf-tab active" id="tab-events" role="tab" aria-selected="true" onclick="switchTab('events')">
+    <span class="tab-num">01</span> The Lineup
+  </button>
+  <button class="fsf-tab" id="tab-bucket" role="tab" aria-selected="false" onclick="switchTab('bucket')">
+    <span class="tab-num">02</span> Bucket List
+  </button>
+  <button class="fsf-tab" id="tab-map" role="tab" aria-selected="false" onclick="switchTab('map')">
+    <span class="tab-num">03</span> Parks Map
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     FILTER PANEL
+═══════════════════════════════════════ -->
+<div class="filter-panel" id="filterPanel">
+  <div class="filter-label-row"><i class="ti ti-adjustments-horizontal"></i> Filter Your Trail</div>
+  <div class="filter-grid">
+    <div class="fg">
+      <label><i class="ti ti-building-community"></i> Organization</label>
+      <select id="filterOrg" onchange="applyFilters()"><option value="">All Organizations</option></select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-users"></i> Age Group</label>
+      <select id="filterAge" onchange="applyFilters()">
+        <option value="">All Ages</option>
+        <option value="baby">Babies &amp; Toddlers</option>
+        <option value="preschool">Preschool (3–5)</option>
+        <option value="elementary">Elementary</option>
+        <option value="family">Family / All Ages</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-calendar"></i> Day of Week</label>
+      <select id="filterDay" onchange="applyFilters()">
+        <option value="">Any Day</option>
+        <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+        <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-clipboard-check"></i> Registration</label>
+      <select id="filterReg" onchange="applyFilters()">
+        <option value="">Any</option>
+        <option value="no">No registration needed</option>
+        <option value="yes">Registration required</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-category"></i> Event Type</label>
+      <select id="filterType" onchange="applyFilters()">
+        <option value="">All Types</option>
+        <option value="Storytime">Storytime</option>
+        <option value="Craft/Art">Craft / Art</option>
+        <option value="Nature/Hike">Nature / Hike</option>
+        <option value="Drop-in/Play">Drop-in / Play</option>
+        <option value="Concert/Music">Concert / Music</option>
+        <option value="Movie/Show">Movie / Show</option>
+        <option value="Festival/Fair">Festival / Fair</option>
+        <option value="Animals">Animals</option>
+        <option value="Free Meal">Free Meal</option>
+        <option value="Class/Education">Class</option>
+        <option value="Fishing">Fishing</option>
+        <option value="Family Fun">Family Fun</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-clock"></i> Time of Day</label>
+      <select id="filterTime" onchange="applyFilters()">
+        <option value="">Any Time</option>
+        <option value="Morning">Morning</option>
+        <option value="Afternoon">Afternoon</option>
+        <option value="Evening">Evening</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label><i class="ti ti-car"></i> Drive Time</label>
+      <select id="filterDrive" onchange="applyFilters()">
+        <option value="">Any Distance</option>
+        <option value="10">Within 10 min</option>
+        <option value="15">Within 15 min</option>
+        <option value="20">Within 20 min</option>
+        <option value="30">Within 30 min</option>
+      </select>
+    </div>
+    <div class="fg" style="justify-content:flex-end;">
+      <label>&nbsp;</label>
+      <label class="toggle-label">
+        <input type="checkbox" id="filterFree" onchange="applyFilters()">
+        <span>Free events only</span>
+      </label>
+    </div>
+    <div class="fg" style="justify-content:flex-end;">
+      <label>&nbsp;</label>
+      <label class="toggle-label">
+        <input type="checkbox" id="filterLakeCounty" onchange="applyFilters()" checked>
+        <span>Lake County only</span>
+      </label>
+    </div>
+    <div class="fg" style="justify-content:flex-end;">
+      <label>&nbsp;</label>
+      <button class="btn-ghost" onclick="resetFilters()"><i class="ti ti-refresh"></i> Reset</button>
     </div>
   </div>
+</div>
 
-  <!-- EVENTS PANEL -->
-  <div class="tab-panel active" id="panel-events">
+<!-- ═══════════════════════════════════════
+     EVENTS PANEL
+═══════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-events">
+
+  <div class="fsf-sec-head">
+    <span class="fsf-sec-num">01</span>
+    <h2 class="fsf-sec-title">The Lineup · Summer 2026</h2>
+  </div>
 
   <!-- ACTION TOOLBAR -->
   <div class="action-toolbar">
@@ -1210,7 +1117,7 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
     <button class="trail-btn ghost" onclick="selectAllVisible()"><i class="ti ti-select"></i> Select All</button>
   </div>
 
-  <!-- CALENDAR -->
+  <!-- CALENDAR HEADER -->
   <div class="cal-bar">
     <div style="display:flex;align-items:center;gap:0.75rem;">
       <div class="view-toggle">
@@ -1224,80 +1131,108 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
   <div id="calContainer" class="cal-list-view"></div>
   <div id="calGridContainer" class="cal-grid-view"></div>
 
-  </div><!-- /panel-events -->
+</div><!-- /panel-events -->
 
-  <!-- BUCKET LIST PANEL -->
-  <div class="tab-panel" id="panel-bucket">
-    <div class="bucket-tab-wrap">
-      <div class="bucket-tab-header">
-        <div>
-          <div class="bucket-tab-title">Summer Bucket List</div>
-          <div class="bucket-tab-sub">Pick your adventures — then print your family's custom badge sheet.</div>
-        </div>
-        <div class="bucket-print-bar">
-          <span class="bucket-select-count" id="bucketSelCount">0 selected</span>
-          <button class="bucket-select-all" onclick="bucketSelectAll()">Select All</button>
-          <button class="bucket-print-btn" id="bucketPrintBtn" onclick="printBucket()" disabled>
-            <i class="ti ti-printer"></i> Print Badge Sheet
-          </button>
-        </div>
+<!-- ═══════════════════════════════════════
+     BUCKET LIST PANEL
+═══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-bucket">
+  <div class="fsf-sec-head">
+    <span class="fsf-sec-num">02</span>
+    <h2 class="fsf-sec-title">Summer Bucket List</h2>
+  </div>
+  <div class="bucket-tab-wrap">
+    <div class="bucket-tab-header">
+      <div>
+        <div class="bucket-tab-title">Pick Your Adventures</div>
+        <div class="bucket-tab-sub">Pick your adventures — then print your family's custom badge sheet.</div>
       </div>
-      <div class="bucket-badge-grid" id="bucketTabGrid"></div>
-      <div class="trail-progress" style="margin-top:1.5rem">
-        <div class="trail-progress-label" id="bucketLabel">0 badges earned</div>
-        <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
+      <div class="bucket-print-bar">
+        <span class="bucket-select-count" id="bucketSelCount">0 selected</span>
+        <button class="bucket-select-all" onclick="bucketSelectAll()">Select All</button>
+        <button class="bucket-print-btn" id="bucketPrintBtn" onclick="printBucket()" disabled>
+          <i class="ti ti-printer"></i> Print Badge Sheet
+        </button>
       </div>
     </div>
-  </div><!-- /panel-bucket -->
-
-  <!-- MAP PANEL -->
-  <div class="tab-panel" id="panel-map">
-    <div class="map-tab-wrap">
-      <div class="map-filter-row">
-        <div class="map-filter-group">
-          <span class="map-filter-label"><i class="ti ti-adjustments-horizontal"></i> Show</span>
-          <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
-          <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
-          <button class="map-filter-btn" data-section="SPLASH PADS" onclick="filterMapPins(this,'SPLASH PADS')"><span class="map-leg-dot splash"></span> Splash Pads</button>
-          <button class="map-filter-btn" data-section="BEACHES & LAKES" onclick="filterMapPins(this,'BEACHES & LAKES')"><span class="map-leg-dot beach"></span> Beaches &amp; Lakes</button>
-          <button class="map-filter-btn" data-section="NATURE CENTERS" onclick="filterMapPins(this,'NATURE CENTERS')"><span class="map-leg-dot nature"></span> Nature Centers</button>
-          <button class="map-filter-btn" data-section="FARMS & PETTING ZOOS" onclick="filterMapPins(this,'FARMS & PETTING ZOOS')"><span class="map-leg-dot farm"></span> Farms</button>
-          <button class="map-filter-btn" data-section="FOREST PRESERVES & NATURE AREAS" onclick="filterMapPins(this,'FOREST PRESERVES & NATURE AREAS')"><span class="map-leg-dot forest"></span> Forest Preserves</button>
-          <button class="map-filter-btn" data-section="DAY TRIPS" onclick="filterMapPins(this,'DAY TRIPS')"><span class="map-leg-dot daytrip"></span> Day Trips</button>
-        </div>
-        <div class="map-drive-group">
-          <span class="map-filter-label"><i class="ti ti-clock"></i> Within</span>
-          <button class="map-drive-btn active" data-drive="99" onclick="filterMapDrive(this,99)">Any</button>
-          <button class="map-drive-btn" data-drive="10" onclick="filterMapDrive(this,10)">10 min</button>
-          <button class="map-drive-btn" data-drive="15" onclick="filterMapDrive(this,15)">15 min</button>
-          <button class="map-drive-btn" data-drive="20" onclick="filterMapDrive(this,20)">20 min</button>
-          <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 min</button>
-        </div>
-      </div>
-      <div id="parksMap" style="height:500px;border-radius:8px;border:2px solid var(--canvas-mid);margin-top:0.75rem;"></div>
-      <p class="map-note"><i class="ti ti-info-circle"></i> Drive times approximate from Grayslake. Click any pin for details.</p>
-    </div>
-  </div><!-- /panel-map -->
-
-  <!-- PRINTABLE SHEET (hidden, shown on print) -->
-  <div id="printSheet"></div>
-
-  <!-- BASECAMP / COFFEE -->
-  <div class="basecamp-section">
-    <div class="basecamp-eyebrow">★ Trail Tip ★</div>
-    <h3>Find This Useful?</h3>
-    <p>This guide is hand-curated for Lake County families. If it saved you some searching, consider buying me a coffee.</p>
-    <div class="basecamp-btns">
-      <a href="https://venmo.com/juliana-wilhoit" target="_blank" class="camp-btn camp-venmo"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
-      <a href="https://paypal.me/mcmillanwilhoit" target="_blank" class="camp-btn camp-paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+    <div class="bucket-badge-grid" id="bucketTabGrid"></div>
+    <div class="trail-progress" style="margin-top:1.5rem">
+      <div class="trail-progress-label" id="bucketLabel">0 badges earned</div>
+      <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
     </div>
   </div>
+</div><!-- /panel-bucket -->
 
-</div><!-- /page -->
+<!-- ═══════════════════════════════════════
+     MAP PANEL
+═══════════════════════════════════════ -->
+<div class="tab-panel" id="panel-map">
+  <div class="fsf-sec-head">
+    <span class="fsf-sec-num">03</span>
+    <h2 class="fsf-sec-title">Parks Map</h2>
+  </div>
+  <div class="map-tab-wrap">
+    <div class="map-filter-row">
+      <div class="map-filter-group">
+        <span class="map-filter-label"><i class="ti ti-adjustments-horizontal"></i> Show</span>
+        <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
+        <button class="map-filter-btn" data-section="SPLASH PADS" onclick="filterMapPins(this,'SPLASH PADS')"><span class="map-leg-dot splash"></span> Splash Pads</button>
+        <button class="map-filter-btn" data-section="BEACHES & LAKES" onclick="filterMapPins(this,'BEACHES & LAKES')"><span class="map-leg-dot beach"></span> Beaches &amp; Lakes</button>
+        <button class="map-filter-btn" data-section="NATURE CENTERS" onclick="filterMapPins(this,'NATURE CENTERS')"><span class="map-leg-dot nature"></span> Nature Centers</button>
+        <button class="map-filter-btn" data-section="FARMS & PETTING ZOOS" onclick="filterMapPins(this,'FARMS & PETTING ZOOS')"><span class="map-leg-dot farm"></span> Farms</button>
+        <button class="map-filter-btn" data-section="FOREST PRESERVES & NATURE AREAS" onclick="filterMapPins(this,'FOREST PRESERVES & NATURE AREAS')"><span class="map-leg-dot forest"></span> Forest Preserves</button>
+        <button class="map-filter-btn" data-section="DAY TRIPS" onclick="filterMapPins(this,'DAY TRIPS')"><span class="map-leg-dot daytrip"></span> Day Trips</button>
+      </div>
+      <div class="map-drive-group">
+        <span class="map-filter-label"><i class="ti ti-clock"></i> Within</span>
+        <button class="map-drive-btn active" data-drive="99" onclick="filterMapDrive(this,99)">Any</button>
+        <button class="map-drive-btn" data-drive="10" onclick="filterMapDrive(this,10)">10 min</button>
+        <button class="map-drive-btn" data-drive="15" onclick="filterMapDrive(this,15)">15 min</button>
+        <button class="map-drive-btn" data-drive="20" onclick="filterMapDrive(this,20)">20 min</button>
+        <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 min</button>
+      </div>
+    </div>
+    <div class="map-frame-outer">
+      <div class="map-corner tl"></div>
+      <div class="map-corner tr"></div>
+      <div class="map-corner bl"></div>
+      <div class="map-corner br"></div>
+      <div id="parksMap" style="height:500px;border:2px solid var(--ink);"></div>
+    </div>
+    <p class="map-note"><i class="ti ti-info-circle"></i> Drive times approximate from Grayslake. Click any pin for details.</p>
+  </div>
+</div><!-- /panel-map -->
 
-<footer>
-  <p>Made for Lake County families &bull; Events sourced from library &amp; park district websites &bull; Always verify before you go &bull; Data updated May 2026</p>
-  <p style="margin-top:0.3rem;"><a href="https://lakecountyil.gov/2385/Beach-Monitoring-and-Advisories" target="_blank">Lake County Beach Advisories</a> &bull; <a href="about.html">About This Site</a></p>
+<!-- PRINTABLE SHEET (hidden, shown on print) -->
+<div id="printSheet"></div>
+
+<!-- ═══════════════════════════════════════
+     SUPPORT / COFFEE
+═══════════════════════════════════════ -->
+<div class="basecamp-section">
+  <div class="basecamp-eyebrow">★ Trail Tip ★</div>
+  <h3>Find This Useful?</h3>
+  <p>This guide is hand-curated for Lake County families. If it saved you some searching, consider buying me a coffee.</p>
+  <div class="basecamp-btns">
+    <a href="https://venmo.com/juliana-wilhoit" target="_blank" class="camp-btn camp-venmo"><i class="ti ti-brand-venmo"></i> Venmo @juliana-wilhoit</a>
+    <a href="https://paypal.me/mcmillanwilhoit" target="_blank" class="camp-btn camp-paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer class="fsf-footer">
+  <div class="footer-l">
+    <svg viewBox="0 0 100 100" width="36" height="36" aria-hidden="true" focusable="false">
+      <circle cx="50" cy="50" r="34" fill="#e8a92c" stroke="#1a1612" stroke-width="3"/>
+      <text x="50" y="58" text-anchor="middle" font-family="DM Serif Display, serif" font-size="26" fill="#1a1612" letter-spacing="-0.02em">FSF</text>
+    </svg>
+    <span class="footer-word"><em>Free</em> Summer Fun</span>
+  </div>
+  <span>★ Made for Lake County kids · Vol. I · No. 03 ★</span>
+  <span>Central Lake County, IL · Summer 2026 · <a href="about.html">About</a></span>
 </footer>
 
 <!-- MODAL -->
@@ -2039,5 +1974,6 @@ function filterMapDrive(btn, drive) {
 }
 </script>
 
+</body>
 </body>
 </html>
