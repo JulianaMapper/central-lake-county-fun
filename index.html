@@ -223,32 +223,39 @@ body::before {
 /* ── TAB NAV ── */
 .fsf-tab-nav {
   display: flex;
+  background: var(--paper-deep);
+  padding: 0 40px;
+  gap: 6px;
   border-bottom: 3px solid var(--ink);
-  background: var(--paper);
-  padding: 0 56px; gap: 0;
   position: sticky; top: 0; z-index: 100;
+  align-items: flex-end;
 }
 .fsf-tab {
-  display: flex; align-items: center; gap: 12px;
-  padding: 20px 28px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 28px 12px;
   font-family: "Special Elite", monospace;
-  font-size: 13px; letter-spacing: 0.14em;
+  font-size: 12px; letter-spacing: 0.14em;
   text-transform: uppercase;
-  border: none; background: none;
+  border: 2px solid transparent;
+  border-bottom: none;
+  background: var(--paper-deep);
   color: var(--ink-soft); cursor: pointer;
-  border-bottom: 3px solid transparent; margin-bottom: -3px;
-  transition: color 0.15s;
+  margin-bottom: -3px;
+  transition: background 0.12s, color 0.12s;
+  border-radius: 4px 4px 0 0;
 }
 .fsf-tab .tab-num {
   font-family: "DM Serif Display", serif;
-  font-size: 28px; color: var(--red); line-height: 1;
+  font-size: 24px; color: var(--red); line-height: 1;
 }
 .fsf-tab.active {
+  background: var(--paper);
+  border-color: var(--ink);
+  border-bottom-color: var(--paper);
   color: var(--ink);
-  border-bottom-color: var(--ink);
-  background: var(--paper-light);
+  box-shadow: 0 -2px 0 var(--sun);
 }
-.fsf-tab:hover { color: var(--ink); }
+.fsf-tab:hover:not(.active) { background: var(--paper-light); color: var(--ink); }
 
 /* ── FILTER PANEL ── */
 .filter-panel {
