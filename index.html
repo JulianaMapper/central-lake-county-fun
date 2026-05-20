@@ -2358,6 +2358,18 @@ function populateOrgs() {
   orgs.forEach(o=>{ const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt); });
 }
 document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); renderGridCal(); });
+
+const PRINT_FOOTER_CSS = `
+  .print-footer { margin-top: 18pt; border-top: 1px solid #ccc; padding-top: 8pt;
+    font-family: monospace; font-size: 8pt; color: #555; text-align: center; line-height: 1.6; }
+  .print-footer strong { color: #1a1612; }`;
+const PRINT_FOOTER_HTML = `
+  <div class="print-footer">
+    Found this useful? Please share it with other parents to help them have a 1990s summer.<br>
+    <strong>julianamapper.github.io/central-lake-county-fun</strong>
+    &nbsp;·&nbsp; Feel free to Venmo <strong>@juliana-wilhoit</strong> to buy her a coffee ☕
+  </div>`;
+
 function printCalendar() {
   // If events are selected, print just those as a list
   if (selectedIds.size > 0) {
@@ -2385,11 +2397,13 @@ function printCalendar() {
   .time { white-space: nowrap; color: #555; width: 70pt; }
   .free { color: #2a7a2a; font-size: 8pt; font-family: monospace; }
   .cost { color: #c1342a; font-size: 8pt; font-family: monospace; }
+  ${PRINT_FOOTER_CSS}
 </style></head><body>
 <h1>My Selected Events</h1>
 <p class="sub">Central Lake County, IL &nbsp;·&nbsp; ${evs.length} event${evs.length!==1?'s':''} &nbsp;·&nbsp; julianamapper.github.io/central-lake-county-fun</p>
 <table><thead><tr><th>Date</th><th>Event</th><th>Organizer</th><th>Time</th><th>Cost</th></tr></thead>
 <tbody>${rows}</tbody></table>
+${PRINT_FOOTER_HTML}
 <script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
 </body></html>`;
     const w = window.open('', '_blank', 'width=900,height=700');
@@ -2440,11 +2454,13 @@ function printCalendar() {
   .dn { font-size: 9pt; color: #888; width: 18pt; height: 18pt; display: flex; align-items: center; justify-content: center; margin-bottom: 2pt; font-family: monospace; }
   .ev { font-size: 6.5pt; padding: 1pt 2pt; margin-bottom: 1pt; border-radius: 1pt; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a1612; }
   .more { font-size: 6pt; color: #999; font-family: monospace; }
+  ${PRINT_FOOTER_CSS}
 </style></head><body>
 <h1>${monthName}</h1>
 <p class="sub">Central Lake County, IL &nbsp;·&nbsp; Free Summer Fun &nbsp;·&nbsp; julianamapper.github.io/central-lake-county-fun</p>
 <table><thead><tr>${days.map(d=>`<th>${d}</th>`).join('')}</tr></thead>
 <tbody><tr>${cells}</tr></tbody></table>
+${PRINT_FOOTER_HTML}
 <script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
 </body></html>`;
   const w = window.open('', '_blank', 'width=1100,height=750');
