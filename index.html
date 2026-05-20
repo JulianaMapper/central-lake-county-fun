@@ -242,7 +242,28 @@ body::before {
   text-transform: uppercase; white-space: nowrap; overflow: hidden;
   position: relative; z-index: 5;
 }
-.fsf-ticker span { display: inline-block; animation: fsf-scroll 35s linear infinite; }
+.fsf-ticker::before,
+.fsf-ticker::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  pointer-events: none;
+  z-index: 2;
+}
+.fsf-ticker::before {
+  left: 0;
+  background: linear-gradient(to right, var(--paper), transparent);
+}
+.fsf-ticker::after {
+  right: 0;
+  background: linear-gradient(to left, var(--paper), transparent);
+}
+.fsf-ticker span { display: inline-block; animation: fsf-scroll 60s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .fsf-ticker span { animation: none; transform: none; }
+  .fsf-ticker { text-align: center; white-space: normal; }
+}
 .sun-dot {
   display: inline-block; width: 12px; height: 12px;
   background: var(--sun); border-radius: 50%;
