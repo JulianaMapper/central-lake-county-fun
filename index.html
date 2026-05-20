@@ -37,6 +37,50 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* Bucket list — checked/earned state */
+.bb-item { position: relative; cursor: pointer; }
+.bb-item.checked {
+  background: linear-gradient(135deg, rgba(232,169,44,0.28), rgba(232,169,44,0.12));
+  border-color: var(--ink);
+}
+.bb-item.checked .bb-label {
+  text-decoration: line-through;
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+  color: var(--ink);
+}
+.bb-check-badge {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  display: none;
+  align-items: center; justify-content: center;
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.bb-item.checked .bb-check-badge { display: flex; }
+.bucket-reset {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: "Special Elite", monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 6px 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.bucket-reset:hover { color: var(--red); }
+
 /* Today's events — per-card highlight */
 .event-card.is-today {
   border-left: 4px solid var(--red);
@@ -1777,10 +1821,25 @@ function switchTab(tab) {
 }
 
 // ── BUCKET TAB ──
-let bucketPrintSel = new Set(JSON.parse(localStorage.getItem('bucket_print_sel')||'[]'));
+const BUCKET_STORAGE_KEY = 'clcf-bucket-v1';
+function loadBucketChecked() {
+  // Migrate from old key once
+  let arr = JSON.parse(localStorage.getItem(BUCKET_STORAGE_KEY) || 'null');
+  if (arr === null) {
+    const legacy = JSON.parse(localStorage.getItem('bucket_done') || '[]');
+    arr = legacy;
+    localStorage.setItem(BUCKET_STORAGE_KEY, JSON.stringify(arr));
+  }
+  return new Set(arr);
+}
+function saveBucketChecked(set) {
+  localStorage.setItem(BUCKET_STORAGE_KEY, JSON.stringify([...set]));
+  // Keep legacy key in sync so existing print code works
+  localStorage.setItem('bucket_done', JSON.stringify([...set]));
+}
+let bucketChecked = loadBucketChecked();
 
 function initBucketTab() {
-  const done = JSON.parse(localStorage.getItem('bucket_done')||'[]');
   const grid = document.getElementById('bucketTabGrid');
   if (!grid) return;
   const groups = {};
@@ -1793,55 +1852,83 @@ function initBucketTab() {
     <div class="bb-cat-grid">
       ${items.map(item => {
         const i = item._i;
-        const isDone = done.includes(i);
-        const isSel = bucketPrintSel.has(i);
+        const isChecked = bucketChecked.has(i);
         const sizeClass = item.size ? ` size-${item.size}` : '';
-        return `<div class="bb-item${isSel?' selected':''}${sizeClass}" onclick="toggleBucketSel(${i})" id="bb-${i}">
-          <div class="bb-icon${isDone?' earned':''}"><i class="ti ${item.icon}"></i></div>
+        return `<div class="bb-item${isChecked?' checked':''}${sizeClass}" onclick="toggleBucketSel(${i})" id="bb-${i}" role="button" tabindex="0" aria-pressed="${isChecked}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBucketSel(${i});}">
+          <div class="bb-icon${isChecked?' earned':''}"><i class="ti ${item.icon}"></i></div>
           <div class="bb-label">${item.text}</div>
+          <div class="bb-check-badge" aria-hidden="true">✓</div>
         </div>`;
       }).join('')}
     </div>
   `).join('');
+  // Add reset link once
+  const wrap = grid.parentElement;
+  if (wrap && !document.getElementById('bucketResetBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'bucketResetBtn';
+    btn.className = 'bucket-reset';
+    btn.textContent = 'Reset progress';
+    btn.onclick = resetBucketProgress;
+    wrap.appendChild(btn);
+  }
   updateBucketSelCount();
-  updateBucket(done.length);
+  updateBucket(bucketChecked.size);
 }
 
 function toggleBucketSel(i) {
-  if (bucketPrintSel.has(i)) bucketPrintSel.delete(i);
-  else bucketPrintSel.add(i);
-  localStorage.setItem('bucket_print_sel', JSON.stringify([...bucketPrintSel]));
+  if (bucketChecked.has(i)) bucketChecked.delete(i);
+  else bucketChecked.add(i);
+  saveBucketChecked(bucketChecked);
   const el = document.getElementById('bb-'+i);
-  if (el) el.classList.toggle('selected', bucketPrintSel.has(i));
+  if (el) {
+    const on = bucketChecked.has(i);
+    el.classList.toggle('checked', on);
+    el.setAttribute('aria-pressed', on);
+    const icon = el.querySelector('.bb-icon');
+    if (icon) icon.classList.toggle('earned', on);
+  }
   updateBucketSelCount();
+  updateBucket(bucketChecked.size);
 }
 
 function bucketSelectAll() {
-  const allSel = bucketPrintSel.size === BUCKET.length;
-  if (allSel) {
-    bucketPrintSel.clear();
-  } else {
-    BUCKET.forEach((_,i) => bucketPrintSel.add(i));
-  }
-  localStorage.setItem('bucket_print_sel', JSON.stringify([...bucketPrintSel]));
-  document.querySelectorAll('.bb-item').forEach((el,i) => el.classList.toggle('selected', bucketPrintSel.has(i)));
-  document.querySelector('.bucket-select-all').textContent = allSel ? 'Select All' : 'Deselect All';
+  const allSel = bucketChecked.size === BUCKET.length;
+  if (allSel) bucketChecked.clear();
+  else BUCKET.forEach((_,i) => bucketChecked.add(i));
+  saveBucketChecked(bucketChecked);
+  document.querySelectorAll('.bb-item').forEach((el,i) => {
+    const on = bucketChecked.has(i);
+    el.classList.toggle('checked', on);
+    el.setAttribute('aria-pressed', on);
+    const icon = el.querySelector('.bb-icon');
+    if (icon) icon.classList.toggle('earned', on);
+  });
+  const sa = document.querySelector('.bucket-select-all');
+  if (sa) sa.textContent = allSel ? 'Select All' : 'Deselect All';
   updateBucketSelCount();
+  updateBucket(bucketChecked.size);
+}
+
+function resetBucketProgress() {
+  if (!confirm('Reset all bucket-list progress? This clears every checked adventure.')) return;
+  bucketChecked.clear();
+  saveBucketChecked(bucketChecked);
+  initBucketTab();
 }
 
 function updateBucketSelCount() {
-  const n = bucketPrintSel.size;
+  const n = bucketChecked.size;
   const el = document.getElementById('bucketSelCount');
-  if (el) el.textContent = n === 0 ? 'None selected' : `${n} selected`;
+  if (el) el.textContent = n === 0 ? 'None checked' : `${n} checked`;
   const btn = document.getElementById('bucketPrintBtn');
   if (btn) btn.disabled = n === 0;
 }
 
 function printBucket() {
-  const done = JSON.parse(localStorage.getItem('bucket_done')||'[]');
-  const items = [...bucketPrintSel].sort((a,b)=>a-b).map(i => {
+  const items = [...bucketChecked].sort((a,b)=>a-b).map(i => {
     const item = BUCKET[i];
-    const earned = done.includes(i);
+    const earned = true;
     return `<div class="ps-badge">
       <div class="ps-circle${earned?' earned':''}"><i class="ti ${item.icon}"></i></div>
       <div class="ps-name">${item.text}</div>
@@ -1857,7 +1944,7 @@ function printBucket() {
     </div>
     <div class="ps-grid">${items}</div>
     <div class="ps-footer">
-      <span>___ of ${bucketPrintSel.size} adventures completed</span>
+      <span>___ of ${bucketChecked.size} adventures completed</span>
       &nbsp;·&nbsp;
       <span>Family Field Guide · Lake County, Illinois</span>
     </div>`;
