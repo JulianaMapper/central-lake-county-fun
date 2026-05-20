@@ -29,6 +29,27 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* Skip link — visible only when focused */
+.skip-link {
+  position: absolute;
+  left: -9999px; top: -9999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "Special Elite", monospace;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  text-decoration: none;
+  border: 2px solid var(--sun);
+  z-index: 9999;
+}
+.skip-link:focus {
+  left: 12px; top: 12px;
+  outline: 3px solid var(--sun);
+  outline-offset: 2px;
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
@@ -901,6 +922,7 @@ body::before {
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <!-- ═══════════════════════════════════════
      MASTHEAD
@@ -910,6 +932,7 @@ body::before {
 <!-- ═══════════════════════════════════════
      HERO
 ═══════════════════════════════════════ -->
+<main id="main">
 <section class="fsf-hero">
   <h1 class="hero-h1">
     Let's give our kids<br>
@@ -940,22 +963,22 @@ body::before {
 <div class="fsf-pillars">
   <div class="pillar">
     <div class="pillar-mk">$</div>
-    <h3>Free, mostly.</h3>
+    <h2>Free, mostly.</h2>
     <p>Every event is free or a few bucks. We mark the ones that cost money in red.</p>
   </div>
   <div class="pillar">
     <div class="pillar-mk">↻</div>
-    <h3>Close to home.</h3>
+    <h2>Close to home.</h2>
     <p>All within 45 minutes of Grayslake. Most within 20. Built for the way little kids actually travel.</p>
   </div>
   <div class="pillar">
     <div class="pillar-mk">☀</div>
-    <h3>Outside, ideally.</h3>
+    <h2>Outside, ideally.</h2>
     <p>Sun on faces, grass on knees. The library backup plan exists, but we lead with the prairie.</p>
   </div>
   <div class="pillar">
     <div class="pillar-mk">★</div>
-    <h3>For little kids.</h3>
+    <h2>For little kids.</h2>
     <p>Ages 0 to 8, with notes on what's stroller-friendly, what needs a kid who can read, and what's worth the nap-skip.</p>
   </div>
 </div>
@@ -993,11 +1016,11 @@ body::before {
   <div class="filter-grid">
     <div class="fg">
       <label><i class="ti ti-building-community"></i> Organization</label>
-      <select id="filterOrg" onchange="applyFilters()"><option value="">All Organizations</option></select>
+      <select id="filterOrg" aria-label="Filter by organization" onchange="applyFilters()"><option value="">All Organizations</option></select>
     </div>
     <div class="fg">
       <label><i class="ti ti-users"></i> Age Group</label>
-      <select id="filterAge" onchange="applyFilters()">
+      <select id="filterAge" aria-label="Filter by age group" onchange="applyFilters()">
         <option value="">All Ages</option>
         <option value="baby">Babies &amp; Toddlers</option>
         <option value="preschool">Preschool (3–5)</option>
@@ -1007,7 +1030,7 @@ body::before {
     </div>
     <div class="fg">
       <label><i class="ti ti-calendar"></i> Day of Week</label>
-      <select id="filterDay" onchange="applyFilters()">
+      <select id="filterDay" aria-label="Filter by day of week" onchange="applyFilters()">
         <option value="">Any Day</option>
         <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
         <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
@@ -1015,7 +1038,7 @@ body::before {
     </div>
     <div class="fg">
       <label><i class="ti ti-clipboard-check"></i> Registration</label>
-      <select id="filterReg" onchange="applyFilters()">
+      <select id="filterReg" aria-label="Filter by registration requirement" onchange="applyFilters()">
         <option value="">Any</option>
         <option value="no">No registration needed</option>
         <option value="yes">Registration required</option>
@@ -1023,7 +1046,7 @@ body::before {
     </div>
     <div class="fg">
       <label><i class="ti ti-category"></i> Event Type</label>
-      <select id="filterType" onchange="applyFilters()">
+      <select id="filterType" aria-label="Filter by event type" onchange="applyFilters()">
         <option value="">All Types</option>
         <option value="Storytime">Storytime</option>
         <option value="Craft/Art">Craft / Art</option>
@@ -1041,7 +1064,7 @@ body::before {
     </div>
     <div class="fg">
       <label><i class="ti ti-clock"></i> Time of Day</label>
-      <select id="filterTime" onchange="applyFilters()">
+      <select id="filterTime" aria-label="Filter by time of day" onchange="applyFilters()">
         <option value="">Any Time</option>
         <option value="Morning">Morning</option>
         <option value="Afternoon">Afternoon</option>
@@ -1050,7 +1073,7 @@ body::before {
     </div>
     <div class="fg">
       <label><i class="ti ti-car"></i> Drive Time</label>
-      <select id="filterDrive" onchange="applyFilters()">
+      <select id="filterDrive" aria-label="Filter by drive time from Grayslake" onchange="applyFilters()">
         <option value="">Any Distance</option>
         <option value="10">Within 10 min</option>
         <option value="15">Within 15 min</option>
@@ -1103,8 +1126,8 @@ body::before {
   <div class="cal-bar">
     <div style="display:flex;align-items:center;gap:0.75rem;">
       <div class="view-toggle">
-        <button class="view-btn active" id="btnListView" onclick="setView('list',this)" title="List view"><i class="ti ti-list"></i></button>
-        <button class="view-btn" id="btnCalView" onclick="setView('cal',this)" title="Month view"><i class="ti ti-calendar-month"></i></button>
+        <button class="view-btn active" id="btnListView" onclick="setView('list',this)" title="List view" aria-label="Switch to list view"><i class="ti ti-list"></i></button>
+        <button class="view-btn" id="btnCalView" onclick="setView('cal',this)" title="Month view" aria-label="Switch to month grid view"><i class="ti ti-calendar-month"></i></button>
       </div>
       <div class="cal-title" id="calTitle">All Events — Summer 2026</div>
     </div>
@@ -1186,6 +1209,8 @@ body::before {
   </div>
 </div><!-- /panel-map -->
 
+</main>
+
 <!-- PRINTABLE SHEET (hidden, shown on print) -->
 <div id="printSheet"></div>
 
@@ -1222,7 +1247,7 @@ body::before {
   <div class="modal" style="max-width:680px;">
     <div class="modal-top">
       <h3 id="termsTitle">About &amp; Terms of Use</h3>
-      <button class="modal-close" onclick="closeTerms()" aria-label="Close">&times;</button>
+      <button class="modal-close" onclick="closeTerms()" aria-label="Close About and Terms dialog">&times;</button>
     </div>
     <div class="modal-body" style="font-family:'Public Sans',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); padding:0 4px;">
       <p><strong>What this is.</strong> <em>Free Summer Fun</em> is a personal, volunteer-built guide to free and low-cost summer events and outdoor spots for families with young kids in central Lake County, Illinois. It is <strong>not a for-profit endeavor</strong>, has no affiliation with the libraries, park districts, forest preserves, or municipalities listed, and earns no money from the listings.</p>
@@ -1247,7 +1272,7 @@ body::before {
   <div class="modal">
     <div class="modal-top">
       <h3 id="mTitle"></h3>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close event details dialog">&times;</button>
     </div>
     <div class="modal-when" id="mWhen"></div>
     <div id="mBody"></div>
@@ -1491,7 +1516,7 @@ function renderCal() {
         const driveBadge = '';
         const ageBadge = e.age ? `<span class="ptag ptag-age"><i class="ti ti-users"></i> ${escHtml(trunc(e.age,26))}</span>` : '';
         html += `<div class="event-card${sel}" data-type="${ot}" onclick="openModal(${e.id})">
-          <input type="checkbox" class="ev-check" data-id="${e.id}" ${selectedIds.has(e.id)?'checked':''} onclick="toggleSel(event,${e.id})">
+          <input type="checkbox" class="ev-check" data-id="${e.id}" aria-label="Select event: ${escHtml(e.name)}" ${selectedIds.has(e.id)?'checked':''} onclick="toggleSel(event,${e.id})">
           <div class="ev-body">
             <div class="ev-name">${escHtml(e.name)}</div>
             <div class="ev-tags">
@@ -1855,9 +1880,9 @@ function renderGridCal() {
   const orgColorMap={}; let ci=0;
   function orgColor(org) { if(!orgColorMap[org])orgColorMap[org]=orgColors[ci++%orgColors.length]; return orgColorMap[org]; }
   let html=`<div class="month-nav">
-    <button class="month-nav-btn" onclick="shiftMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+    <button class="month-nav-btn" onclick="shiftMonth(-1)" aria-label="Previous month"><i class="ti ti-chevron-left"></i></button>
     <h3>${monthName}</h3>
-    <button class="month-nav-btn" onclick="shiftMonth(1)"><i class="ti ti-chevron-right"></i></button>
+    <button class="month-nav-btn" onclick="shiftMonth(1)" aria-label="Next month"><i class="ti ti-chevron-right"></i></button>
   </div><div class="month-grid">`;
   days.forEach(d=>{ html+=`<div class="grid-dow">${d}</div>`; });
   for(let i=0;i<startDow;i++) html+='<div class="grid-cell other-month"></div>';
