@@ -593,6 +593,7 @@ body::before {
 .event-card:hover { transform: translateY(-2px); box-shadow: 4px 5px 0 var(--ink); }
 .event-card.selected { background: #fff8f0; border-color: var(--red); box-shadow: 3px 3px 0 var(--red); }
 .ev-check { width: 17px; height: 17px; min-width: 17px; accent-color: var(--red); cursor: pointer; margin-top: 3px; }
+.drive-info-tip { font-size: 11px; cursor: help; opacity: 0.6; vertical-align: middle; margin-left: 2px; }
 .ev-body { flex: 1; min-width: 0; }
 .ev-name {
   font-family: "DM Serif Display", serif;
@@ -1022,9 +1023,38 @@ body::before {
 @media print {
   .fsf-tab-nav, .filter-panel, .action-toolbar,
   .basecamp-section, .fsf-footer, .ev-check, .modal-overlay,
-  .fsf-masthead, .tagband, .fsf-hero, .fsf-ticker, .fsf-pillars, .sunburst-divider { display: none !important; }
-  .event-card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 4pt; box-shadow: none; }
+  .fsf-masthead, .tagband, .fsf-hero, .fsf-ticker, .fsf-pillars,
+  .sunburst-divider, .share-bar, #filterChipsRow { display: none !important; }
+
+  /* Show only the events tab panel when printing */
+  #panel-bucket, #panel-map { display: none !important; }
+  #panel-events { display: block !important; }
+
+  /* Hide unselected event cards — only print .selected ones (JS adds .has-selection to body when any are selected) */
+  body.has-selection .event-card:not(.selected) { display: none !important; }
+  .event-card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 6pt; box-shadow: none; }
+
+  /* Hide week-markers that only have hidden cards under them */
   .week-marker { background: #eee !important; color: black !important; }
+
+  /* Print header */
+  .print-events-header { display: block !important; }
+}
+.print-events-header {
+  display: none;
+  font-family: "DM Serif Display", serif;
+  font-size: 22px;
+  margin: 0 0 12pt;
+  border-bottom: 2px solid #1a1612;
+  padding-bottom: 6pt;
+}
+.print-events-header span {
+  font-family: "Public Sans", sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  display: block;
+  margin-top: 4px;
+  color: #555;
 }
 
 /* ── KEYFRAMES ── */
@@ -1100,12 +1130,6 @@ body::before {
     Bike rides 'til the streetlights. Splash pads on Tuesdays. <em>Library storytime on Mondays.</em>
     Firefly walks on Fridays. A field guide to the free, close-to-home, outside summer your kids deserve.
   </p>
-  <div class="hero-stats">
-    <div><div class="stat-n" id="heroCount">1,793</div><div class="stat-l">Free events this summer</div></div>
-    <div><div class="stat-n red">105</div><div class="stat-l">Parks &amp; nature spots</div></div>
-    <div><div class="stat-n blue">58</div><div class="stat-l">Bucket-list adventures</div></div>
-    <div><div class="stat-n">45<span style="font-size:0.5em"> min</span></div><div class="stat-l">Max drive from Grayslake</div></div>
-  </div>
 </section>
 
 <!-- ═══════════════════════════════════════
@@ -1147,8 +1171,8 @@ body::before {
      INTRO NOTE
 ═══════════════════════════════════════ -->
 <div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;">
-  <p style="margin:0;"><strong>Built for ages 0–8 in central Lake County.</strong> This guide pulls together events from libraries, park districts, and forest preserves that would otherwise take hours to find — filtered, sorted, and ready to plan from. Three tools inside: a searchable event calendar, a summer bucket list you can work through with your kids, and a map of 95 outdoor destinations with notes on what makes each one worth the drive.</p>
-  <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Always confirm times &amp; registration directly with the organizer — details can change.</p>
+  <p style="margin:0;">This guide pulls together events from libraries, park districts, and forest preserves across central Lake County — filtered, sorted, and ready to plan from. Three tools inside: a searchable event calendar, a summer bucket list you can work through with your kids, and a map of 95 outdoor destinations.</p>
+  <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Events were gathered using web scraping and automated tools — details may not be complete or fully accurate. Always confirm times, registration, and cost directly with the organizer before you go. If this has been useful to you, we'd love if you <a href="https://buymeacoffee.com/julianamapper" target="_blank" rel="noopener" style="color:var(--red);">bought us a coffee ☕</a> or shared it with another parent.</p>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -1230,7 +1254,7 @@ body::before {
       </select>
     </div>
     <div class="fg">
-      <label><i class="ti ti-car"></i> Drive Time</label>
+      <label><i class="ti ti-car"></i> Drive Time <span class="drive-info-tip" title="Drive times are estimated from the intersection of Route 45 &amp; Route 120 in Grayslake, IL" aria-label="Drive times estimated from Rt 45 &amp; 120, Grayslake">ⓘ</span></label>
       <select id="filterDrive" aria-label="Filter by drive time from Grayslake" onchange="applyFilters()">
         <option value="">Any Distance</option>
         <option value="10">Within 10 min</option>
@@ -1267,6 +1291,10 @@ body::before {
      EVENTS PANEL
 ═══════════════════════════════════════ -->
 <div class="tab-panel active" id="panel-events">
+<div class="print-events-header" id="printEventsHeader">
+  My Selected Events — Central Lake County, IL Summer 2026
+  <span>Printed from Free Summer Fun · julianamapper.github.io/central-lake-county-fun</span>
+</div>
 
   <div class="fsf-sec-head">
     <span class="fsf-sec-num">01</span>
@@ -1782,6 +1810,7 @@ function updateToolbar() {
   const gcal = document.getElementById('btnGCal');
   gcal.disabled = n===0;
   gcal.title = n>1 ? 'Google Calendar only supports 1 event — use .ICS for multiple' : '';
+  document.body.classList.toggle('has-selection', n > 0);
 }
 function selectAllVisible() { filteredEvents.forEach(e=>selectedIds.add(e.id)); renderCal(); updateToolbar(); }
 
@@ -2226,6 +2255,11 @@ function populateOrgs() {
   orgs.forEach(o=>{ const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt); });
 }
 document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); });
+window.addEventListener('beforeprint', () => {
+  const n = selectedIds.size;
+  const hdr = document.getElementById('printEventsHeader');
+  if (hdr) hdr.querySelector('span').textContent = `${n} event${n===1?'':'s'} selected · Printed from Free Summer Fun · julianamapper.github.io/central-lake-county-fun`;
+});
 
 // -- PARKS MAP --
 let _mapInited = false;
