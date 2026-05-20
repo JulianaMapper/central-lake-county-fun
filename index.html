@@ -37,6 +37,52 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* Active filter chips */
+.filter-chips-row {
+  display: flex; flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 56px 0;
+  align-items: center;
+}
+.filter-chips-row:empty { display: none; padding: 0; }
+.filter-chip {
+  display: inline-flex; align-items: center;
+  gap: 6px;
+  font-family: "Special Elite", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 5px 10px;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.filter-chip:hover, .filter-chip:focus {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  outline: none;
+}
+.filter-chip .x {
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+}
+.filter-chips-label {
+  font-family: "Special Elite", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-right: 4px;
+}
+@media (max-width: 720px) {
+  .filter-chips-row { padding: 12px 24px 0; }
+}
+
 /* Bucket list — checked/earned state */
 .bb-item { position: relative; cursor: pointer; }
 .bb-item.checked {
@@ -1194,6 +1240,9 @@ body::before {
   </div>
 </div>
 
+<!-- Active filter chips -->
+<div class="filter-chips-row" id="filterChipsRow" aria-live="polite"></div>
+
 <!-- ═══════════════════════════════════════
      EVENTS PANEL
 ═══════════════════════════════════════ -->
@@ -1540,6 +1589,47 @@ function applyFilters() {
   document.getElementById('calTitle').textContent = titles[activeQuick]||'Next 4 Weeks';
   renderCal();
   updateToolbar();
+  renderFilterChips();
+}
+
+function clearFilterById(id, isCheckbox, defaultChecked) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (isCheckbox) el.checked = !!defaultChecked;
+  else el.value = '';
+  applyFilters();
+}
+
+function renderFilterChips() {
+  const row = document.getElementById('filterChipsRow');
+  if (!row) return;
+  const chips = [];
+  const selText = (id) => {
+    const el = document.getElementById(id);
+    if (!el || !el.value) return '';
+    const opt = el.options[el.selectedIndex];
+    return opt ? opt.text : el.value;
+  };
+  const add = (label, onClear) => chips.push({ label, onClear });
+  if (document.getElementById('filterLakeCounty') && !document.getElementById('filterLakeCounty').checked) {
+    add('Lake County: off', () => clearFilterById('filterLakeCounty', true, true));
+  }
+  if (document.getElementById('filterFree')?.checked) {
+    add('Free only', () => clearFilterById('filterFree', true, false));
+  }
+  const orgT = selText('filterOrg'); if (orgT) add('Org: '+orgT, () => clearFilterById('filterOrg'));
+  const ageT = selText('filterAge'); if (ageT) add('Age: '+ageT, () => clearFilterById('filterAge'));
+  const dayT = selText('filterDay'); if (dayT) add('Day: '+dayT, () => clearFilterById('filterDay'));
+  const regT = selText('filterReg'); if (regT) add('Reg: '+regT, () => clearFilterById('filterReg'));
+  const typeT = selText('filterType'); if (typeT) add('Type: '+typeT, () => clearFilterById('filterType'));
+  const timeT = selText('filterTime'); if (timeT) add('Time: '+timeT, () => clearFilterById('filterTime'));
+  const driveT = selText('filterDrive'); if (driveT) add('Drive: '+driveT, () => clearFilterById('filterDrive'));
+  if (!chips.length) { row.innerHTML = ''; return; }
+  row.innerHTML = '<span class="filter-chips-label">Active filters:</span>' +
+    chips.map((c,i)=>`<button type="button" class="filter-chip" data-i="${i}" aria-label="Remove filter: ${c.label.replace(/"/g,'&quot;')}">${c.label}<span class="x" aria-hidden="true">×</span></button>`).join('');
+  row.querySelectorAll('.filter-chip').forEach((btn,i)=>{
+    btn.addEventListener('click', chips[i].onClear);
+  });
 }
 
 function quickFilter(type, btn) {
