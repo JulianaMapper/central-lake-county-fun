@@ -1214,8 +1214,33 @@ body::before {
     <span class="footer-word"><em>Free</em> Summer Fun</span>
   </div>
   <span>★ Made for Lake County kids · Vol. I · No. 03 ★</span>
-  <span>Central Lake County, IL · Summer 2026 · <a href="about.html">About</a></span>
+  <span>Central Lake County, IL · Summer 2026 · <a href="#" onclick="openTerms(event)">About &amp; Terms</a></span>
 </footer>
+
+<!-- TERMS MODAL -->
+<div class="modal-overlay" id="termsOverlay" onclick="if(event.target===this) closeTerms()" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-top">
+      <h3 id="termsTitle">About &amp; Terms of Use</h3>
+      <button class="modal-close" onclick="closeTerms()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" style="font-family:'Public Sans',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); padding:0 4px;">
+      <p><strong>What this is.</strong> <em>Free Summer Fun</em> is a personal, volunteer-built guide to free and low-cost summer events and outdoor spots for families with young kids in central Lake County, Illinois. It is <strong>not a for-profit endeavor</strong>, has no affiliation with the libraries, park districts, forest preserves, or municipalities listed, and earns no money from the listings.</p>
+
+      <p><strong>Use at your own risk.</strong> Events, times, locations, prices, registration requirements, and program availability change frequently. Listings are aggregated from public calendars and may contain errors, omissions, or out-of-date information. <strong>Always confirm details directly with the organizer</strong> before traveling to or relying on any event. We make no warranty, express or implied, about accuracy, completeness, fitness for a particular purpose, or safety of any activity, location, or organization listed. You are solely responsible for your own and your children's safety, supervision, and decisions to participate.</p>
+
+      <p><strong>No endorsement.</strong> Inclusion of an organization, event, or park does not constitute endorsement. Logos, names, and trademarks remain the property of their respective owners.</p>
+
+      <p><strong>Accessibility.</strong> Reasonable efforts have been made to design and build this site to meet WCAG 2.1 Level AAA conformance and the spirit of the Americans with Disabilities Act, including 7:1 text contrast, keyboard navigation, semantic landmarks, and respect for reduced-motion preferences. Accessibility is an ongoing effort &mdash; if you encounter a barrier, please email so it can be fixed.</p>
+
+      <p><strong>Privacy.</strong> This site sets no tracking cookies, runs no analytics, and collects no personal information. The "bucket list" check-offs are stored only in your own browser's local storage.</p>
+
+      <p><strong>Contact &amp; corrections.</strong> Spotted something wrong or missing? Reach out via the email link associated with this site so the listing can be updated.</p>
+
+      <p style="font-family:'Special Elite',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-soft); margin-top:24px; padding-top:16px; border-top:1px solid var(--ink);">Last updated Summer 2026 &middot; Provided as-is, with love, for the neighborhood.</p>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -1662,6 +1687,8 @@ function openModal(id) {
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 function handleOverlayClick(e) { if(e.target===document.getElementById('modalOverlay'))closeModal(); }
+function openTerms(e) { if(e) e.preventDefault(); document.getElementById('termsOverlay').classList.add('open'); }
+function closeTerms() { document.getElementById('termsOverlay').classList.remove('open'); }
 function modalToggle(id) {
   selectedIds.has(id)?selectedIds.delete(id):selectedIds.add(id);
   updateToolbar();
