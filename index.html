@@ -642,7 +642,7 @@ body::before {
 .event-card:hover { transform: translateY(-2px); box-shadow: 4px 5px 0 var(--ink); }
 .event-card.selected { background: #fff8f0; border-color: var(--red); box-shadow: 3px 3px 0 var(--red); }
 .ev-check { width: 17px; height: 17px; min-width: 17px; accent-color: var(--red); cursor: pointer; margin-top: 3px; }
-.drive-info-tip { font-size: 11px; cursor: help; opacity: 0.6; vertical-align: middle; margin-left: 2px; }
+.drive-info-tip { font-size: 13px; cursor: help; opacity: 0.55; vertical-align: middle; margin-left: 3px; }
 .ev-body { flex: 1; min-width: 0; }
 .ev-name {
   font-family: "DM Serif Display", serif;
@@ -1355,7 +1355,7 @@ body::before {
       </select>
     </div>
     <div class="fg">
-      <label><i class="ti ti-car"></i> Drive Time <span class="drive-info-tip" title="Drive times are estimated from the intersection of Route 45 &amp; Route 120 in Grayslake, IL" aria-label="Drive times estimated from Rt 45 &amp; 120, Grayslake">ⓘ</span></label>
+      <label><i class="ti ti-car"></i> Drive Time <i class="ti ti-info-circle drive-info-tip" title="Drive times are estimated from the intersection of Rt 45 &amp; Rt 120 in Grayslake, IL"></i></label>
       <select id="filterDrive" aria-label="Filter by drive time from Grayslake" onchange="applyFilters()">
         <option value="">Any Distance</option>
         <option value="10">Within 10 min</option>
@@ -1378,12 +1378,12 @@ body::before {
         <span>Lake County only</span>
       </label>
     </div>
-    <div class="fg" style="justify-content:flex-end;">
-      <label>&nbsp;</label>
-      <label class="toggle-label">
-        <input type="checkbox" id="filterSpecialNeeds" onchange="applyFilters()">
-        <span>♿ Sensory / Special Needs</span>
-      </label>
+    <div class="fg">
+      <label><i class="ti ti-accessible"></i> Accessibility</label>
+      <select id="filterSpecialNeeds" aria-label="Filter by sensory or special needs" onchange="applyFilters()">
+        <option value="">All Events</option>
+        <option value="yes">Sensory / Special Needs only</option>
+      </select>
     </div>
     <div class="fg" style="justify-content:flex-end;">
       <label>&nbsp;</label>
@@ -1747,7 +1747,7 @@ function applyFilters() {
   const timeOfDay = document.getElementById('filterTime')?.value || '';
   const maxDrive = parseInt(document.getElementById('filterDrive')?.value || '0');
   const lakeCountyOnly = document.getElementById('filterLakeCounty')?.checked;
-  const specialNeedsOnly = document.getElementById('filterSpecialNeeds')?.checked;
+  const specialNeedsOnly = document.getElementById('filterSpecialNeeds')?.value === 'yes';
   const t = todayDate();
   filteredEvents = EVENTS.filter(e => {
     const d = parseDate(e.date);
@@ -1801,8 +1801,8 @@ function renderFilterChips() {
   }
   if (document.getElementById('filterFree')?.checked) {
     add('Free only', () => clearFilterById('filterFree', true, false));
-  if (document.getElementById('filterSpecialNeeds')?.checked)
-    add('Sensory / Special Needs', () => clearFilterById('filterSpecialNeeds', true, false));
+  if (document.getElementById('filterSpecialNeeds')?.value === 'yes')
+    add('Sensory / Special Needs', () => { document.getElementById('filterSpecialNeeds').value = ''; applyFilters(); });
   }
   const orgT = selText('filterOrg'); if (orgT) add('Org: '+orgT, () => clearFilterById('filterOrg'));
   const ageT = selText('filterAge'); if (ageT) add('Age: '+ageT, () => clearFilterById('filterAge'));
