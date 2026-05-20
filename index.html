@@ -1732,6 +1732,7 @@ function openModal(id) {
     e.reg&&e.reg!=='No'&&`<div class="modal-row"><i class="ti ti-clipboard-check"></i><span>Registration: ${escHtml(e.reg)}</span></div>`,
 
     e.notes&&`<div class="modal-row"><i class="ti ti-notes"></i><span>${escHtml(e.notes)}</span></div>`,
+    `<div class="modal-disclaimer" style="font-family:'Special Elite',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink);margin-top:14px;padding-top:10px;border-top:1px dashed var(--ink-soft);">★ Always confirm date, time, registration, and price directly with the organizer before traveling.</div>`,
   ].filter(Boolean).join('');
   const sel=selectedIds.has(id);
   document.getElementById('mActions').innerHTML=`
