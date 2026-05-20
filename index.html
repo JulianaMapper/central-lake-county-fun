@@ -184,6 +184,22 @@ body::before {
   mix-blend-mode: multiply;
 }
 
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 40px;
+  background: var(--ink); color: var(--paper);
+  font-family: "Special Elite", monospace;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.topbar-brand { opacity: 0.6; }
+.topbar-coffee {
+  color: var(--sun); text-decoration: none;
+  border: 1px solid var(--sun); padding: 3px 10px;
+  transition: background 0.15s, color 0.15s;
+}
+.topbar-coffee:hover { background: var(--sun); color: var(--ink); }
+
 /* ── MASTHEAD ── */
 .fsf-masthead {
   border-bottom: 2px solid var(--ink);
@@ -1034,6 +1050,7 @@ body::before {
   body:not(.printing-badge) .fsf-footer,
   body:not(.printing-badge) .ev-check,
   body:not(.printing-badge) .modal-overlay,
+  body:not(.printing-badge) .topbar,
   body:not(.printing-badge) .fsf-masthead,
   body:not(.printing-badge) .tagband,
   body:not(.printing-badge) .fsf-hero,
@@ -1103,6 +1120,7 @@ body::before {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
+  .topbar { padding: 7px 20px; }
   .fsf-masthead { padding: 14px 24px; gap: 16px; }
   .mast-word { font-size: 26px; }
   .tagband { padding: 8px 24px; font-size: 10px; flex-wrap: wrap; gap: 6px; }
@@ -1151,9 +1169,12 @@ body::before {
 <a href="#main" class="skip-link">Skip to main content</a>
 
 <!-- ═══════════════════════════════════════
-     MASTHEAD
+     TOPBAR
 ═══════════════════════════════════════ -->
-
+<div class="topbar">
+  <span class="topbar-brand">Free Summer Fun &mdash; Central Lake County, IL</span>
+  <a class="topbar-coffee" href="https://buymeacoffee.com/julianamapper" target="_blank" rel="noopener">☕ Buy us a coffee</a>
+</div>
 
 <!-- ═══════════════════════════════════════
      HERO
