@@ -2317,7 +2317,45 @@ function populateOrgs() {
 }
 document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); renderGridCal(); });
 function printCalendar() {
-  // Build grid HTML for current month
+  // If events are selected, print just those as a list
+  if (selectedIds.size > 0) {
+    const evs = EVENTS.filter(e => selectedIds.has(e.id)).sort((a,b) => a.date.localeCompare(b.date));
+    const rows = evs.map(e => {
+      const d = parseDate(e.date).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+      const cost = e.cost && e.cost !== 'Free' ? `<span class="cost">${escHtml(e.cost)}</span>` : '<span class="free">Free</span>';
+      return `<tr><td class="date">${d}</td><td class="name">${escHtml(e.name)}</td><td class="org">${escHtml(e.org||'')}</td><td class="time">${escHtml(e.time||'')}</td><td>${cost}</td></tr>`;
+    }).join('');
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>My Selected Events — Central Lake County Fun</title>
+<style>
+  @page { margin: 0.5in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; font-size: 10pt; color: #1a1612; }
+  h1 { font-size: 16pt; margin-bottom: 4pt; }
+  .sub { font-size: 8pt; color: #666; margin-bottom: 14pt; font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #1a1612; color: #f0e6d0; font-size: 8pt; padding: 5pt 6pt; text-align: left; font-family: monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+  td { border-bottom: 1px solid #e0d8cc; padding: 5pt 6pt; vertical-align: top; font-size: 9pt; }
+  tr:nth-child(even) td { background: #faf7f2; }
+  .date { white-space: nowrap; color: #555; width: 80pt; }
+  .name { font-weight: bold; }
+  .org { color: #666; width: 120pt; }
+  .time { white-space: nowrap; color: #555; width: 70pt; }
+  .free { color: #2a7a2a; font-size: 8pt; font-family: monospace; }
+  .cost { color: #c1342a; font-size: 8pt; font-family: monospace; }
+</style></head><body>
+<h1>My Selected Events</h1>
+<p class="sub">Central Lake County, IL &nbsp;·&nbsp; ${evs.length} event${evs.length!==1?'s':''} &nbsp;·&nbsp; julianamapper.github.io/central-lake-county-fun</p>
+<table><thead><tr><th>Date</th><th>Event</th><th>Organizer</th><th>Time</th><th>Cost</th></tr></thead>
+<tbody>${rows}</tbody></table>
+<script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
+</body></html>`;
+    const w = window.open('', '_blank', 'width=900,height=700');
+    w.document.write(html); w.document.close();
+    return;
+  }
+
+  // No selection — print the calendar grid for the current month
   if (!calGridMonth) { const t = todayDate(); calGridMonth = { year: t.getFullYear(), month: t.getMonth() }; }
   const { year, month } = calGridMonth;
   const eventsThisMonth = EVENTS.filter(e => { const d = parseDate(e.date); return d.getFullYear()===year && d.getMonth()===month; });
@@ -2344,7 +2382,6 @@ function printCalendar() {
   }
   const rem = (startDow + lastDay.getDate()) % 7;
   if (rem > 0) for (let i = rem; i < 7; i++) cells += '<td class="empty"></td>';
-
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
 <title>${monthName} — Central Lake County Fun</title>
 <style>
@@ -2368,10 +2405,8 @@ function printCalendar() {
 <tbody><tr>${cells}</tr></tbody></table>
 <script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
 </body></html>`;
-
   const w = window.open('', '_blank', 'width=1100,height=750');
-  w.document.write(html);
-  w.document.close();
+  w.document.write(html); w.document.close();
 }
 
 window.addEventListener('beforeprint', () => {
