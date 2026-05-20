@@ -1171,13 +1171,6 @@ body::before {
 </section>
 
 <!-- ═══════════════════════════════════════
-     TICKER
-═══════════════════════════════════════ -->
-<div class="fsf-ticker" aria-hidden="true">
-  <span>🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits <span class="sun-dot"></span> 🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits</span>
-</div>
-
-<!-- ═══════════════════════════════════════
      BRAND PILLARS
 ═══════════════════════════════════════ -->
 <div class="fsf-pillars">
@@ -1201,6 +1194,13 @@ body::before {
     <h2>For little kids.</h2>
     <p>Ages 0 to 8, with notes on what's stroller-friendly, what needs a kid who can read, and what's worth the nap-skip.</p>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TICKER
+═══════════════════════════════════════ -->
+<div class="fsf-ticker" aria-hidden="true">
+  <span>🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits <span class="sun-dot"></span> 🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits</span>
 </div>
 
 <div class="sunburst-divider" aria-hidden="true"></div>
@@ -1345,7 +1345,7 @@ body::before {
     <button class="trail-btn ics" id="btnICS" onclick="downloadICS()" disabled><i class="ti ti-calendar-plus"></i> .ICS</button>
     <button class="trail-btn gcal" id="btnGCal" onclick="addToGCal()" disabled><i class="ti ti-brand-google"></i> Google Cal</button>
     <button class="trail-btn outlook" id="btnOutlook" onclick="addToOutlook()" disabled><i class="ti ti-brand-windows"></i> Outlook</button>
-    <button class="trail-btn print-btn" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+    <button class="trail-btn print-btn" onclick="printCalendar()"><i class="ti ti-printer"></i> Print</button>
     <button class="trail-btn ghost" onclick="selectAllVisible()"><i class="ti ti-select"></i> Select All</button>
   </div>
 
@@ -2295,6 +2295,64 @@ function populateOrgs() {
   orgs.forEach(o=>{ const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt); });
 }
 document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); renderGridCal(); });
+function printCalendar() {
+  // Build grid HTML for current month
+  if (!calGridMonth) { const t = todayDate(); calGridMonth = { year: t.getFullYear(), month: t.getMonth() }; }
+  const { year, month } = calGridMonth;
+  const eventsThisMonth = EVENTS.filter(e => { const d = parseDate(e.date); return d.getFullYear()===year && d.getMonth()===month; });
+  const byDate = {};
+  eventsThisMonth.forEach(e => { (byDate[e.date] = byDate[e.date] || []).push(e); });
+  const firstDay = new Date(year, month, 1), lastDay = new Date(year, month+1, 0);
+  const startDow = firstDay.getDay();
+  const monthName = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const colors = ['#E8F0EB','#F0EBE5','#FBF6E9','#EBF0EC','#F5EBF0'];
+  const colorMap = {}; let ci = 0;
+  function col(org) { if (!colorMap[org]) colorMap[org] = colors[ci++ % colors.length]; return colorMap[org]; }
+  let cells = '';
+  for (let i = 0; i < startDow; i++) cells += '<td class="empty"></td>';
+  for (let day = 1; day <= lastDay.getDate(); day++) {
+    const dateStr = isoStr(new Date(year, month, day));
+    const evs = byDate[dateStr] || [];
+    const isT = isToday(dateStr);
+    cells += `<td${isT?' class="today"':''}><div class="dn">${day}</div>`;
+    evs.slice(0, 4).forEach(e => { cells += `<div class="ev" style="background:${col(e.org)}">${escHtml(e.name)}</div>`; });
+    if (evs.length > 4) cells += `<div class="more">+${evs.length - 4} more</div>`;
+    cells += '</td>';
+    if ((startDow + day) % 7 === 0 && day < lastDay.getDate()) cells += '</tr><tr>';
+  }
+  const rem = (startDow + lastDay.getDate()) % 7;
+  if (rem > 0) for (let i = rem; i < 7; i++) cells += '<td class="empty"></td>';
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>${monthName} — Central Lake County Fun</title>
+<style>
+  @page { size: landscape; margin: 0.4in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: white; }
+  h1 { font-size: 20pt; text-align: center; margin-bottom: 6pt; }
+  .sub { text-align: center; font-size: 9pt; color: #666; margin-bottom: 10pt; font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  th { background: #1a1612; color: #f0e6d0; font-size: 8pt; padding: 4pt; text-align: center; font-family: monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+  td { border: 1px solid #ccc; vertical-align: top; padding: 3pt; height: 90pt; width: 14.28%; }
+  td.empty { background: #f8f5f0; }
+  td.today .dn { background: #c1342a; color: white; border-radius: 50%; }
+  .dn { font-size: 9pt; color: #888; width: 18pt; height: 18pt; display: flex; align-items: center; justify-content: center; margin-bottom: 2pt; font-family: monospace; }
+  .ev { font-size: 6.5pt; padding: 1pt 2pt; margin-bottom: 1pt; border-radius: 1pt; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a1612; }
+  .more { font-size: 6pt; color: #999; font-family: monospace; }
+</style></head><body>
+<h1>${monthName}</h1>
+<p class="sub">Central Lake County, IL &nbsp;·&nbsp; Free Summer Fun &nbsp;·&nbsp; julianamapper.github.io/central-lake-county-fun</p>
+<table><thead><tr>${days.map(d=>`<th>${d}</th>`).join('')}</tr></thead>
+<tbody><tr>${cells}</tr></tbody></table>
+<script>window.onload=()=>{window.print();window.onafterprint=()=>window.close();}<\/script>
+</body></html>`;
+
+  const w = window.open('', '_blank', 'width=1100,height=750');
+  w.document.write(html);
+  w.document.close();
+}
+
 window.addEventListener('beforeprint', () => {
   const n = selectedIds.size;
   const hdr = document.getElementById('printEventsHeader');
