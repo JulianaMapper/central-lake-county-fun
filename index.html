@@ -1775,13 +1775,7 @@ function printBucket() {
   sheet.style.display = 'none';
 }
 
-function initBucket() {
-  const done=JSON.parse(localStorage.getItem('bucket_done')||'[]');
-  document.getElementById('bucketGrid').innerHTML=BUCKET.map((item,i)=>
-    `<div class="merit-badge${done.includes(i)?' done':''}" onclick="toggleBucket(${i})" id="bi-${i}" title="${item.text}"><i class="ti ${item.icon}"></i><span class="badge-text">${item.text}</span></div>`
-  ).join('');
-  updateBucket(done.length);
-}
+function initBucket() { /* handled by initBucketTab() on tab switch */ }
 function toggleBucket(i) {
   const done=JSON.parse(localStorage.getItem('bucket_done')||'[]');
   const idx=done.indexOf(i); idx>-1?done.splice(idx,1):done.push(i);
