@@ -1185,6 +1185,13 @@ footer a { color: var(--rust); text-decoration: none; font-weight: 700; }
       </div>
       <div class="fg" style="justify-content:flex-end;">
         <label>&nbsp;</label>
+        <label class="toggle-label">
+          <input type="checkbox" id="filterLakeCounty" onchange="applyFilters()" checked>
+          <span>Lake County only</span>
+        </label>
+      </div>
+      <div class="fg" style="justify-content:flex-end;">
+        <label>&nbsp;</label>
         <button class="btn-ghost" onclick="resetFilters()"><i class="ti ti-refresh"></i> Reset</button>
       </div>
     </div>
@@ -1448,12 +1455,14 @@ function applyFilters() {
   const evType = document.getElementById('filterType')?.value || '';
   const timeOfDay = document.getElementById('filterTime')?.value || '';
   const maxDrive = parseInt(document.getElementById('filterDrive')?.value || '0');
+  const lakeCountyOnly = document.getElementById('filterLakeCounty')?.checked;
   const t = todayDate();
   filteredEvents = EVENTS.filter(e => {
     const d = parseDate(e.date);
     if (d < t) return false;
     if (org && e.org !== org) return false;
     if (maxDrive && (ORG_DRIVE[e.org] || 99) > maxDrive) return false;
+    if (lakeCountyOnly && OUTSIDE_LAKE_COUNTY.has(e.org)) return false;
     if (age && classAge(e.age) !== age) return false;
     if (day && e.day !== day) return false;
     if (freeOnly && !/free/i.test(e.cost)) return false;
@@ -1489,6 +1498,7 @@ function resetFilters() {
   const ft=document.getElementById('filterType'); if(ft)ft.value='';
   const ftd=document.getElementById('filterTime'); if(ftd)ftd.value='';
   const fdr=document.getElementById('filterDrive'); if(fdr)fdr.value='';
+  const flc=document.getElementById('filterLakeCounty'); if(flc)flc.checked=true;
   activeQuick = 'all';
   document.querySelectorAll('.trail-chip').forEach(b => b.classList.remove('active'));
   document.querySelector('.trail-chip.all').classList.add('active');
@@ -1660,6 +1670,11 @@ const ORG_DRIVE = {
   'Wildwood Park District': 8,
   'Zion-Benton Public Library District': 25
 };
+const OUTSIDE_LAKE_COUNTY = new Set([
+  'Glen Ellyn Public Library',
+  'Wheaton Public Library',
+  'Barrington Area Library'
+]);
 function orgLocation(e) {
   const base = ORG_ADDRESSES[e.org] || e.org || '';
   const room = e.location && e.location !== e.org ? e.location + ', ' : '';
