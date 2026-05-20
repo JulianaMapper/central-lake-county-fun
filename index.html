@@ -1078,7 +1078,6 @@ body::before {
   body:not(.printing-badge) .month-nav h3 { font-size: 16pt !important; text-align: center; width: 100%; }
   body:not(.printing-badge) .month-nav { justify-content: center !important; }
 }
-}
 .print-events-header {
   display: none;
   font-family: "DM Serif Display", serif;
@@ -1211,7 +1210,7 @@ body::before {
 ═══════════════════════════════════════ -->
 <div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;">
   <p style="margin:0;">This guide pulls together events from libraries, park districts, and forest preserves across central Lake County — filtered, sorted, and ready to plan from. Three tools inside: a searchable event calendar, a summer bucket list you can work through with your kids, and a map of 95 outdoor destinations.</p>
-  <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Events were gathered using web scraping and automated tools — details may not be complete or fully accurate. Always confirm times, registration, and cost directly with the organizer before you go. If this has been useful to you, we'd love if you <a href="https://buymeacoffee.com/julianamapper" target="_blank" rel="noopener" style="color:var(--red);">bought us a coffee ☕</a> or shared it with another parent.</p>
+  <p style="margin:0;font-size:0.85em;opacity:0.8;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Events were gathered using web scraping and automated tools — details may not be complete or fully accurate. Always confirm times, registration, and cost directly with the organizer before you go. If this has been useful to you, we'd love if you <a href="https://buymeacoffee.com/julianamapper" target="_blank" rel="noopener" style="color:var(--red);font-size:1.1em;font-weight:600;">☕ Buy us a coffee</a> or shared it with another parent.</p>
 </div>
 
 <!-- ═══════════════════════════════════════
@@ -2295,7 +2294,7 @@ function populateOrgs() {
   const sel=document.getElementById('filterOrg');
   orgs.forEach(o=>{ const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt); });
 }
-document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); });
+document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); renderGridCal(); });
 window.addEventListener('beforeprint', () => {
   const n = selectedIds.size;
   const hdr = document.getElementById('printEventsHeader');
