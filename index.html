@@ -2300,6 +2300,24 @@ window.addEventListener('beforeprint', () => {
   const n = selectedIds.size;
   const hdr = document.getElementById('printEventsHeader');
   if (hdr) hdr.querySelector('span').textContent = `${n} event${n===1?'':'s'} selected · Printed from Free Summer Fun · julianamapper.github.io/central-lake-county-fun`;
+  // Ensure grid is rendered for calendar print
+  if (!document.body.classList.contains('printing-badge')) {
+    renderGridCal();
+    const grid = document.getElementById('calGridContainer');
+    if (grid) grid.style.display = 'block';
+    const list = document.getElementById('calContainer');
+    if (list) list.style.display = 'none';
+  }
+});
+window.addEventListener('afterprint', () => {
+  if (!document.body.classList.contains('printing-badge')) {
+    const grid = document.getElementById('calGridContainer');
+    const list = document.getElementById('calContainer');
+    // restore to whatever view was active
+    const gridWasVisible = grid && grid.classList.contains('visible');
+    if (grid) grid.style.display = gridWasVisible ? 'block' : '';
+    if (list) list.style.display = '';
+  }
 });
 
 // -- PARKS MAP --
