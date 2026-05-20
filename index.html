@@ -37,6 +37,25 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* Today's events — per-card highlight */
+.event-card.is-today {
+  border-left: 4px solid var(--red);
+  background: linear-gradient(90deg, rgba(232,169,44,0.12), transparent 70%);
+}
+.ev-dow-pill {
+  display: inline-flex; align-items: center;
+  font-family: "Special Elite", monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--ink); color: var(--paper);
+  padding: 2px 7px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+.event-card.is-today .ev-dow-pill {
+  background: var(--red); color: #fff;
+}
+
 /* Skip link — visible only when focused */
 .skip-link {
   position: absolute;
@@ -1523,11 +1542,14 @@ function renderCal() {
         const regBadge = e.reg && e.reg!=='No' ? `<span class="ptag ptag-reg"><i class="ti ti-clipboard-check"></i> Reg: ${escHtml(e.reg)}</span>` : '';
         const driveBadge = '';
         const ageBadge = e.age ? `<span class="ptag ptag-age"><i class="ti ti-users"></i> ${escHtml(trunc(e.age,26))}</span>` : '';
-        html += `<div class="event-card${sel}" data-type="${ot}" onclick="openModal(${e.id})">
+        const todayCardCls = isToday(e.date) ? ' is-today' : '';
+        const dowShort = (e.day||'').slice(0,3);
+        html += `<div class="event-card${sel}${todayCardCls}" data-type="${ot}" onclick="openModal(${e.id})">
           <input type="checkbox" class="ev-check" data-id="${e.id}" aria-label="Select event: ${escHtml(e.name)}" ${selectedIds.has(e.id)?'checked':''} onclick="toggleSel(event,${e.id})">
           <div class="ev-body">
             <div class="ev-name">${escHtml(e.name)}</div>
             <div class="ev-tags">
+              ${dowShort?`<span class="ev-dow-pill">${escHtml(dowShort)}</span>`:''}
               <span class="ptag ptag-time"><i class="ti ti-clock"></i> ${escHtml(e.time||'See event')}</span>
               <span class="ptag ptag-org"><i class="ti ti-building-community"></i> ${escHtml(trunc(e.org,22))}</span>
               ${ageBadge}${freeBadge}${regBadge}${driveBadge}
