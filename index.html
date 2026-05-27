@@ -1674,9 +1674,26 @@ body::before {
       </div>
     </div>
 
-    <!-- Placeholder for more resources -->
-    <div style="border:2px dashed rgba(0,0,0,0.18);padding:24px 28px;text-align:center;color:var(--ink-soft);font-family:'Special Elite',monospace;font-size:12px;letter-spacing:0.12em;">
-      MORE FREE RESOURCES COMING SOON
+    <!-- MAP Locations Map -->
+    <div style="margin-top:1.5rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;">Museum Adventure Pass</div>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin:0;">Libraries &amp; Museums Near You</h3>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="map-filter-btn map-pass-filter-btn active" onclick="filterMAPMap(this,'all')" style="font-size:11px;padding:5px 12px;">All</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'lib')" style="font-size:11px;padding:5px 12px;background:var(--blue);color:var(--paper);border-color:var(--blue);">📚 Libraries</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'mus')" style="font-size:11px;padding:5px 12px;background:var(--red);color:var(--paper);border-color:var(--red);">🏛️ Museums</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-bottom:8px;flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:10px;height:10px;background:#1f3a6b;border-radius:2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Library (has MAP passes)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#c1342a;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Museum (accepts MAP passes)</span>
+        <span><span style="display:inline-block;width:14px;height:14px;background:#2a7a4f;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Free admission venue</span>
+      </div>
+      <div id="mapMAP" style="height:460px;border:2px solid var(--ink);"></div>
+      <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Check out MAP passes at any participating library with your library card. <a href="https://www.museumadventure.org/" target="_blank" rel="noopener" style="color:var(--ink);">museumadventure.org</a></p>
     </div>
 
   </div>
@@ -2331,7 +2348,7 @@ function modalSaveOne(id) {
 // ── BUCKET LIST ──
 // ── TABS ──
 function switchTab(tab) {
-  ['events','bucket','map'].forEach(t => {
+  ['events','bucket','map','freefun'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).setAttribute('aria-selected', t===tab);
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
@@ -2342,6 +2359,9 @@ function switchTab(tab) {
       initParksMap();
       setTimeout(() => { if(_leafletMap) _leafletMap.invalidateSize(); }, 100);
     }, 10);
+  }
+  if (tab==='freefun') {
+    setTimeout(() => { initMAPMap(); }, 50);
   }
   const fp = document.getElementById('filterPanel');
   if (fp) fp.style.display = tab==='events' ? '' : 'none';
@@ -2705,6 +2725,273 @@ window.addEventListener('afterprint', () => {
     if (list) list.style.display = '';
   }
 });
+
+// ── MAP (Museum Adventure Pass) MAP ──
+const MAP_LOCATIONS = [
+  // Libraries
+  {t:'lib',name:'Grayslake Area Public Library District',addr:'100 Library Lane, Grayslake, IL 60030',phone:'847.223.5313',lat:42.2087,lng:-88.0415},
+  {t:'lib',name:'Round Lake Area Public Library District',addr:'906 Hart Road, Round Lake, IL 60073',phone:'847.546.7060',lat:42.3531,lng:-88.0909},
+  {t:'lib',name:'Fremont Public Library District',addr:'1170 N Midlothian Road, Mundelein, IL 60060',phone:'847.566.8702',lat:42.2756,lng:-88.0065},
+  {t:'lib',name:'Lake Villa District Library',addr:'140 N Munn Rd, Lindenhurst, IL 60046',phone:'847.356.7711',lat:42.4225,lng:-88.0292},
+  {t:'lib',name:'Cook Memorial Public Library District',addr:'413 N Milwaukee Ave, Libertyville, IL 60048',phone:'847.362.2330',lat:42.2800,lng:-87.9533},
+  {t:'lib',name:'Warren-Newport Public Library District',addr:'224 N O\'Plaine Rd, Gurnee, IL 60031',phone:'847.244.5150',lat:42.3756,lng:-87.9399},
+  {t:'lib',name:'Fox Lake Public Library District',addr:'255 E Grand Ave, Fox Lake, IL 60020',phone:'847.587.0198',lat:42.3975,lng:-88.1836},
+  {t:'lib',name:'Wauconda Area Public Library District',addr:'801 N Main St, Wauconda, IL 60084',phone:'847.526.6225',lat:42.2636,lng:-88.1367},
+  {t:'lib',name:'North Chicago Public Library',addr:'2100 Argonne Drive, North Chicago, IL 60064',phone:'847.689.0125',lat:42.3228,lng:-87.8608},
+  {t:'lib',name:'River East Public Library',addr:'813 W Route 120, McHenry, IL 60051',phone:'815.385.6303',lat:42.3261,lng:-88.2637},
+  {t:'lib',name:'Antioch Public Library District',addr:'757 N Main St, Antioch, IL 60002',phone:'847.395.0874',lat:42.4778,lng:-88.0973},
+  {t:'lib',name:'Waukegan Public Library',addr:'128 N County St, Waukegan, IL 60085',phone:'847.623.2041',lat:42.3639,lng:-87.8489},
+  {t:'lib',name:'Johnsburg Public Library',addr:'3000 N Johnsburg Rd, Johnsburg, IL 60051',phone:'815.344.0077',lat:42.3692,lng:-88.2403},
+  {t:'lib',name:'Ela Area Public Library District',addr:'275 Mohawk Trail, Lake Zurich, IL 60047',phone:'847.438.3433',lat:42.1983,lng:-88.0875},
+  {t:'lib',name:'Lake Bluff Public Library',addr:'123 E Scranton Ave, Lake Bluff, IL 60044',phone:'847.234.2540',lat:42.2781,lng:-87.8325},
+  {t:'lib',name:'Vernon Area Public Library District',addr:'300 Olde Half Day Rd, Lincolnshire, IL 60069',phone:'847.634.3650',lat:42.2017,lng:-87.9122},
+  {t:'lib',name:'Lake Forest Library',addr:'360 E Deerpath Rd, Lake Forest, IL 60045',phone:'847.234.0636',lat:42.2589,lng:-87.8303},
+  {t:'lib',name:'Zion-Benton Public Library District',addr:'2400 Gabriel Ave, Zion, IL 60099',phone:'847.872.4680',lat:42.4486,lng:-87.8361},
+  {t:'lib',name:'McHenry Public Library District',addr:'809 N Front St, McHenry, IL 60050',phone:'815.385.0036',lat:42.3278,lng:-88.2692},
+  {t:'lib',name:'Cary Area Public Library District',addr:'1606 Three Oaks Rd, Cary, IL 60013',phone:'847.639.4210',lat:42.2167,lng:-88.2364},
+  {t:'lib',name:'Fox River Grove Memorial Library',addr:'407 Lincoln Ave, Fox River Grove, IL 60021',phone:'847.639.2274',lat:42.2011,lng:-88.2131},
+  {t:'lib',name:'Highwood Public Library',addr:'102 Highwood Ave, Highwood, IL 60040',phone:'847-432-5404',lat:42.2008,lng:-87.8083},
+  {t:'lib',name:'Indian Trails Public Library District',addr:'355 Schoenbeck Rd, Wheeling, IL 60090',phone:'847.459.4100',lat:42.1381,lng:-87.9286},
+  {t:'lib',name:'Palatine Public Library District',addr:'700 N North Court, Palatine, IL 60067',phone:'847.907.3600',lat:42.1153,lng:-88.0431},
+  {t:'lib',name:'Deerfield Public Library',addr:'920 Waukegan Rd, Deerfield, IL 60015',phone:'847.945.3311',lat:42.1722,lng:-87.8450},
+  {t:'lib',name:'Nippersink Public Library District',addr:'5418 Hill Rd, Richmond, IL 60071',phone:'815-678-4014',lat:42.4783,lng:-88.3081},
+  {t:'lib',name:'Highland Park Public Library',addr:'494 Laurel Ave, Highland Park, IL 60035',phone:'847.432.0216',lat:42.1811,lng:-87.8008},
+  {t:'lib',name:'Crystal Lake Public Library',addr:'126 Paddock St, Crystal Lake, IL 60014',phone:'815.459.1687',lat:42.2411,lng:-88.3209},
+  {t:'lib',name:'Prospect Heights Public Library District',addr:'12 Elm St, Prospect Heights, IL 60070',phone:'847.259.3500',lat:42.1028,lng:-87.9375},
+  {t:'lib',name:'Arlington Heights Memorial Library',addr:'500 N Dunton Ave, Arlington Heights, IL 60004',phone:'847.392.0100',lat:42.0883,lng:-87.9847},
+  {t:'lib',name:'Northbrook Public Library',addr:'1201 Cedar Lane, Northbrook, IL 60062',phone:'847.272.6224',lat:42.1256,lng:-87.8286},
+  {t:'lib',name:'Genoa City Public Library',addr:'126 Freeman St, Genoa City, WI 53128',phone:'262.279.6188',lat:42.5053,lng:-88.3247},
+  {t:'lib',name:'Rolling Meadows Library',addr:'3110 Martin Lane, Rolling Meadows, IL 60008',phone:'847.259.6050',lat:42.0706,lng:-88.0122},
+  {t:'lib',name:'Mount Prospect Public Library',addr:'10 S Emerson St, Mount Prospect, IL 60056',phone:'847.253.5675',lat:42.0664,lng:-87.9375},
+  {t:'lib',name:'Glencoe Public Library',addr:'320 Park Ave, Glencoe, IL 60022',phone:'847.835.5056',lat:42.1353,lng:-87.7611},
+  {t:'lib',name:'Fox River Valley Public Library District',addr:'555 Barrington Ave, Dundee, IL 60118',phone:'847.428.3661',lat:42.1000,lng:-88.2767},
+  {t:'lib',name:'Algonquin Area Public Library District',addr:'2600 Harnish Dr, Algonquin, IL 60102',phone:'847.458.6060',lat:42.1653,lng:-88.3283},
+  {t:'lib',name:'Woodstock Public Library',addr:'414 W Judd St, Woodstock, IL 60098',phone:'815.338.0542',lat:42.3147,lng:-88.4506},
+  {t:'lib',name:'Glenview Public Library',addr:'1930 Glenview Rd, Glenview, IL 60025',phone:'847.729.7500',lat:42.0728,lng:-87.8153},
+  {t:'lib',name:'Schaumburg Township District Library',addr:'130 S Roselle Rd, Schaumburg, IL 60193',phone:'847.985.4000',lat:42.0289,lng:-88.0814},
+  {t:'lib',name:'Des Plaines Public Library',addr:'1501 Ellinwood St, Des Plaines, IL 60016',phone:'847.827.5551',lat:42.0322,lng:-87.8886},
+  {t:'lib',name:'Winnetka-Northfield Public Library District',addr:'768 Oak St, Winnetka, IL 60093',phone:'847.446.7220',lat:42.1072,lng:-87.7356},
+  {t:'lib',name:'Huntley Area Public Library District',addr:'11000 Ruth Rd, Huntley, IL 60142',phone:'847.669.5386',lat:42.1686,lng:-88.4281},
+  {t:'lib',name:'Elk Grove Village Public Library',addr:'1001 Wellington Ave, Elk Grove Village, IL 60007',phone:'847.439.0447',lat:42.0017,lng:-87.9839},
+  {t:'lib',name:'Poplar Creek Public Library District',addr:'1405 S Park, Streamwood, IL 60107',phone:'630.837.6800',lat:42.0256,lng:-88.1753},
+  {t:'lib',name:'Gail Borden Public Library District',addr:'270 N Grove Ave, Elgin, IL 60120',phone:'847.742.2411',lat:42.0369,lng:-88.2836},
+  {t:'lib',name:'Wilmette Public Library District',addr:'1242 Wilmette Ave, Wilmette, IL 60091',phone:'847.256.5025',lat:42.0731,lng:-87.7239},
+  {t:'lib',name:'Morton Grove Public Library',addr:'6140 Lincoln Ave, Morton Grove, IL 60053',phone:'847.965.4220',lat:42.0444,lng:-87.7828},
+  {t:'lib',name:'Niles Public Library District',addr:'6960 W Oakton St, Niles, IL 60714',phone:'847.663.1234',lat:42.0178,lng:-87.7994},
+  {t:'lib',name:'Roselle Public Library District',addr:'40 S Park St, Roselle, IL 60172',phone:'630.529.1641',lat:41.9856,lng:-88.0831},
+  {t:'lib',name:'Park Ridge Public Library',addr:'20 S Prospect Ave, Park Ridge, IL 60068',phone:'847.825.3123',lat:42.0111,lng:-87.8403},
+  {t:'lib',name:'Itasca Community Library',addr:'500 W Irving Park Rd, Itasca, IL 60143',phone:'630.773.1699',lat:41.9750,lng:-88.0072},
+  {t:'lib',name:'Wood Dale Public Library District',addr:'520 N Wood Dale Rd, Wood Dale, IL 60191',phone:'630.766.6762',lat:41.9636,lng:-87.9878},
+  {t:'lib',name:'Skokie Public Library',addr:'5215 Oakton St, Skokie, IL 60077',phone:'847.673.7774',lat:42.0356,lng:-87.7344},
+  {t:'lib',name:'Burlington WI Public Library',addr:'166 E Jefferson St, Burlington, WI 53105',phone:'262-342-1130',lat:42.6781,lng:-88.2792},
+  {t:'lib',name:'Bartlett Public Library District',addr:'800 S Bartlett Rd, Bartlett, IL 60103',phone:'630.837.2855',lat:41.9950,lng:-88.1853},
+  {t:'lib',name:'Lake Geneva Public Library',addr:'918 W Main St, Lake Geneva, WI 53147',phone:'262-249-5299',lat:42.5908,lng:-88.4328},
+  {t:'lib',name:'Evanston Public Library',addr:'1703 Orrington Ave, Evanston, IL 60201',phone:'847.448.8600',lat:42.0464,lng:-87.6939},
+  {t:'lib',name:'Bensenville Community Public Library',addr:'200 S Church Rd, Bensenville, IL 60106',phone:'630.766.4642',lat:41.9553,lng:-87.9392},
+  {t:'lib',name:'Bloomingdale Public Library',addr:'101 Fairfield Way, Bloomingdale, IL 60108',phone:'630.529.3120',lat:41.9528,lng:-88.0794},
+  {t:'lib',name:'Lincolnwood Public Library District',addr:'4000 W Pratt Ave, Lincolnwood, IL 60712',phone:'847.677.5277',lat:42.0047,lng:-87.7392},
+  {t:'lib',name:'Schiller Park Public Library',addr:'4200 Old River Rd, Schiller Park, IL 60176',phone:'847.678.0433',lat:41.9572,lng:-87.8678},
+  {t:'lib',name:'Addison Public Library District',addr:'4 Friendship Plaza, Addison, IL 60101',phone:'630.543.3617',lat:41.9314,lng:-88.0003},
+  {t:'lib',name:'Eisenhower Public Library District',addr:'4613 N Oketo Ave, Harwood Heights, IL 60706',phone:'708.867.7828',lat:41.9631,lng:-87.8081},
+  {t:'lib',name:'Marengo Union Library District',addr:'19714 E Grant Hwy, Marengo, IL 60152',phone:'815-568-8236',lat:42.2331,lng:-88.6072},
+  {t:'lib',name:'Franklin Park Public Library District',addr:'10311 Grand Ave, Franklin Park, IL 60131',phone:'847-455-6016',lat:41.9361,lng:-87.8781},
+  {t:'lib',name:'Glenside Public Library District',addr:'25 E Fullerton Ave, Glendale Heights, IL 60139',phone:'630.260.1550',lat:41.9208,lng:-88.0725},
+  {t:'lib',name:'Carol Stream Public Library',addr:'616 Hiawatha Dr, Carol Stream, IL 60188',phone:'630.653.0755',lat:41.9117,lng:-88.1344},
+  {t:'lib',name:'River Grove Public Library District',addr:'8638 Grand Ave, River Grove, IL 60171',phone:'708.453.4484',lat:41.9253,lng:-87.8369},
+  {t:'lib',name:'Ella Johnson Memorial Public Library District',addr:'109 S State St, Hampshire, IL 60140',phone:'847.683.4490',lat:42.0992,lng:-88.5283},
+  {t:'lib',name:'Barrett Memorial Library',addr:'65 Geneva St, Williams Bay, WI 53191',phone:'262-245-2709',lat:42.5731,lng:-88.5353},
+  {t:'lib',name:'Northlake Public Library District',addr:'231 N Wolf Rd, Northlake, IL 60164',phone:'708.562.2301',lat:41.9117,lng:-87.8978},
+  {t:'lib',name:'Elmwood Park Public Library',addr:'1 Conti Pkwy, Elmwood Park, IL 60707',phone:'708.453.7645',lat:41.9214,lng:-87.8078},
+  {t:'lib',name:'Elmhurst Public Library',addr:'125 S Prospect Ave, Elmhurst, IL 60126',phone:'630.279.8696',lat:41.9003,lng:-87.9406},
+  {t:'lib',name:'Villa Park Public Library',addr:'305 S Ardmore Ave, Villa Park, IL 60181',phone:'630.834.1164',lat:41.8889,lng:-87.9764},
+  {t:'lib',name:'Helen Plum Memorial Library',addr:'411 S Main St, Lombard, IL 60148',phone:'630.627.0316',lat:41.8808,lng:-88.0083},
+  {t:'lib',name:'Melrose Park Public Library',addr:'801 N Broadway, Melrose Park, IL 60160',phone:'708.649.7400',lat:41.8992,lng:-87.8578},
+  {t:'lib',name:'Berkeley Public Library',addr:'1637 Taft Ave, Berkeley, IL 60163',phone:'708.544.6017',lat:41.8892,lng:-87.9003},
+  {t:'lib',name:'Glen Ellyn Public Library',addr:'400 Duane St, Glen Ellyn, IL 60137',phone:'630.469.0879',lat:41.8764,lng:-88.0631},
+  {t:'lib',name:'St. Charles Public Library',addr:'1 S 6th Ave, St. Charles, IL 60174',phone:'630.584.0076',lat:41.9142,lng:-88.3064},
+  {t:'lib',name:'Hillside Public Library',addr:'405 N Hillside Ave, Hillside, IL 60162',phone:'708.449.7510',lat:41.8792,lng:-87.9122},
+  {t:'lib',name:'Bellwood Public Library',addr:'600 Bohland Ave, Bellwood, IL 60104',phone:'708.547.7393',lat:41.8819,lng:-87.8803},
+  {t:'lib',name:'West Chicago Public Library District',addr:'118 W Washington St, West Chicago, IL 60185',phone:'630-231-1552',lat:41.8889,lng:-88.2011},
+  {t:'lib',name:'Maywood Public Library District',addr:'121 S 5th Ave, Maywood, IL 60153',phone:'708.343.1847',lat:41.8783,lng:-87.8422},
+  {t:'lib',name:'River Forest Public Library',addr:'735 Lathrop Ave, River Forest, IL 60305',phone:'708.366.5205',lat:41.8972,lng:-87.8158},
+  {t:'lib',name:'Wheaton Public Library',addr:'225 N Cross St, Wheaton, IL 60187',phone:'630.668.1374',lat:41.8622,lng:-88.1072},
+  {t:'lib',name:'Oak Park Public Library',addr:'834 Lake St, Oak Park, IL 60301',phone:'708.383.8200',lat:41.8853,lng:-87.7972},
+  {t:'lib',name:'Forest Park Public Library',addr:'7555 Jackson Blvd, Forest Park, IL 60130',phone:'708.366.7171',lat:41.8683,lng:-87.8139},
+  {t:'lib',name:'Winfield Public Library',addr:'0S291 Winfield Rd, Winfield, IL 60190',phone:'630.653.7599',lat:41.8703,lng:-88.1572},
+  {t:'lib',name:'Broadview Public Library District',addr:'2226 S 16th Ave, Broadview, IL 60155',phone:'708.345.1325',lat:41.8572,lng:-87.8644},
+  {t:'lib',name:'Westchester Public Library',addr:'10700 Canterbury St, Westchester, IL 60154',phone:'708.562.3573',lat:41.8492,lng:-87.8878},
+  {t:'lib',name:'Geneva Public Library District',addr:'227 7th St, Geneva, IL 60134',phone:'630.232.0780',lat:41.8881,lng:-88.3103},
+  {t:'lib',name:'Oak Brook Public Library',addr:'600 Oak Brook Rd, Oak Brook, IL 60523',phone:'630.368.7700',lat:41.8514,lng:-87.9439},
+  {t:'lib',name:'North Riverside Public Library',addr:'2400 Des Plaines Ave, North Riverside, IL 60546',phone:'708.447.0869',lat:41.8364,lng:-87.8292},
+  {t:'lib',name:'Berwyn Public Library',addr:'2701 S Harlem, Berwyn, IL 60402',phone:'708.795.8000',lat:41.8514,lng:-87.7939},
+  {t:'lib',name:'Warrenville Public Library District',addr:'28W751 Stafford Pl, Warrenville, IL 60555',phone:'630.393.1171',lat:41.8217,lng:-88.1883},
+  {t:'lib',name:'La Grange Park Public Library District',addr:'555 N La Grange Rd, La Grange Park, IL 60526',phone:'708.352.0100',lat:41.8364,lng:-87.8792},
+  {t:'lib',name:'Delavan Public Library',addr:'404 E Walworth Ave, Delavan, WI 53115',phone:'262.728.3111',lat:42.6317,lng:-88.6431},
+  {t:'lib',name:'Cicero Public Library',addr:'5225 W Cermak Rd, Cicero, IL 60804',phone:'708.652.8084',lat:41.8519,lng:-87.7539},
+  {t:'lib',name:'Batavia Public Library District',addr:'10 S Batavia Ave, Batavia, IL 60510',phone:'630.879.1393',lat:41.8514,lng:-88.3131},
+  {t:'lib',name:'Linda Sokol Francis Brookfield Library',addr:'3541 Park Ave, Brookfield, IL 60513',phone:'708.485.6917',lat:41.8183,lng:-87.8528},
+  {t:'lib',name:'Westmont Public Library',addr:'428 N Cass Ave, Westmont, IL 60559',phone:'630.969.5625',lat:41.7972,lng:-88.0003},
+  {t:'lib',name:'Thomas Ford Memorial Library',addr:'800 Chestnut St, Western Springs, IL 60558',phone:'708.246.0520',lat:41.8072,lng:-87.8992},
+  {t:'lib',name:'Riverside Public Library',addr:'1 Burling Rd, Riverside, IL 60546',phone:'708.442.6366',lat:41.8381,lng:-87.8203},
+  {t:'lib',name:'Hinsdale Public Library',addr:'20 E Maple St, Hinsdale, IL 60521',phone:'630.986.1976',lat:41.8022,lng:-87.9314},
+  {t:'lib',name:'La Grange Public Library',addr:'10 W Cossitt Ave, La Grange, IL 60525',phone:'708.215.3200',lat:41.8061,lng:-87.8703},
+  {t:'lib',name:'Lisle Library District',addr:'777 Front St, Lisle, IL 60532',phone:'630.971.1675',lat:41.7961,lng:-88.1022},
+  {t:'lib',name:'Clarendon Hills Public Library',addr:'7 N Prospect Ave, Clarendon Hills, IL 60514',phone:'630.323.8188',lat:41.7994,lng:-87.9578},
+  {t:'lib',name:'Downers Grove Public Library',addr:'1050 Curtiss St, Downers Grove, IL 60515',phone:'630.960.1200',lat:41.8072,lng:-88.0181},
+  {t:'lib',name:'Lyons Public Library',addr:'4209 Joliet Ave, Lyons, IL 60534',phone:'708.447.3577',lat:41.8139,lng:-87.8203},
+  {t:'lib',name:'Town and Country Public Library District',addr:'320 E North St, Elburn, IL 60119',phone:'630.365.2244',lat:41.8953,lng:-88.4722},
+  {t:'lib',name:'Stickney-Forest View Public Library District',addr:'6800 W 43rd St, Stickney, IL 60402',phone:'708.749.1050',lat:41.8153,lng:-87.7753},
+  {t:'lib',name:'Messenger Public Library of North Aurora',addr:'113 Oak St, North Aurora, IL 60542',phone:'630.896.0240',lat:41.8042,lng:-88.3231},
+  {t:'lib',name:'Naperville Public Library',addr:'200 W Jefferson Ave, Naperville, IL 60540',phone:'630.961.4100',lat:41.7689,lng:-88.1503},
+  {t:'lib',name:'Woodridge Public Library',addr:'3 Plaza Dr, Woodridge, IL 60517',phone:'630.964.7899',lat:41.7361,lng:-88.0514},
+  {t:'lib',name:'Indian Prairie Public Library District',addr:'401 Plainfield Rd, Darien, IL 60561',phone:'630.887.8760',lat:41.7514,lng:-87.9836},
+  {t:'lib',name:'Oswego Public Library District',addr:'1111 Reading Dr, Montgomery, IL 60538',phone:'630.978.1205',lat:41.7314,lng:-88.3461},
+  {t:'lib',name:'Sycamore Public Library',addr:'103 E State St, Sycamore, IL 60178',phone:'815.895.2500',lat:41.9883,lng:-88.6869},
+  {t:'lib',name:'Maple Park Public Library',addr:'302 Willow St, Maple Park, IL 60151',phone:'815-827-3362',lat:41.9050,lng:-88.5944},
+  {t:'lib',name:'Aurora Public Library',addr:'101 S River St, Aurora, IL 60506',phone:'630.264.4128',lat:41.7600,lng:-88.3200},
+  {t:'lib',name:'Fountaindale Public Library District',addr:'300 W Briarcliff Rd, Bolingbrook, IL 60440',phone:'630.759.2102',lat:41.6972,lng:-88.0731},
+  {t:'lib',name:'Sugar Grove Public Library District',addr:'125 S Municipal Dr, Sugar Grove, IL 60554',phone:'630.466.4686',lat:41.7572,lng:-88.4411},
+  {t:'lib',name:'Genoa Public Library',addr:'240 W Main St, Genoa, IL 60135',phone:'815.784.2627',lat:42.1003,lng:-88.6942},
+  {t:'lib',name:'Green Hills Public Library District',addr:'10331 Interlochen Dr, Palos Hills, IL 60465',phone:'708.598.8446',lat:41.7031,lng:-87.8292},
+  {t:'lib',name:'Oak Lawn Public Library',addr:'9427 S Raymond Ave, Oak Lawn, IL 60453',phone:'708.422.4990',lat:41.7219,lng:-87.7539},
+  {t:'lib',name:'Evergreen Park Public Library',addr:'9400 S Troy Ave, Evergreen Park, IL 60805',phone:'708.422.8522',lat:41.7214,lng:-87.7031},
+  {t:'lib',name:'Chicago Ridge Public Library',addr:'10400 Oxford Ave, Chicago Ridge, IL 60415',phone:'708.423.7753',lat:41.7031,lng:-87.7792},
+  {t:'lib',name:'Lemont Public Library District',addr:'50 E Wend St, Lemont, IL 60439',phone:'630.257.6541',lat:41.6731,lng:-88.0003},
+  {t:'lib',name:'Worth Public Library District',addr:'6917 W 111th St, Worth, IL 60482',phone:'708.448.2855',lat:41.6919,lng:-87.7981},
+  {t:'lib',name:'Justice Public Library District',addr:'7641 Oak Grove Ave, Justice, IL 60458',phone:'708.496.1790',lat:41.7519,lng:-87.8361},
+  {t:'lib',name:'Bridgeview Public Library',addr:'7840 W 79th St, Bridgeview, IL 60455',phone:'708.458.2880',lat:41.7419,lng:-87.8031},
+  {t:'lib',name:'Palos Park Public Library',addr:'12330 Forest Glen Blvd, Palos Park, IL 60464',phone:'708.448.1530',lat:41.6631,lng:-87.8331},
+  {t:'lib',name:'Palos Heights Public Library',addr:'12501 S 71st Ave, Palos Heights, IL 60463',phone:'708.448.1473',lat:41.6631,lng:-87.7939},
+  {t:'lib',name:'Alsip-Merrionette Park Public Library District',addr:'11960 S Pulaski Rd, Alsip, IL 60803',phone:'708.371.5666',lat:41.6681,lng:-87.7403},
+  {t:'lib',name:'Crestwood Public Library District',addr:'4955 135th St, Crestwood, IL 60418',phone:'708.371.4090',lat:41.6461,lng:-87.7622},
+  {t:'lib',name:'Prairie Trails Public Library District',addr:'8449 Moody Ave, Burbank, IL 60459',phone:'708.430.3688',lat:41.7503,lng:-87.7753},
+  {t:'lib',name:'Summit Public Library District',addr:'6233 S Archer Rd, Summit, IL 60501',phone:'708.458.1545',lat:41.7892,lng:-87.8142},
+  {t:'lib',name:'Steger-South Chicago Heights Library District',addr:'54 E 31st St, Steger, IL 60475',phone:'708.755.5040',lat:41.4711,lng:-87.6331},
+  {t:'lib',name:'Blue Island Public Library',addr:'2433 York St, Blue Island, IL 60406',phone:'708.388.1078',lat:41.6592,lng:-87.6822},
+  {t:'lib',name:'Calumet Park Public Library',addr:'1500 W 127th St, Calumet Park, IL 60827',phone:'708.385.5768',lat:41.6653,lng:-87.6600},
+  {t:'lib',name:'Orland Park Public Library',addr:'14921 S Ravinia Ave, Orland Park, IL 60462',phone:'708.428.5100',lat:41.6031,lng:-87.8578},
+  {t:'lib',name:'Homer Township Public Library District',addr:'14320 W 151st St, Homer Glen, IL 60491',phone:'708.301.7908',lat:41.6003,lng:-87.9403},
+  {t:'lib',name:'Acorn Public Library District',addr:'15624 S Central Ave, Oak Forest, IL 60452',phone:'708.687.3700',lat:41.6081,lng:-87.7539},
+  {t:'lib',name:'Plainfield Area Public Library',addr:'15025 S Illinois St, Plainfield, IL 60544',phone:'815-436-6639',lat:41.6100,lng:-88.2044},
+  {t:'lib',name:'Midlothian Public Library',addr:'14701 S Kenton Ave, Midlothian, IL 60445',phone:'708.535.2027',lat:41.6253,lng:-87.7181},
+  {t:'lib',name:'White Oak Library District',addr:'121 E 8th St, Lockport, IL 60441',phone:'815.838.0755',lat:41.5897,lng:-88.0581},
+  {t:'lib',name:'Mokena Community Public Library District',addr:'11327 W 195th St, Mokena, IL 60448',phone:'708.479.9663',lat:41.5344,lng:-87.8881},
+  {t:'lib',name:'Harvey Public Library District',addr:'15441 Turlington Ave, Harvey, IL 60426',phone:'708.331.0757',lat:41.6100,lng:-87.6472},
+  {t:'lib',name:'William Leonard Public Library',addr:'13820 Central Park Ave, Robbins, IL 60472',phone:'708.597.2670',lat:41.6392,lng:-87.7072},
+  {t:'lib',name:'Grande Prairie Public Library District',addr:'3479 W 183rd St, Hazel Crest, IL 60429',phone:'708.798.5563',lat:41.5700,lng:-87.6942},
+  {t:'lib',name:'Homewood Public Library District',addr:'17917 Dixie Hwy, Homewood, IL 60430',phone:'708.798.0121',lat:41.5592,lng:-87.6600},
+  {t:'lib',name:'Tinley Park Public Library',addr:'7851 Timber Dr, Tinley Park, IL 60477',phone:'708.532.0160',lat:41.5731,lng:-87.7861},
+  {t:'lib',name:'South Holland Public Library',addr:'16250 Wausau Ave, South Holland, IL 60473',phone:'708.527.3150',lat:41.6003,lng:-87.6081},
+  {t:'lib',name:'Dolton Public Library District',addr:'14037 Lincoln Ave, Dolton, IL 60419',phone:'708.849.2385',lat:41.6300,lng:-87.6072},
+  {t:'lib',name:'Calumet City Public Library',addr:'660 Manistee Ave, Calumet City, IL 60409',phone:'708.862.6220',lat:41.6172,lng:-87.5392},
+  {t:'lib',name:'New Lenox Public Library District',addr:'120 Veterans Pkwy, New Lenox, IL 60451',phone:'815.485.2605',lat:41.5114,lng:-87.9650},
+  {t:'lib',name:'Shorewood-Troy Public Library',addr:'650 Deerwood Dr, Shorewood, IL 60404',phone:'815-725-1715',lat:41.5122,lng:-88.2031},
+  {t:'lib',name:'Joliet Public Library',addr:'150 N Ottawa St, Joliet, IL 60432',phone:'815.740.2660',lat:41.5253,lng:-88.0822},
+  {t:'lib',name:'Three Rivers Public Library District',addr:'25207 W Channon Dr, Channahon, IL 60410',phone:'815.467.6200',lat:41.4253,lng:-88.2261},
+  {t:'lib',name:'Manhattan-Elwood Public Library',addr:'240 Whitson St, Manhattan, IL 60442',phone:'815-478-3987',lat:41.4261,lng:-87.9847},
+  {t:'lib',name:'Crete Public Library District',addr:'1177 N Main St, Crete, IL 60417',phone:'708.672.8017',lat:41.4344,lng:-87.6261},
+  {t:'lib',name:'Riverdale Public Library District',addr:'208 W 144th St, Riverdale, IL 60827',phone:'708.841.3311',lat:41.6381,lng:-87.6303},
+  {t:'lib',name:'Thornton Public Library',addr:'115 E Margaret St, Thornton, IL 60476',phone:'708.877.2579',lat:41.5672,lng:-87.6203},
+  {t:'lib',name:'Flossmoor Public Library',addr:'1000 Sterling Ave, Flossmoor, IL 60422',phone:'708.798.3600',lat:41.5381,lng:-87.6792},
+  {t:'lib',name:'Park Forest Public Library',addr:'400 Lakewood Blvd, Park Forest, IL 60466',phone:'708.748.3731',lat:41.4814,lng:-87.6831},
+  {t:'lib',name:'Frankfort Public Library District',addr:'21119 S Pfeiffer Rd, Frankfort, IL 60423',phone:'815.469.2423',lat:41.4961,lng:-87.8492},
+  {t:'lib',name:'Richton Park Public Library District',addr:'22310 Latonia Ln, Richton Park, IL 60471',phone:'708.481.5333',lat:41.4831,lng:-87.7369},
+  {t:'lib',name:'Chicago Heights Public Library',addr:'25 W 15th St, Chicago Heights, IL 60411',phone:'708.754.0323',lat:41.5072,lng:-87.6361},
+  {t:'lib',name:'Glenwood-Lynwood Public Library District',addr:'19901 Stony Island Ave, Lynwood, IL 60411',phone:'708.758.0090',lat:41.5261,lng:-87.5461},
+  {t:'lib',name:'Lansing Public Library',addr:'2750 Indiana Ave, Lansing, IL 60438',phone:'708.474.2447',lat:41.5653,lng:-87.5453},
+  {t:'lib',name:'University Park Public Library District',addr:'1100 Blackhawk Dr, University Park, IL 60484',phone:'708.534.2580',lat:41.4453,lng:-87.5400},
+  {t:'lib',name:'Matteson Public Library',addr:'801 School Ave, Matteson, IL 60443',phone:'708.748.4431',lat:41.5053,lng:-87.7142},
+  {t:'lib',name:'Yorkville Public Library',addr:'902 Game Farm Rd, Yorkville, IL 60560',phone:'630.553.4354',lat:41.6592,lng:-88.4478},
+  {t:'lib',name:'Kaneville Public Library District',addr:'2 S 101 Harter Rd, Kaneville, IL 60144',phone:'630.557.2441',lat:41.8600,lng:-88.5242},
+  {t:'lib',name:'Big Rock Library',addr:'48W447 Hinckley Rd, Big Rock, IL 60511',phone:'630-556-3604',lat:41.7681,lng:-88.5342},
+  {t:'lib',name:'Hinckley Public Library District',addr:'100 Maple St, Hinckley, IL 60520',phone:'815.286.3220',lat:41.7764,lng:-88.6442},
+  {t:'lib',name:'DeKalb Public Library',addr:'309 Oak St, DeKalb, IL 60115',phone:'815.756.9568',lat:41.9339,lng:-88.7503},
+  {t:'lib',name:'Ellwood House Museum',addr:'5009 N First St, DeKalb, IL 60115',phone:'815.756.4609',lat:41.9342,lng:-88.7503},
+  {t:'lib',name:'Cortland Community Library',addr:'63 S Somonauk Rd, Cortland, IL 60112',phone:'815-756-7274',lat:41.9219,lng:-88.6919},
+  {t:'lib',name:'Somonauk Public Library District',addr:'700 E LaSalle St, Somonauk, IL 60552',phone:'815.498.2440',lat:41.6369,lng:-88.6719},
+  {t:'lib',name:'Coal City Public Library District',addr:'85 N Garfield St, Coal City, IL 60416',phone:'815.634.4552',lat:41.2861,lng:-88.2742},
+  {t:'lib',name:'Fossil Ridge Public Library',addr:'386 W Kennedy Rd, Braidwood, IL 60408',phone:'815.458.2187',lat:41.2631,lng:-88.2142},
+  {t:'lib',name:'Wilmington Public Library District',addr:'201 S Kankakee St, Wilmington, IL 60481',phone:'815.476.2834',lat:41.3053,lng:-88.1492},
+  {t:'lib',name:'Morris Library',addr:'604 Liberty St, Morris, IL 60450',phone:'815-942-6880',lat:41.3564,lng:-88.4242},
+  {t:'lib',name:'Peotone Public Library District',addr:'515 N First St, Peotone, IL 60468',phone:'708.258.3436',lat:41.3331,lng:-87.7803},
+  {t:'lib',name:'Bourbonnais Public Library District',addr:'250 W John Casey Rd, Bourbonnais, IL 60914',phone:'815-933-1727',lat:41.1553,lng:-87.8831},
+  {t:'lib',name:'Bradley Public Library',addr:'296 N Fulton Ave, Bradley, IL 60915',phone:'815-932-6245',lat:41.1431,lng:-87.8653},
+  {t:'lib',name:'Kankakee Public Library',addr:'201 E Merchant St, Kankakee, IL 60901',phone:'815-939-4564',lat:41.1214,lng:-87.8622},
+  {t:'lib',name:'Limestone Township District Library',addr:'2701 W Tower Rd, Kankakee, IL 60901',phone:'815.939.1696',lat:41.1200,lng:-87.8619},
+  {t:'lib',name:'Manteno Public Library District',addr:'10 S Walnut St, Manteno, IL 60950',phone:'815-468-3323',lat:41.2442,lng:-87.8331},
+  {t:'lib',name:'Beecher Community Library District',addr:'660 Penfield St, Beecher, IL 60401',phone:'708.946.9090',lat:41.3431,lng:-87.6211},
+  {t:'lib',name:'Seneca Public Library',addr:'210 N Main St, Seneca, IL 61360',phone:'815-357-6566',lat:41.3114,lng:-88.6092},
+  {t:'lib',name:'Oglesby Public Library',addr:'111 S Woodland Ave, Oglesby, IL 61348',phone:'815.883.3619',lat:41.2953,lng:-89.0619},
+  {t:'lib',name:'Whitefish Bay Public Library',addr:'5420 N Marlborough Dr, Whitefish Bay, WI 53217',phone:'414-964-4380',lat:43.1181,lng:-87.9022},
+  {t:'lib',name:'Sandwich Public Library',addr:'925 S Main St, Sandwich, IL 60548',phone:'815.786.8308',lat:41.6472,lng:-88.6172},
+  {t:'lib',name:'Robert Rowe Public Library',addr:'120 E Johnson Ave, Sheridan, IL 60551',phone:'815-496-2031',lat:41.5272,lng:-88.6781},
+  // Museums
+  {t:'mus',name:'Bess Bower Dunn Museum of Lake County',addr:'1899 W Winchester Rd, Libertyville, IL 60048',admits:'2 free general admission tickets',lat:42.2836,lng:-87.9653},
+  {t:'mus',name:'Volo Museum',addr:'27582 Volo Village Rd, Volo, IL 60073',admits:'50% off admission for up to 6 persons',lat:42.3197,lng:-88.1653},
+  {t:'mus',name:'Chicago Botanic Garden',addr:'1000 Lake Cook Rd, Glencoe, IL 60022',admits:'Family of 4 free general admission',lat:42.1431,lng:-87.7869},
+  {t:'mus',name:'Elgin Public Museum',addr:'225 Grand Blvd (Lords Park), Elgin, IL 60120',admits:'1 free kids admission with paid adult',lat:42.0317,lng:-88.2786},
+  {t:'mus',name:'Elgin History Museum',addr:'360 Park St, Elgin, IL 60120',admits:'Admits up to 4 persons free',lat:42.0378,lng:-88.2819},
+  {t:'mus',name:'Gichigamiin Indigenous Nations Museum',addr:'3001 Central St, Evanston, IL 60201',admits:'2 free regular admission',lat:42.0581,lng:-87.6853},
+  {t:'mus',name:'Geneva Lake Museum',addr:'255 Mill St, Lake Geneva, WI 53147',admits:'Two for one with MAP pass',lat:42.5908,lng:-88.4328},
+  {t:'mus',name:'Illinois Railway Museum',addr:'7000 Olson Rd, Union, IL 60180',admits:'2 free with purchase of 2',lat:42.2378,lng:-88.5442},
+  {t:'mus',name:'Evanston History Center',addr:'225 Greenwood St, Evanston, IL 60201',admits:'1 free entry into Dawes House',lat:42.0453,lng:-87.6872},
+  {t:'mus',name:'Cernan Earth and Space Center at Triton College',addr:'2000 5th Ave N, River Grove, IL 60171',admits:'1 free adult or 2 youth with paid adult',lat:41.9253,lng:-87.8372},
+  {t:'mus',name:'St. Charles Heritage Museum',addr:'215 E Main St, St. Charles, IL 60174',admits:'15% discount on gift shop',lat:41.9142,lng:-88.3064},
+  {t:'mus',name:'Pleasant Home Foundation',addr:'217 Home Ave, Oak Park, IL 60302',admits:'Buy 1 get 1 free tour admission',lat:41.8831,lng:-87.7969},
+  {t:'mus',name:'Cantigny Park',addr:'1S151 Winfield Rd, Wheaton, IL 60189',admits:'1 vehicle free on parking fee days',lat:41.8414,lng:-88.1550},
+  {t:'mus',name:'Lizzadro Museum of Lapidary Art',addr:'1220 Kensington Rd, Oak Brook, IL 60523',admits:'Half off admission, max 4 per pass',lat:41.8514,lng:-87.9439},
+  {t:'mus',name:'Brookfield Zoo',addr:'First Ave & 31st St, Brookfield, IL 60513',admits:'2 free admissions (zoo only)',lat:41.8322,lng:-87.8372},
+  {t:'mus',name:'American Writers Museum',addr:'180 N Michigan Ave, Chicago, IL 60601',admits:'Free admission for up to 4 people',lat:41.8822,lng:-87.6242},
+  {t:'mus',name:'Naper Settlement',addr:'523 S Webster St, Naperville, IL 60540',admits:'Buy 1 get 1 free, max 2 free tickets',lat:41.7731,lng:-88.1472},
+  {t:'mus',name:'Aurora Regional Fire Museum',addr:'53 N Broadway, Aurora, IL 60505',admits:'Buy 1 get 1 free admission',lat:41.7572,lng:-88.3169},
+  {t:'mus',name:'Children\'s Museum in Oak Lawn',addr:'5100 Museum Dr, Oak Lawn, IL 60453',admits:'1 free child admission with paid adult',lat:41.7142,lng:-87.7542},
+  {t:'mus',name:'Air Classic Inc Museum of Aviation',addr:'44W546 US Route 30, Sugar Grove, IL 60554',admits:'1 free with paid adult ($10)',lat:41.7619,lng:-88.4414},
+  {t:'mus',name:'Bronzeville Children\'s Museum',addr:'9301 S Stony Island Ave, Chicago, IL 60617',admits:'Buy 1 get 1 free, limit 2 per family',lat:41.7219,lng:-87.5661},
+  {t:'mus',name:'Illinois Rock & Roll Museum on Rt 66',addr:'9 W Cass St, Joliet, IL 60432',admits:'Free admission on Tuesdays',lat:41.5242,lng:-88.0822},
+  // Children's Neighborhood Museum (special)
+  {t:'special',name:'Children\'s Neighborhood Museum',addr:'814 Hart Rd, Round Lake, IL 60073',admits:'Free every Wednesday 12:30–2:30 PM',lat:42.3530,lng:-88.0909},
+];
+
+let _mapMAP = null;
+let _mapMAPLibFilter = 'all';
+
+function initMAPMap() {
+  const container = document.getElementById('mapMAP');
+  if (!container) return;
+  if (_mapMAP) { setTimeout(() => _mapMAP.invalidateSize(), 50); return; }
+
+  _mapMAP = L.map('mapMAP', {zoomControl:true}).setView([42.10, -88.05], 9);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© OpenStreetMap © CARTO', maxZoom:18
+  }).addTo(_mapMAP);
+
+  MAP_LOCATIONS.forEach(loc => {
+    const color = loc.t === 'lib' ? '#1f3a6b' : loc.t === 'mus' ? '#c1342a' : '#2a7a4f';
+    const shape = loc.t === 'lib' ? '3px' : '50%';
+    const size = loc.t === 'special' ? 14 : 10;
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #fff;border-radius:${shape};box-shadow:0 1px 4px rgba(0,0,0,0.35);"></div>`,
+      iconSize:[size,size], iconAnchor:[size/2,size/2]
+    });
+    const admitsHtml = loc.admits ? `<div style="font-size:11px;margin-top:6px;color:#555;border-top:1px solid #ddd;padding-top:6px;">🎟️ ${loc.admits}</div>` : '';
+    const popup = `<div style="font-family:'Public Sans',sans-serif;min-width:180px;"><strong style="font-size:13px;">${loc.name}</strong><div style="font-size:11px;color:#666;margin-top:3px;">${loc.addr}</div>${admitsHtml}</div>`;
+    const marker = L.marker([loc.lat,loc.lng],{icon}).addTo(_mapMAP).bindPopup(popup,{maxWidth:260});
+    marker._mapType = loc.t;
+  });
+}
+
+function filterMAPMap(btn, filter) {
+  document.querySelectorAll('.map-pass-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _mapMAPLibFilter = filter;
+  if (!_mapMAP) return;
+  _mapMAP.eachLayer(layer => {
+    if (!layer._mapType) return;
+    const show = filter === 'all' || layer._mapType === filter || (filter === 'mus' && layer._mapType === 'special');
+    if (show) layer.addTo(_mapMAP); else layer.remove();
+  });
+}
 
 // -- PARKS MAP --
 let _mapInited = false;
