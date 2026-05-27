@@ -1200,6 +1200,97 @@ body::before {
   .bb-label { font-size: 0.65rem; }
   .trail-btn { font-size: 10px; padding: 6px 10px; }
 }
+
+/* ── MOBILE FILTER COLLAPSE ─────────────────────────────────────── */
+.mobile-filter-toggle {
+  display: none;
+}
+@media (max-width: 768px) {
+  .mobile-filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 12px 24px;
+    background: var(--paper-light);
+    border: none;
+    border-bottom: 2px solid var(--ink);
+    font-family: "Special Elite", monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+  }
+  .mobile-filter-toggle i { color: var(--red); }
+  .mobile-filter-toggle .filter-toggle-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+  .mobile-filter-toggle .filter-toggle-arrow {
+    margin-left: auto;
+    transition: transform 0.2s;
+  }
+  .mobile-filter-toggle.open .filter-toggle-arrow {
+    transform: rotate(180deg);
+  }
+  .filter-panel {
+    display: none;
+  }
+  .filter-panel.mobile-open {
+    display: block;
+  }
+  /* Floating FAB when panel is closed */
+  .filter-fab {
+    display: flex;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 900;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 12px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 28px;
+    font-family: "Special Elite", monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  }
+  .filter-fab .filter-toggle-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 9px;
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+  .filter-fab.hidden { display: none; }
+}
+@media (min-width: 769px) {
+  .filter-fab { display: none; }
+  .mobile-filter-toggle { display: none; }
+  .filter-panel { display: block !important; }
+}
 </style>
 </head>
 <body>
@@ -1296,6 +1387,16 @@ body::before {
 <!-- ═══════════════════════════════════════
      FILTER PANEL
 ═══════════════════════════════════════ -->
+<button class="mobile-filter-toggle" id="mobileFilterToggle" onclick="toggleMobileFilters()" aria-expanded="false" aria-controls="filterPanel">
+  <i class="ti ti-adjustments-horizontal"></i>
+  Filter Your Trail
+  <span class="filter-toggle-count" id="mobileFilterCount" style="display:none"></span>
+  <i class="ti ti-chevron-down filter-toggle-arrow"></i>
+</button>
+<button class="filter-fab hidden" id="filterFab" onclick="toggleMobileFilters()" aria-label="Open filters">
+  <i class="ti ti-adjustments-horizontal"></i> Filters
+  <span class="filter-toggle-count" id="fabFilterCount" style="display:none"></span>
+</button>
 <div class="filter-panel" id="filterPanel">
   <div class="filter-label-row"><i class="ti ti-adjustments-horizontal"></i> Filter Your Trail</div>
   <div class="filter-grid">
@@ -1813,6 +1914,7 @@ function renderFilterChips() {
   const driveT = selText('filterDrive'); if (driveT) add('Within: '+driveT, () => clearFilterById('filterDrive'));
   const zipVal = document.getElementById('userZipInput')?.value;
   if (zipVal && zipVal.length===5 && userZipCoords) add('Zip: '+zipVal, () => { document.getElementById('userZipInput').value=''; setUserZip(''); });
+  updateMobileFilterBadge(chips.length);
   if (!chips.length) { row.innerHTML = ''; return; }
   row.innerHTML = '<span class="filter-chips-label">Active filters:</span>' +
     chips.map((c,i)=>`<button type="button" class="filter-chip" data-i="${i}" aria-label="Remove filter: ${c.label.replace(/"/g,'&quot;')}">${c.label}<span class="x" aria-hidden="true">×</span></button>`).join('');
@@ -1830,6 +1932,29 @@ function quickFilter(type, btn) {
   applyFilters();
 }
 
+function toggleMobileFilters(forceOpen) {
+  const panel = document.getElementById('filterPanel');
+  const toggle = document.getElementById('mobileFilterToggle');
+  const fab = document.getElementById('filterFab');
+  const isOpen = panel.classList.contains('mobile-open');
+  const shouldOpen = forceOpen !== undefined ? forceOpen : !isOpen;
+  panel.classList.toggle('mobile-open', shouldOpen);
+  if (toggle) {
+    toggle.classList.toggle('open', shouldOpen);
+    toggle.setAttribute('aria-expanded', shouldOpen);
+  }
+  if (fab) fab.classList.toggle('hidden', shouldOpen);
+}
+function updateMobileFilterBadge(count) {
+  ['mobileFilterCount','fabFilterCount'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (count > 0) { el.textContent = count; el.style.display = 'inline-flex'; }
+    else { el.style.display = 'none'; }
+  });
+  const fab = document.getElementById('filterFab');
+  if (fab && count > 0) fab.classList.remove('hidden');
+}
 function resetFilters() {
   ['filterOrg','filterAge','filterDay','filterReg'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('filterFree').checked = false;
