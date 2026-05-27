@@ -1602,6 +1602,7 @@ body::before {
         <button class="map-drive-btn" data-drive="20" onclick="filterMapDrive(this,20)">20 min</button>
         <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 min</button>
       </div>
+      <button id="btnTrails" class="map-filter-btn" style="background:var(--paper);color:var(--ink);border-color:var(--ink);" onclick="toggleTrails(this)">🚴 Bike Trails</button>
       <button class="map-filter-btn" style="background:var(--ink);color:var(--paper);border-color:var(--ink);margin-left:auto;" onclick="locateUser()">📍 My Location</button>
     </div>
     <div class="map-frame-outer">
@@ -3154,6 +3155,62 @@ function filterMapDrive(btn, drive) {
   _activeDrive = drive;
   applyMapFilters();
 }
+
+let _trailLayer = null;
+let _trailsVisible = false;
+let _trailsLoading = false;
+
+window.toggleTrails = function(btn) {
+  if (_trailsLoading) return;
+  if (_trailsVisible && _trailLayer) {
+    _trailLayer.remove();
+    _trailsVisible = false;
+    btn.style.background = 'var(--paper)';
+    btn.style.color = 'var(--ink)';
+    btn.textContent = '🚴 Bike Trails';
+    return;
+  }
+  if (_trailLayer) {
+    _trailLayer.addTo(_leafletMap);
+    _trailsVisible = true;
+    btn.style.background = 'var(--ink)';
+    btn.style.color = 'var(--paper)';
+    return;
+  }
+  // First load
+  _trailsLoading = true;
+  btn.textContent = '🚴 Loading…';
+  btn.disabled = true;
+  fetch('trails.geojson')
+    .then(r => r.json())
+    .then(data => {
+      _trailLayer = L.geoJSON(data, {
+        style: function(feature) {
+          const n = feature.properties.network;
+          const color = n === 'rcn' ? '#1f3a6b' : '#3D6B4F';
+          return { color, weight: n === 'rcn' ? 3 : 2, opacity: 0.75, dashArray: n === 'rcn' ? null : '5,4' };
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties;
+          const dist = p.distance ? ` &middot; ${p.distance}` : '';
+          const surface = p.surface ? `<div style="font-size:11px;color:#666;margin-top:2px;">${p.surface}</div>` : '';
+          layer.bindPopup(`<b>${p.name}</b>${dist}${surface}`, {maxWidth: 240});
+        }
+      }).addTo(_leafletMap);
+      _trailsVisible = true;
+      _trailsLoading = false;
+      btn.disabled = false;
+      btn.style.background = 'var(--ink)';
+      btn.style.color = 'var(--paper)';
+      btn.textContent = '🚴 Bike Trails';
+    })
+    .catch(err => {
+      _trailsLoading = false;
+      btn.disabled = false;
+      btn.textContent = '🚴 Bike Trails';
+      console.error('Trail load failed:', err);
+    });
+};
 </script>
 
 </body>
