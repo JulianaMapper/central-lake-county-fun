@@ -2761,9 +2761,35 @@ window.locateUser = function() {
   navigator.geolocation.getCurrentPosition(function(pos) {
     const lat = pos.coords.latitude, lng = pos.coords.longitude;
     if (window._userMarker) window._userMarker.remove();
+    if (window._radiusRings) window._radiusRings.forEach(r => r.remove());
+    if (window._radiusLabels) window._radiusLabels.forEach(l => l.remove());
     const icon = L.divIcon({className:'',html:'<div style="width:16px;height:16px;background:#c1342a;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #c1342a;"></div>',iconSize:[16,16],iconAnchor:[8,8]});
     window._userMarker = L.marker([lat,lng],{icon:icon,zIndexOffset:1000}).addTo(window._map).bindPopup('<b>Your location</b>').openPopup();
-    window._map.setView([lat,lng],12);
+    const miToM = 1609.34;
+    const ringStyles = [
+      { mi: 5,  color: '#1f3a6b', dash: '6,4',  weight: 1.5, fill: 0.04 },
+      { mi: 10, color: '#1f3a6b', dash: '6,4',  weight: 1.5, fill: 0.03 },
+      { mi: 15, color: '#1f3a6b', dash: '6,4',  weight: 1.5, fill: 0.02 },
+    ];
+    window._radiusRings = [];
+    window._radiusLabels = [];
+    ringStyles.forEach(({mi, color, dash, weight, fill}) => {
+      const circle = L.circle([lat,lng], {
+        radius: mi * miToM,
+        color, dashArray: dash, weight,
+        fillColor: color, fillOpacity: fill,
+        interactive: false
+      }).addTo(window._map);
+      window._radiusRings.push(circle);
+      const labelIcon = L.divIcon({
+        className: '',
+        html: `<span style="font-family:'Public Sans',sans-serif;font-size:11px;font-weight:600;color:#1f3a6b;background:rgba(240,230,208,0.85);padding:1px 4px;border-radius:2px;white-space:nowrap;">${mi} mi</span>`,
+        iconAnchor: [0,0]
+      });
+      const lbl = L.marker([lat + (mi * miToM / 111320 * 0.98), lng], {icon: labelIcon, interactive: false, zIndexOffset: -100}).addTo(window._map);
+      window._radiusLabels.push(lbl);
+    });
+    window._map.setView([lat,lng],11);
   }, function(){ alert('Unable to get your location. Please check your browser permissions.'); });
 };
 
