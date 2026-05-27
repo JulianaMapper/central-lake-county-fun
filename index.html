@@ -89,26 +89,25 @@ html { scroll-behavior: smooth; }
 .bb-item { position: relative; cursor: pointer; }
 .bb-item.checked {
   background: linear-gradient(135deg, rgba(232,169,44,0.28), rgba(232,169,44,0.12));
-  border-color: var(--ink);
+  border-color: var(--sun);
+  box-shadow: 3px 3px 0 var(--sun);
 }
 .bb-item.checked .bb-label {
-  text-decoration: line-through;
-  text-decoration-color: var(--ink);
-  text-decoration-thickness: 2px;
   color: var(--ink);
+  font-weight: 700;
 }
 .bb-check-badge {
   position: absolute;
   top: 6px; right: 6px;
   width: 22px; height: 22px;
   border-radius: 50%;
-  background: var(--red);
-  color: #fff;
+  background: var(--sun);
+  color: var(--ink);
   display: none;
   align-items: center; justify-content: center;
   font-family: "Public Sans", sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   border: 2px solid var(--paper);
   box-shadow: 0 0 0 1px var(--ink);
 }
@@ -1555,20 +1554,20 @@ body::before {
   <div class="bucket-tab-wrap">
     <div class="bucket-tab-header">
       <div>
-        <div class="bucket-tab-title">Pick Your Adventures</div>
-        <div class="bucket-tab-sub">Pick your adventures — then print your family's custom badge sheet.</div>
+        <div class="bucket-tab-title">Build Your Bucket List</div>
+        <div class="bucket-tab-sub">Tap adventures to add them to your family's summer list — then print it out.</div>
       </div>
       <div class="bucket-print-bar">
-        <span class="bucket-select-count" id="bucketSelCount">0 selected</span>
-        <button class="bucket-select-all" onclick="bucketSelectAll()">Select All</button>
+        <span class="bucket-select-count" id="bucketSelCount">Nothing on your list yet</span>
+        <button class="bucket-select-all" onclick="bucketSelectAll()">Add All</button>
         <button class="bucket-print-btn" id="bucketPrintBtn" onclick="printBucket()" disabled>
-          <i class="ti ti-printer"></i> Print Badge Sheet
+          <i class="ti ti-printer"></i> Print My List
         </button>
       </div>
     </div>
     <div class="bucket-badge-grid" id="bucketTabGrid"></div>
     <div class="trail-progress" style="margin-top:1.5rem">
-      <div class="trail-progress-label" id="bucketLabel">0 badges earned</div>
+      <div class="trail-progress-label" id="bucketLabel">0 adventures on your list</div>
       <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
     </div>
   </div>
@@ -2385,7 +2384,7 @@ function initBucketTab() {
         return `<div class="bb-item${isChecked?' checked':''}${sizeClass}" onclick="toggleBucketSel(${i})" id="bb-${i}" role="button" tabindex="0" aria-pressed="${isChecked}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBucketSel(${i});}">
           <div class="bb-icon${isChecked?' earned':''}"><i class="ti ${item.icon}"></i></div>
           <div class="bb-label">${item.text}</div>
-          <div class="bb-check-badge" aria-hidden="true">✓</div>
+          <div class="bb-check-badge" aria-hidden="true">★</div>
         </div>`;
       }).join('')}
     </div>
@@ -2396,7 +2395,7 @@ function initBucketTab() {
     const btn = document.createElement('button');
     btn.id = 'bucketResetBtn';
     btn.className = 'bucket-reset';
-    btn.textContent = 'Reset progress';
+    btn.textContent = 'Clear my list';
     btn.onclick = resetBucketProgress;
     wrap.appendChild(btn);
   }
@@ -2433,13 +2432,13 @@ function bucketSelectAll() {
     if (icon) icon.classList.toggle('earned', on);
   });
   const sa = document.querySelector('.bucket-select-all');
-  if (sa) sa.textContent = allSel ? 'Select All' : 'Deselect All';
+  if (sa) sa.textContent = allSel ? 'Add All' : 'Remove All';
   updateBucketSelCount();
   updateBucket(bucketChecked.size);
 }
 
 function resetBucketProgress() {
-  if (!confirm('Reset all bucket-list progress? This clears every checked adventure.')) return;
+  if (!confirm('Clear your bucket list? This removes all adventures from your list.')) return;
   bucketChecked.clear();
   saveBucketChecked(bucketChecked);
   initBucketTab();
@@ -2448,7 +2447,7 @@ function resetBucketProgress() {
 function updateBucketSelCount() {
   const n = bucketChecked.size;
   const el = document.getElementById('bucketSelCount');
-  if (el) el.textContent = n === 0 ? 'None checked' : `${n} checked`;
+  if (el) el.textContent = n === 0 ? 'Nothing on your list yet' : `${n} on your list`;
   const btn = document.getElementById('bucketPrintBtn');
   if (btn) btn.disabled = n === 0;
 }
@@ -2493,7 +2492,7 @@ function toggleBucket(i) {
 }
 function updateBucket(n) {
   const total=BUCKET.length;
-  document.getElementById('bucketLabel').textContent=`${n} of ${total} badges earned${n===total?' — Ranger status achieved!':''}`;
+  document.getElementById('bucketLabel').textContent=`${n} of ${total} adventures on your list${n===total?' — Full summer unlocked!':''}`;
   document.getElementById('bucketFill').style.width=`${(n/total)*100}%`;
 }
 
