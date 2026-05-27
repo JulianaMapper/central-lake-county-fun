@@ -1625,42 +1625,8 @@ body::before {
   </div>
   <div class="map-tab-wrap" style="max-width:860px;">
 
-    <!-- Children's Neighborhood Museum -->
-    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
-      <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Round Lake · Every Wednesday</div>
-      <h3 style="font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--ink);margin:0 0 10px;">Children's Neighborhood Museum</h3>
-      <p style="font-size:0.95rem;line-height:1.6;color:var(--ink);margin:0 0 14px;"><strong>Free admission every Wednesday, 12:30–2:30 PM.</strong> Located in the lower level of the Robert W. Rolek Community Center in Round Lake.</p>
-      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.88rem;color:var(--ink);margin-bottom:4px;">
-        <span><i class="ti ti-map-pin"></i> 814 Hart Road, Round Lake, IL 60073</span>
-        <span><i class="ti ti-clock"></i> Wednesdays 12:30–2:30 PM</span>
-        <span><i class="ti ti-currency-dollar"></i> Free</span>
-      </div>
-    </div>
-
-    <!-- MAP Locations Map -->
-    <div style="margin-top:1.5rem;">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-        <div>
-          <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;">Museum Adventure Pass</div>
-          <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin:0;">Libraries &amp; Museums Near You</h3>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="map-filter-btn map-pass-filter-btn active" onclick="filterMAPMap(this,'all')" style="font-size:11px;padding:5px 12px;">All</button>
-          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'lib')" style="font-size:11px;padding:5px 12px;background:var(--blue);color:var(--paper);border-color:var(--blue);">📚 Libraries</button>
-          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'mus')" style="font-size:11px;padding:5px 12px;background:var(--red);color:var(--paper);border-color:var(--red);">🏛️ Museums</button>
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-bottom:8px;flex-wrap:wrap;">
-        <span><span style="display:inline-block;width:10px;height:10px;background:#1f3a6b;border-radius:2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Library (has MAP passes)</span>
-        <span><span style="display:inline-block;width:10px;height:10px;background:#c1342a;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Museum (accepts MAP passes)</span>
-        <span><span style="display:inline-block;width:14px;height:14px;background:#2a7a4f;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Free admission venue</span>
-      </div>
-      <div id="mapMAP" style="height:460px;border:2px solid var(--ink);"></div>
-      <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Check out MAP passes at any participating library with your library card. <a href="https://www.museumadventure.org/" target="_blank" rel="noopener" style="color:var(--ink);">museumadventure.org</a></p>
-    </div>
-
     <!-- Museum Adventure Pass -->
-    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-top:2rem;">
+    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
       <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
         <div style="flex:1;min-width:220px;">
           <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Illinois Library Program</div>
@@ -1693,6 +1659,40 @@ body::before {
           </div>
           <div style="font-size:9px;margin-top:10px;color:var(--ink-soft);">Check museumadventure.org to confirm your library participates.</div>
         </div>
+      </div>
+    </div>
+
+    <!-- MAP Locations Map -->
+    <div style="margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;">Museum Adventure Pass</div>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin:0;">Libraries &amp; Museums Near You</h3>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="map-filter-btn map-pass-filter-btn active" onclick="filterMAPMap(this,'all')" style="font-size:11px;padding:5px 12px;">All</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'lib')" style="font-size:11px;padding:5px 12px;background:var(--blue);color:var(--paper);border-color:var(--blue);">📚 Libraries</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'mus')" style="font-size:11px;padding:5px 12px;background:var(--red);color:var(--paper);border-color:var(--red);">🏛️ Museums</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-bottom:8px;flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:10px;height:10px;background:#1f3a6b;border-radius:2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Library (has MAP passes)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#c1342a;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Museum (accepts MAP passes)</span>
+        <span><span style="display:inline-block;width:14px;height:14px;background:#2a7a4f;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Free admission venue</span>
+      </div>
+      <div id="mapMAP" style="height:460px;border:2px solid var(--ink);"></div>
+      <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Check out MAP passes at any participating library with your library card. <a href="https://www.museumadventure.org/" target="_blank" rel="noopener" style="color:var(--ink);">museumadventure.org</a></p>
+    </div>
+
+    <!-- Children's Neighborhood Museum -->
+    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
+      <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Round Lake · Every Wednesday</div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--ink);margin:0 0 10px;">Children's Neighborhood Museum</h3>
+      <p style="font-size:0.95rem;line-height:1.6;color:var(--ink);margin:0 0 14px;"><strong>Free admission every Wednesday, 12:30–2:30 PM.</strong> Located in the lower level of the Robert W. Rolek Community Center in Round Lake.</p>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.88rem;color:var(--ink);margin-bottom:4px;">
+        <span><i class="ti ti-map-pin"></i> 814 Hart Road, Round Lake, IL 60073</span>
+        <span><i class="ti ti-clock"></i> Wednesdays 12:30–2:30 PM</span>
+        <span><i class="ti ti-currency-dollar"></i> Free</span>
       </div>
     </div>
 
