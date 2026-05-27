@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Summer Fun — Central Lake County 2026</title>
 <meta name="description" content="A volunteer-built guide to 1,700+ free and low-cost summer 2026 events, parks, and outdoor adventures for families with young kids in central Lake County, Illinois.">
@@ -1625,6 +1625,28 @@ body::before {
   </div>
   <div class="map-tab-wrap" style="max-width:860px;">
 
+    <!-- MAP Locations Map -->
+    <div style="margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;">Museum Adventure Pass</div>
+          <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin:0;">Libraries &amp; Museums Near You</h3>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="map-filter-btn map-pass-filter-btn active" onclick="filterMAPMap(this,'all')" style="font-size:11px;padding:5px 12px;">All</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'lib')" style="font-size:11px;padding:5px 12px;background:var(--blue);color:var(--paper);border-color:var(--blue);">📚 Libraries</button>
+          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'mus')" style="font-size:11px;padding:5px 12px;background:var(--red);color:var(--paper);border-color:var(--red);">🏛️ Museums</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-bottom:8px;flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:10px;height:10px;background:#1f3a6b;border-radius:2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Library (has MAP passes)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#c1342a;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Museum (accepts MAP passes)</span>
+        <span><span style="display:inline-block;width:14px;height:14px;background:#2a7a4f;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Free admission venue</span>
+      </div>
+      <div id="mapMAP" style="height:460px;border:2px solid var(--ink);"></div>
+      <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Check out MAP passes at any participating library with your library card. <a href="https://www.museumadventure.org/" target="_blank" rel="noopener" style="color:var(--ink);">museumadventure.org</a></p>
+    </div>
+
     <!-- Museum Adventure Pass -->
     <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
       <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
@@ -1660,28 +1682,6 @@ body::before {
           <div style="font-size:9px;margin-top:10px;color:var(--ink-soft);">Check museumadventure.org to confirm your library participates.</div>
         </div>
       </div>
-    </div>
-
-    <!-- MAP Locations Map -->
-    <div style="margin-bottom:2rem;">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
-        <div>
-          <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;">Museum Adventure Pass</div>
-          <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin:0;">Libraries &amp; Museums Near You</h3>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="map-filter-btn map-pass-filter-btn active" onclick="filterMAPMap(this,'all')" style="font-size:11px;padding:5px 12px;">All</button>
-          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'lib')" style="font-size:11px;padding:5px 12px;background:var(--blue);color:var(--paper);border-color:var(--blue);">📚 Libraries</button>
-          <button class="map-filter-btn map-pass-filter-btn" onclick="filterMAPMap(this,'mus')" style="font-size:11px;padding:5px 12px;background:var(--red);color:var(--paper);border-color:var(--red);">🏛️ Museums</button>
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-bottom:8px;flex-wrap:wrap;">
-        <span><span style="display:inline-block;width:10px;height:10px;background:#1f3a6b;border-radius:2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Library (has MAP passes)</span>
-        <span><span style="display:inline-block;width:10px;height:10px;background:#c1342a;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Museum (accepts MAP passes)</span>
-        <span><span style="display:inline-block;width:14px;height:14px;background:#2a7a4f;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);vertical-align:middle;"></span> Free admission venue</span>
-      </div>
-      <div id="mapMAP" style="height:460px;border:2px solid var(--ink);"></div>
-      <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Check out MAP passes at any participating library with your library card. <a href="https://www.museumadventure.org/" target="_blank" rel="noopener" style="color:var(--ink);">museumadventure.org</a></p>
     </div>
 
     <!-- Children's Neighborhood Museum -->
