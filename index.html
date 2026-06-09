@@ -492,18 +492,31 @@ body::before {
   text-transform: uppercase; color: var(--ink-soft);
   display: flex; align-items: center; gap: 0.25rem;
 }
-.type-check-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.type-check-group .type-chip {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  font-family: "Special Elite", monospace; font-size: 12px;
-  letter-spacing: 0.04em; text-transform: none; color: var(--ink);
-  background: var(--paper); border: 1.5px solid var(--ink);
-  padding: 5px 9px; cursor: pointer; line-height: 1.1; user-select: none;
+.type-dropdown { position: relative; width: 100%; }
+.type-dropdown-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  width: 100%; font-family: "Special Elite", monospace; font-size: 12px;
+  letter-spacing: 0.06em; background: var(--paper); color: var(--ink);
+  border: 1.5px solid var(--ink); padding: 8px 10px; cursor: pointer; text-align: left;
 }
-.type-check-group .type-chip:hover { background: var(--paper-deep); }
-.type-check-group .type-chip input { accent-color: var(--ink); margin: 0; cursor: pointer; }
-.type-check-group .type-chip:has(input:checked) { background: var(--ink); color: var(--paper); }
-.type-check-group .type-chip:focus-within { outline: 2px solid var(--ink); outline-offset: 1px; }
+.type-dropdown-btn:hover { background: var(--paper-deep); }
+.type-dropdown-btn i { font-size: 0.85rem; transition: transform 0.15s; }
+.type-dropdown.open .type-dropdown-btn i { transform: rotate(180deg); }
+.type-dropdown-panel {
+  display: none; position: absolute; z-index: 40; top: calc(100% + 3px); left: 0;
+  min-width: 100%; width: max-content; max-width: 320px; max-height: 320px; overflow-y: auto;
+  background: var(--paper); border: 1.5px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink); padding: 4px;
+}
+.type-dropdown.open .type-dropdown-panel { display: block; }
+.type-dropdown-panel .type-opt {
+  display: flex; align-items: center; gap: 0.45rem;
+  font-family: "Special Elite", monospace; font-size: 12px; letter-spacing: 0.04em;
+  text-transform: none; color: var(--ink); padding: 6px 8px; cursor: pointer; white-space: nowrap;
+}
+.type-dropdown-panel .type-opt:hover { background: var(--paper-deep); }
+.type-dropdown-panel .type-opt input { accent-color: var(--ink); margin: 0; cursor: pointer; }
+.type-dropdown-panel .type-opt:has(input:checked) { background: var(--ink); color: var(--paper); }
 .fg select, .fg input[type=text] {
   font-family: "Special Elite", monospace;
   font-size: 12px; background: var(--paper);
@@ -1445,25 +1458,31 @@ body::before {
         <option value="yes">Registration required</option>
       </select>
     </div>
-    <div class="fg" style="grid-column:1 / -1;">
-      <label><i class="ti ti-category"></i> Event Type <span style="font-weight:400;opacity:0.6;">(pick any)</span></label>
-      <div id="filterTypeGroup" class="type-check-group" role="group" aria-label="Filter by event type (multiple allowed)">
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Storytime" onchange="applyFilters()"> Storytime</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Craft / Art" onchange="applyFilters()"> Craft / Art</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Nature / Outdoors" onchange="applyFilters()"> Nature / Outdoors</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Animals" onchange="applyFilters()"> Animals</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Music / Performance" onchange="applyFilters()"> Music / Performance</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Play / Drop-in" onchange="applyFilters()"> Play / Drop-in</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Movies" onchange="applyFilters()"> Movies</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="STEM / Discovery" onchange="applyFilters()"> STEM / Discovery</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Museums" onchange="applyFilters()"> Museums</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Games & Clubs" onchange="applyFilters()"> Games &amp; Clubs</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Free Meals / Food" onchange="applyFilters()"> Free Meals / Food</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Festivals / Celebrations" onchange="applyFilters()"> Festivals / Celebrations</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Movement / Sports" onchange="applyFilters()"> Movement / Sports</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Community Resources" onchange="applyFilters()"> Community Resources</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Camps" onchange="applyFilters()"> Camps</label>
-        <label class="type-chip"><input type="checkbox" class="type-check" value="Family Fun" onchange="applyFilters()"> Family Fun</label>
+    <div class="fg">
+      <label><i class="ti ti-category"></i> Event Type</label>
+      <div class="type-dropdown" id="typeDropdown">
+        <button type="button" id="typeDropdownBtn" class="type-dropdown-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleTypeDropdown(event)">
+          <span id="typeDropdownLabel">All Types</span>
+          <i class="ti ti-chevron-down"></i>
+        </button>
+        <div class="type-dropdown-panel" id="typeDropdownPanel" role="group" aria-label="Filter by event type (multiple allowed)">
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Storytime" onchange="applyFilters()"> Storytime</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Craft / Art" onchange="applyFilters()"> Craft / Art</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Nature / Outdoors" onchange="applyFilters()"> Nature / Outdoors</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Animals" onchange="applyFilters()"> Animals</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Music / Performance" onchange="applyFilters()"> Music / Performance</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Play / Drop-in" onchange="applyFilters()"> Play / Drop-in</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Movies" onchange="applyFilters()"> Movies</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="STEM / Discovery" onchange="applyFilters()"> STEM / Discovery</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Museums" onchange="applyFilters()"> Museums</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Games & Clubs" onchange="applyFilters()"> Games &amp; Clubs</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Free Meals / Food" onchange="applyFilters()"> Free Meals / Food</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Festivals / Celebrations" onchange="applyFilters()"> Festivals / Celebrations</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Movement / Sports" onchange="applyFilters()"> Movement / Sports</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Community Resources" onchange="applyFilters()"> Community Resources</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Camps" onchange="applyFilters()"> Camps</label>
+          <label class="type-opt"><input type="checkbox" class="type-check" value="Family Fun" onchange="applyFilters()"> Family Fun</label>
+        </div>
       </div>
     </div>
     <div class="fg">
@@ -4387,6 +4406,27 @@ function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function trunc(s,n) { return s&&s.length>n ? s.slice(0,n)+'…' : (s||''); }
 
 // ── FILTERS ──
+function toggleTypeDropdown(e) {
+  if (e) e.stopPropagation();
+  const dd = document.getElementById('typeDropdown');
+  const open = dd.classList.toggle('open');
+  document.getElementById('typeDropdownBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function updateTypeBtnLabel() {
+  const sel = Array.from(document.querySelectorAll('.type-check:checked')).map(c => c.value);
+  const lbl = document.getElementById('typeDropdownLabel');
+  if (!lbl) return;
+  if (!sel.length) lbl.textContent = 'All Types';
+  else if (sel.length === 1) lbl.textContent = sel[0];
+  else lbl.textContent = sel.length + ' types';
+}
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('typeDropdown');
+  if (dd && dd.classList.contains('open') && !dd.contains(e.target)) {
+    dd.classList.remove('open');
+    document.getElementById('typeDropdownBtn').setAttribute('aria-expanded', 'false');
+  }
+});
 function timeToMin(t) {
   if (!t) return 9999;
   const m = t.match(/(\d+):?(\d*)\s*(AM|PM)/i);
@@ -4404,6 +4444,7 @@ function applyFilters() {
   const freeOnly = document.getElementById('filterFree').checked;
   const noStory = document.getElementById('filterNoStory')?.checked;
   const evTypes = Array.from(document.querySelectorAll('.type-check:checked')).map(c => c.value);
+  updateTypeBtnLabel();
   const timeOfDay = document.getElementById('filterTime')?.value || '';
   const maxDrive = parseInt(document.getElementById('filterDrive')?.value || '0');
   const specialNeedsOnly = document.getElementById('filterSpecialNeeds')?.value === 'yes';
