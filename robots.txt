@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://julianamapper.github.io/central-lake-county-fun/sitemap.xml

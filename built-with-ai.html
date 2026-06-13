@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Built This With AI — Learn Claude Code | Central Lake County Fun</title>
+<meta name="description" content="This whole Lake County events site — 2,300+ events, a live calendar, an interactive parks map — was built with Claude Code. Curious how? Learn to build with AI yourself, or bring it to your team.">
+<link rel="canonical" href="https://julianamapper.github.io/central-lake-county-fun/built-with-ai.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:site_name" content="Central Lake County Fun">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A mom built this with AI. Here's how — and how you can too.">
+<meta property="og:description" content="2,300+ events, a live calendar, an interactive map — all built with Claude Code. Learn to build with AI, or bring it to your team.">
+<meta property="og:url" content="https://julianamapper.github.io/central-lake-county-fun/built-with-ai.html">
+<meta property="og:image" content="https://julianamapper.github.io/central-lake-county-fun/og-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A mom built this with AI. Here's how — and how you can too.">
+<meta name="twitter:description" content="2,300+ events, a live calendar, an interactive map — all built with Claude Code. Learn to build with AI, or bring it to your team.">
+<meta name="twitter:image" content="https://julianamapper.github.io/central-lake-county-fun/og-preview.png">
+<meta name="theme-color" content="#1f3a6b">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Special+Elite&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Juliana Wilhoit","jobTitle":"Builder & AI consultant","sameAs":["https://www.facebook.com/juliana.wilhoit","https://www.linkedin.com/in/julianamapper/"],"description":"Built the Central Lake County Fun events site with Claude Code. Helps individuals and teams learn to build with AI."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Was this website really built with AI?","acceptedAnswer":{"@type":"Answer","text":"Yes. The entire site — 2,300+ events, the live calendar, filters, and the interactive parks map — was built with Claude Code, an AI coding tool, by describing what was needed in plain English."}},{"@type":"Question","name":"Can I learn to build things with Claude Code myself?","acceptedAnswer":{"@type":"Answer","text":"Yes. You don't need to be an engineer to get started. Message Juliana on Facebook or LinkedIn and she'll show you how to begin."}},{"@type":"Question","name":"Can you help bring AI into my team or organization?","acceptedAnswer":{"@type":"Answer","text":"Yes. Through F&T Labs, a US-based development team, you can get hands-on AI workshops and an AI-readiness assessment for your organization."}}]}</script>
+<style>
+  :root{
+    --blue:#1f3a6b; --ink:#1a1612; --ink-soft:#4a4034;
+    --paper:#f0e6d0; --paper-light:#f7efdc; --paper-deep:#e6dabd;
+    --red:#c1342a; --red-deep:#8a1f17; --sun:#e8a92c; --gold-aaa:#f5d27a;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"Public Sans",system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px;}
+  a{color:var(--red-deep);}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-light);text-decoration:none;border:1.5px solid rgba(247,239,220,.4);padding:7px 14px;border-radius:2px;margin-bottom:26px;transition:.15s;}
+  .back-link:hover{background:var(--paper-light);color:var(--blue);}
+
+  /* HERO */
+  .hero{background:var(--blue);color:var(--paper-light);padding:48px 0 56px;border-bottom:3px solid var(--ink);}
+  .hero-eyebrow{font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-aaa);margin-bottom:14px;}
+  .hero h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(38px,6.5vw,64px);line-height:1.02;letter-spacing:-.02em;margin-bottom:18px;}
+  .hero h1 em{font-style:italic;color:var(--gold-aaa);}
+  .hero-sub{font-size:19px;line-height:1.55;max-width:620px;color:var(--paper-light);}
+  .hero-sub strong{color:#fff;}
+
+  /* SECTIONS */
+  section.block{padding:44px 0;border-bottom:1px solid var(--paper-deep);}
+  .eyebrow{font-family:"Special Elite",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red-deep);margin-bottom:10px;}
+  h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(26px,4vw,38px);line-height:1.1;color:var(--blue);margin-bottom:16px;letter-spacing:-.01em;}
+  h3{font-family:"DM Serif Display",serif;font-weight:400;font-size:24px;color:var(--ink);margin-bottom:8px;}
+  p{font-size:17px;color:var(--ink);margin-bottom:14px;}
+  p.lead{font-size:20px;line-height:1.5;color:var(--ink-soft);font-family:"DM Serif Display",serif;border-left:4px solid var(--red);padding-left:16px;margin:6px 0 20px;}
+  strong{font-weight:700;color:var(--ink);}
+
+  .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;}
+  .proof{background:var(--paper-light);border:2px solid var(--ink);border-radius:3px;padding:18px;}
+  .proof .n{font-family:"DM Serif Display",serif;font-size:34px;color:var(--red);line-height:1;}
+  .proof .l{font-family:"Public Sans",sans-serif;font-size:14px;font-weight:600;color:var(--ink-soft);margin-top:6px;}
+
+  /* FUNNEL */
+  .paths{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:10px;}
+  .path{background:var(--paper-light);border:2px solid var(--ink);border-radius:4px;padding:24px;display:flex;flex-direction:column;}
+  .path .tag{font-family:"Special Elite",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red-deep);margin-bottom:8px;}
+  .path p{font-size:15px;flex:1;}
+  .path .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:12px 16px;border:2px solid var(--ink);background:var(--blue);color:var(--paper-light);text-decoration:none;border-radius:2px;transition:.12s;}
+  .path .pbtn:hover{background:var(--ink);}
+
+  /* CONTACT */
+  .contact{background:var(--blue);color:var(--paper-light);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:48px 0;}
+  .contact h2{color:var(--paper-light);}
+  .contact .eyebrow{color:var(--gold-aaa);}
+  .contact p{color:var(--paper-light);}
+  form{margin-top:18px;display:grid;gap:14px;max-width:620px;}
+  label{font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-aaa);display:block;margin-bottom:5px;}
+  input[type=text],input[type=email],textarea{width:100%;font-family:"Public Sans",sans-serif;font-size:16px;padding:12px 14px;border:2px solid var(--paper-light);border-radius:3px;background:var(--paper-light);color:var(--ink);}
+  input:focus,textarea:focus{outline:3px solid var(--gold-aaa);outline-offset:2px;}
+  textarea{min-height:130px;resize:vertical;}
+  .honey{position:absolute;left:-9999px;}
+  .submit-btn{justify-self:start;font-family:"Special Elite",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;border:2px solid var(--paper-light);background:var(--gold-aaa);color:var(--ink);cursor:pointer;border-radius:2px;transition:.12s;}
+  .submit-btn:hover{background:#fff;}
+  .form-status{font-family:"Special Elite",monospace;font-size:14px;margin-top:4px;min-height:20px;}
+  .socials{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;}
+  .sbtn{display:inline-flex;align-items:center;gap:8px;font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;border:2px solid var(--paper-light);background:var(--paper-light);color:var(--ink);text-decoration:none;border-radius:2px;transition:.12s;}
+  .sbtn:hover{background:var(--gold-aaa);}
+  .sbtn svg{flex:0 0 auto;}
+
+  footer{text-align:center;padding:28px 24px;font-family:"Special Elite",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  footer a{color:var(--blue);text-decoration:none;font-weight:700;}
+
+  @media (max-width:680px){
+    .proof-grid{grid-template-columns:1fr;}
+    .paths{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="index.html" class="back-link">← Back to the events calendar</a>
+    <div class="hero-eyebrow">★ Behind the build ★</div>
+    <h1>A mom built this with AI.<br><em>Here's how — and how you can too.</em></h1>
+    <p class="hero-sub">
+      Everything you just used — <strong>2,300+ events</strong>, the live calendar, the filters,
+      the interactive parks map — I built with <strong>Claude&nbsp;Code</strong>, an AI coding tool,
+      in the cracks of a busy life. No big dev team. If that sparks something for you, keep reading.
+    </p>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <div class="eyebrow">The short version</div>
+    <h2>You can build real things now — just by describing them.</h2>
+    <p class="lead">The gap between "I wish this existed" and "I built it" got a lot smaller.</p>
+    <p>
+      I'm Juliana — I run a company, I'm raising little kids, and I kept wishing someone would put every
+      free local event in one place. So I described what I wanted, in plain English, and built it with AI.
+      The result is the site you're on. It's the clearest proof I know of that you don't need to be a
+      full-time engineer to make something genuinely useful anymore.
+    </p>
+    <div class="proof-grid">
+      <div class="proof"><div class="n">2,300+</div><div class="l">events aggregated &amp; filtered</div></div>
+      <div class="proof"><div class="n">100+</div><div class="l">parks mapped &amp; rated</div></div>
+      <div class="proof"><div class="n">1</div><div class="l">person, building in the margins</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="eyebrow">Where you come in</div>
+    <h2>Two ways I can help.</h2>
+    <div class="paths">
+      <div class="path">
+        <div class="tag">For you</div>
+        <h3>Learn to build it yourself</h3>
+        <p>Want to make your own thing — a tool, a site, an automation that saves you hours? I'll show you how to get started with Claude Code, hands-on, from wherever you are now. No engineering background needed.</p>
+        <a class="pbtn" href="#contact">Show me how →</a>
+      </div>
+      <div class="path">
+        <div class="tag">For your team</div>
+        <h3>Bring AI into your organization</h3>
+        <p>Through <strong>F&amp;T Labs</strong> — a US-based development team — we run hands-on AI workshops and AI-readiness assessments so your team can put these tools to work on real workflows, safely.</p>
+        <a class="pbtn" href="#contact">Let's talk →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">★ Get in touch ★</div>
+    <h2>Tell me what you're trying to build.</h2>
+    <p>Drop me a note and I'll get back to you. Prefer to message? I'm on Facebook and LinkedIn below.</p>
+
+    <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+      <!-- Web3Forms access key — submissions email to Juliana's Gmail -->
+      <input type="hidden" name="access_key" value="5e6a55d2-2179-4735-be98-65a943ade348">
+      <input type="hidden" name="subject" value="New message from the Central Lake County Fun build page">
+      <input type="hidden" name="from_name" value="Central Lake County Fun">
+      <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off">
+
+      <div>
+        <label for="cf-name">Your name</label>
+        <input type="text" id="cf-name" name="name" required autocomplete="name">
+      </div>
+      <div>
+        <label for="cf-email">Your email</label>
+        <input type="email" id="cf-email" name="email" required autocomplete="email">
+      </div>
+      <div>
+        <label for="cf-msg">What are you trying to build (or learn)?</label>
+        <textarea id="cf-msg" name="message" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send message</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="socials">
+      <a class="sbtn" href="https://www.facebook.com/juliana.wilhoit" target="_blank" rel="noopener" aria-label="Message Juliana on Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.52 1.5-3.91 3.78-3.91 1.1 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>
+        <span>Message me on Facebook</span>
+      </a>
+      <a class="sbtn" href="https://www.linkedin.com/in/julianamapper/" target="_blank" rel="noopener" aria-label="Connect with Juliana on LinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+        <span>Connect on LinkedIn</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html">← Back to Central Lake County Fun</a>
+</footer>
+
+<script>
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.style.color = '#f7efdc';
+    status.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+      const data = await res.json();
+      if (data.success) {
+        form.reset();
+        status.style.color = '#f5d27a';
+        status.textContent = '✓ Thank you — your message is on its way. I\'ll be in touch soon!';
+      } else {
+        status.style.color = '#f5d27a';
+        status.textContent = 'Hmm, that didn\'t go through. Please message me on Facebook or LinkedIn below.';
+      }
+    } catch (err) {
+      status.style.color = '#f5d27a';
+      status.textContent = 'Hmm, that didn\'t go through. Please message me on Facebook or LinkedIn below.';
+    }
+  });
+</script>
+
+</body>
+</html>
