@@ -751,6 +751,18 @@ body::before {
 .trail-chip.active { background: var(--ink); color: var(--paper); }
 .trail-chip i { font-size: 0.85rem; }
 
+/* Quick date filter row — the "tap and go" controls for busy parents */
+.quick-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; }
+.quick-label { font-family: "Special Elite", monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-right: 2px; }
+.trail-chip.quick { font-size: 13px; padding: 11px 16px; border-width: 2px; border-radius: 3px; }
+.trail-chip.quick.active { background: var(--red); border-color: var(--red); color: var(--paper-light); }
+.trail-chip.quick:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .quick-row { gap: 7px; }
+  .quick-label { width: 100%; margin-bottom: 2px; }
+  .trail-chip.quick { flex: 1 1 calc(50% - 4px); justify-content: center; padding: 13px 8px; font-size: 13px; }
+}
+
 /* ── CALENDAR GRID VIEW ── */
 .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
 .month-nav h3 { font-family: "DM Serif Display", serif; font-size: 1.3rem; color: var(--ink); }
@@ -1221,12 +1233,13 @@ body::before {
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   .topbar { padding: 7px 20px; }
-  .fsf-masthead { padding: 14px 24px; gap: 16px; }
-  .mast-word { font-size: 26px; }
-  .tagband { padding: 8px 24px; font-size: 10px; flex-wrap: wrap; gap: 6px; }
-  .fsf-hero { padding: 40px 24px 36px; }
-  .hero-h1 { font-size: clamp(48px, 12vw, 80px); }
-  .hero-lede { font-size: 18px; }
+  .fsf-masthead { padding: 12px 20px; gap: 12px; }
+  .mast-word { font-size: 21px; }
+  .tagband { padding: 7px 20px; font-size: 9px; flex-wrap: wrap; gap: 5px; }
+  .fsf-hero { padding: 28px 20px 26px; }
+  .hero-h1 { font-size: clamp(30px, 8vw, 46px); line-height: 0.98; letter-spacing: -0.02em; }
+  .hero-lede { font-size: 15.5px; line-height: 1.5; }
+  .fsf-sec-title { font-size: 30px; }
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
   .hero-stats > div:nth-child(2) { border-right: none; }
   .hero-stats > div:nth-child(3) { border-right: 1px dashed rgba(0,0,0,0.25); }
@@ -1251,8 +1264,11 @@ body::before {
 }
 @media (max-width: 480px) {
   .filter-grid { grid-template-columns: 1fr; }
+  .hero-h1 { font-size: clamp(27px, 7.4vw, 36px); letter-spacing: -0.02em; }
+  .mast-word { font-size: 19px; }
+  .fsf-sec-title { font-size: 26px; }
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .stat-n { font-size: 38px; }
+  .stat-n { font-size: 32px; }
   .badge-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
   .modal { border-radius: 0; }
   .modal-overlay { align-items: flex-end; }
@@ -1602,6 +1618,15 @@ body::before {
   <div class="fsf-sec-head">
     <span class="fsf-sec-num">01</span>
     <h2 class="fsf-sec-title">The Lineup · Summer 2026</h2>
+  </div>
+
+  <!-- QUICK DATE FILTERS -->
+  <div class="quick-row" role="group" aria-label="Quick date filters">
+    <span class="quick-label">Show me:</span>
+    <button class="trail-chip quick" onclick="quickFilter('today', this)"><i class="ti ti-sun"></i> Today</button>
+    <button class="trail-chip quick" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
+    <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
+    <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
   </div>
 
   <!-- ACTION TOOLBAR -->
@@ -2125,12 +2150,18 @@ function applyFilters() {
     if (timeOfDay && e.timeOfDay !== timeOfDay) return false;
     if (activeQuick === 'today' && !isToday(e.date)) return false;
     if (activeQuick === 'week') { const we = addDays(t,6); if (d > we) return false; }
+    if (activeQuick === 'weekend') {
+      const dow = t.getDay();
+      const start = dow === 0 ? t : addDays(t, (6 - dow + 7) % 7);
+      const end = dow === 0 ? t : addDays(start, 1);
+      if (d < start || d > end) return false;
+    }
     return true;
   }).sort((a, b) => {
     if (a.date !== b.date) return a.date < b.date ? -1 : 1;
     return timeToMin(a.time) - timeToMin(b.time);
   });
-  const titles = { today:'Today',week:'This Week',free:'Free Events — All Summer',all:'All Events — Summer 2026' };
+  const titles = { today:'Today',weekend:'This Weekend',week:'This Week',free:'Free Events — All Summer',all:'All Events — Summer 2026' };
   document.getElementById('calTitle').textContent = titles[activeQuick]||'Next 4 Weeks';
   renderCal();
   updateToolbar();
