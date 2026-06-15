@@ -978,6 +978,8 @@ body::before {
 .pp-badge { display: inline-block; font-size: 0.62rem; font-family: "Special Elite", monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; white-space: nowrap; }
 .pp-badge.top { background: var(--sun); color: var(--ink); }
 .pp-badge.new { background: var(--ink); color: var(--paper); }
+.pp-dir { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; background: var(--blue); color: #fff; font-family: "Public Sans", sans-serif; font-size: 0.78rem; font-weight: 700; text-decoration: none; padding: 6px 12px; border-radius: 6px; }
+.pp-dir:hover { background: #16294d; }
 
 /* ── COFFEE / SUPPORT SECTION ── */
 .basecamp-section {
@@ -5200,6 +5202,7 @@ function initParksMap() {
       '<div class="pp-meta">' + p.city + ' &middot; ' + p.drive + ' min &middot; ' + p.cost + '</div>' +
       '<div class="pp-type">' + p.type + '</div>' +
       agesLine + amenityList + ratingLine + noteLine +
+      '<a class="pp-dir" href="https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lon + '" target="_blank" rel="noopener"><i class="ti ti-navigation"></i> Directions</a>' +
       '</div>';
     const marker = L.marker([p.lat, p.lon], {icon}).addTo(map).bindPopup(popup, {maxWidth: 280});
     _allMarkers.push({ marker, section: p.section, drive: p.drive });
