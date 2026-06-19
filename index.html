@@ -978,8 +978,10 @@ body::before {
 .pp-badge { display: inline-block; font-size: 0.62rem; font-family: "Special Elite", monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; white-space: nowrap; }
 .pp-badge.top { background: var(--sun); color: var(--ink); }
 .pp-badge.new { background: var(--ink); color: var(--paper); }
-.pp-dir { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; background: var(--blue); color: #fff; font-family: "Public Sans", sans-serif; font-size: 0.78rem; font-weight: 700; text-decoration: none; padding: 6px 12px; border-radius: 6px; }
-.pp-dir:hover { background: #16294d; }
+.leaflet-popup-content a.pp-dir, .pp-dir, .pp-dir i { color: #fff; }
+.pp-dir { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; background: var(--blue); font-family: "Public Sans", sans-serif; font-size: 0.78rem; font-weight: 700; text-decoration: none; padding: 6px 12px; border-radius: 6px; }
+.pp-dir:hover, .pp-dir:focus { background: #16294d; color: #fff; }
+.pp-dir:focus-visible { outline: 3px solid #e8a92c; outline-offset: 2px; }
 
 /* ── COFFEE / SUPPORT SECTION ── */
 .basecamp-section {
@@ -1080,6 +1082,7 @@ body::before {
 .footer-word em { font-style: normal; color: var(--red); }
 .fsf-footer a { color: var(--red); text-decoration: none; }
 .fsf-footer a:hover { text-decoration: underline; }
+.footer-a11y { flex-basis: 100%; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(26,22,18,0.25); font-family: "Public Sans", sans-serif; font-size: 12px; line-height: 1.6; letter-spacing: normal; text-transform: none; color: var(--ink); max-width: 760px; }
 
 /* ── MODAL ── */
 .modal-overlay {
@@ -1930,6 +1933,7 @@ body::before {
   <span>★ Made for Lake County kids · Vol. I · No. 03 ★</span>
   <span>Out west? → <a href="western-burbs.html">Wheaton, Glen Ellyn &amp; DuPage events</a></span>
   <span>Central Lake County, IL · Summer 2026 · <a href="#" onclick="openTerms(event)">About &amp; Terms</a></span>
+  <span class="footer-a11y">This is a personal, non-business project. I&rsquo;ve done my best to make it accessible (WCAG AAA) and I&rsquo;m always working to keep it that way. Spot an accessibility issue? Please DM me on Facebook and I&rsquo;ll fix it.</span>
 </footer>
 
 <!-- TERMS MODAL -->
@@ -1946,7 +1950,7 @@ body::before {
 
       <p><strong>No endorsement.</strong> Inclusion of an organization, event, or park does not constitute endorsement. Logos, names, and trademarks remain the property of their respective owners.</p>
 
-      <p><strong>Accessibility.</strong> Reasonable efforts have been made to design and build this site to meet WCAG 2.1 Level AAA conformance and the spirit of the Americans with Disabilities Act, including 7:1 text contrast, keyboard navigation, semantic landmarks, and respect for reduced-motion preferences. Accessibility is an ongoing effort &mdash; if you encounter a barrier, please email so it can be fixed.</p>
+      <p><strong>Accessibility.</strong> Reasonable efforts have been made to design and build this site to meet WCAG 2.1 Level AAA conformance and the spirit of the Americans with Disabilities Act, including 7:1 text contrast, keyboard navigation, semantic landmarks, and respect for reduced-motion preferences. This is a personal, non-business project, and accessibility is an ongoing effort &mdash; if you encounter a barrier, please send me a message on Facebook and I&rsquo;ll work to fix it.</p>
 
       <p><strong>Privacy.</strong> This site sets no tracking cookies, runs no analytics, and collects no personal information. The "bucket list" check-offs are stored only in your own browser's local storage.</p>
 
