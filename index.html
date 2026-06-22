@@ -668,6 +668,17 @@ body::before {
   background: var(--red); color: white;
   padding: 2px 8px;
 }
+.day-museums {
+  background: var(--blue); color: #fff;
+  border-radius: 8px; padding: 7px 11px; margin-bottom: 8px;
+  font-size: 13px; line-height: 1.45;
+}
+.day-museums .dm-label {
+  font-family: "Special Elite", monospace;
+  color: var(--sun); letter-spacing: 0.04em; margin-right: 4px;
+}
+.day-museums a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+.day-museums a:hover { color: var(--sun); }
 
 /* ── EVENT CARDS — ZINE STYLE ── */
 .events-list { display: flex; flex-direction: column; gap: 6px; }
@@ -2302,8 +2313,18 @@ function renderCal() {
       const evs = byDate[ds];
       const todayCls = isToday(ds) ? ' is-today' : '';
       const todayTxt = isToday(ds) ? ' — Today' : '';
-      html += `<div class="day-block"><div class="day-label"><span class="day-name">${evs[0].day}</span><span class="day-date-badge${todayCls}">${fmtShort(ds)}${todayTxt}</span></div><div class="events-list">`;
-      evs.forEach(e => {
+      const musEvs = evs.filter(e => e.type === 'Museums');
+      const timedEvs = evs.filter(e => e.type !== 'Museums');
+      html += `<div class="day-block"><div class="day-label"><span class="day-name">${evs[0].day}</span><span class="day-date-badge${todayCls}">${fmtShort(ds)}${todayTxt}</span></div>`;
+      if (musEvs.length) {
+        const items = musEvs.map(e => {
+          const label = escHtml(e.org || e.name);
+          return e.url ? `<a href="${e.url}" target="_blank" rel="noopener">${label}</a>` : label;
+        }).join(', ');
+        html += `<div class="day-museums"><span class="dm-label"><i class="ti ti-building-bank"></i> Free museum days:</span> ${items}</div>`;
+      }
+      html += `<div class="events-list">`;
+      timedEvs.forEach(e => {
         const sel = selectedIds.has(e.id) ? ' selected' : '';
         const ot = orgType(e.org);
         const freeBadge = /free/i.test(e.cost) ? '<span class="ptag ptag-free"><i class="ti ti-coin"></i> Free</span>' : `<span class="ptag ptag-cost"><i class="ti ti-coin"></i> ${escHtml(e.cost)}</span>`;
