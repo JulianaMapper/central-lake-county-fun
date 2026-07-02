@@ -1496,139 +1496,6 @@ body::before {
 </nav>
 
 <!-- ═══════════════════════════════════════
-     FILTER PANEL
-═══════════════════════════════════════ -->
-<button class="mobile-filter-toggle" id="mobileFilterToggle" onclick="toggleMobileFilters()" aria-expanded="false" aria-controls="filterPanel">
-  <i class="ti ti-adjustments-horizontal"></i>
-  Filter Your Trail
-  <span class="filter-toggle-count" id="mobileFilterCount" style="display:none"></span>
-  <i class="ti ti-chevron-down filter-toggle-arrow"></i>
-</button>
-<button class="filter-fab hidden" id="filterFab" onclick="toggleMobileFilters()" aria-label="Open filters">
-  <i class="ti ti-adjustments-horizontal"></i> Filters
-  <span class="filter-toggle-count" id="fabFilterCount" style="display:none"></span>
-</button>
-<div class="filter-panel" id="filterPanel">
-  <div class="filter-label-row"><i class="ti ti-adjustments-horizontal"></i> Filter Your Trail</div>
-  <div class="distance-hero">
-    <label><i class="ti ti-car"></i> Distance from you <i class="ti ti-info-circle drive-info-tip" title="Enter your zip to calculate from your location, or leave blank to use Grayslake (60030)"></i></label>
-    <div class="distance-hero-controls">
-      <input type="text" id="userZipInput" maxlength="5" placeholder="Your zip" inputmode="numeric" pattern="[0-9]{5}"
-        class="distance-hero-zip"
-        oninput="setUserZip(this.value)" aria-label="Your zip code">
-      <span id="zipValid" class="distance-hero-zipvalid"></span>
-      <select id="filterDrive" aria-label="Filter by distance in miles" onchange="applyFilters()" class="distance-hero-select">
-        <option value="">Any distance</option>
-        <option value="5">≤ 5 mi</option>
-        <option value="10">≤ 10 mi</option>
-        <option value="15">≤ 15 mi</option>
-        <option value="20">≤ 20 mi</option>
-        <option value="30">≤ 30 mi</option>
-      </select>
-    </div>
-  </div>
-  <div class="filter-grid">
-    <div class="fg">
-      <label><i class="ti ti-building-community"></i> Organization</label>
-      <select id="filterOrg" aria-label="Filter by organization" onchange="applyFilters()"><option value="">All Organizations</option></select>
-    </div>
-    <div class="fg">
-      <label><i class="ti ti-users"></i> Age Group</label>
-      <select id="filterAge" aria-label="Filter by age group" onchange="applyFilters()">
-        <option value="">All Ages</option>
-        <option value="baby">Babies &amp; Toddlers</option>
-        <option value="preschool">Preschool (3–5)</option>
-        <option value="elementary">Elementary</option>
-        <option value="family">Family / All Ages</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label><i class="ti ti-calendar"></i> Day of Week</label>
-      <select id="filterDay" aria-label="Filter by day of week" onchange="applyFilters()">
-        <option value="">Any Day</option>
-        <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
-        <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label><i class="ti ti-clipboard-check"></i> Registration</label>
-      <select id="filterReg" aria-label="Filter by registration requirement" onchange="applyFilters()">
-        <option value="">Any</option>
-        <option value="no">No registration needed</option>
-        <option value="yes">Registration required</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label><i class="ti ti-category"></i> Event Type</label>
-      <div class="type-dropdown" id="typeDropdown">
-        <button type="button" id="typeDropdownBtn" class="type-dropdown-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleTypeDropdown(event)">
-          <span id="typeDropdownLabel">All Types</span>
-          <i class="ti ti-chevron-down"></i>
-        </button>
-        <div class="type-dropdown-panel" id="typeDropdownPanel" role="group" aria-label="Filter by event type (multiple allowed)">
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Storytime" onchange="applyFilters()"> Storytime</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Craft / Art" onchange="applyFilters()"> Craft / Art</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Nature / Outdoors" onchange="applyFilters()"> Nature / Outdoors</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Animals" onchange="applyFilters()"> Animals</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Music / Performance" onchange="applyFilters()"> Music / Performance</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Play / Drop-in" onchange="applyFilters()"> Play / Drop-in</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Movies" onchange="applyFilters()"> Movies</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="STEM / Discovery" onchange="applyFilters()"> STEM / Discovery</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Museums" onchange="applyFilters()"> Museums</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Games & Clubs" onchange="applyFilters()"> Games &amp; Clubs</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Free Meals / Food" onchange="applyFilters()"> Free Meals / Food</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Farmers Markets" onchange="applyFilters()"> Farmers Markets</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Festivals / Celebrations" onchange="applyFilters()"> Festivals / Celebrations</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Movement / Sports" onchange="applyFilters()"> Movement / Sports</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Community Resources" onchange="applyFilters()"> Community Resources</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Camps" onchange="applyFilters()"> Camps</label>
-          <label class="type-opt"><input type="checkbox" class="type-check" value="Family Fun" onchange="applyFilters()"> Family Fun</label>
-        </div>
-      </div>
-    </div>
-    <div class="fg">
-      <label><i class="ti ti-clock"></i> Time of Day</label>
-      <select id="filterTime" aria-label="Filter by time of day" onchange="applyFilters()">
-        <option value="">Any Time</option>
-        <option value="Morning">Morning</option>
-        <option value="Afternoon">Afternoon</option>
-        <option value="Evening">Evening</option>
-      </select>
-    </div>
-  </div>
-  <div class="filter-grid" style="margin-top:0.5rem;">
-    <div class="fg">
-      <label><i class="ti ti-accessible"></i> Accessibility</label>
-      <select id="filterSpecialNeeds" aria-label="Filter by sensory or special needs" onchange="applyFilters()">
-        <option value="">All Events</option>
-        <option value="yes">Sensory / Special Needs only</option>
-      </select>
-    </div>
-    <div class="fg" style="justify-content:flex-end;">
-      <label>&nbsp;</label>
-      <label class="toggle-label">
-        <input type="checkbox" id="filterFree" onchange="applyFilters()">
-        <span>Free events only</span>
-      </label>
-    </div>
-    <div class="fg" style="justify-content:flex-end;">
-      <label>&nbsp;</label>
-      <label class="toggle-label">
-        <input type="checkbox" id="filterNoStory" onchange="applyFilters()">
-        <span>Exclude storytimes</span>
-      </label>
-    </div>
-    <div class="fg" style="justify-content:flex-end;">
-      <label>&nbsp;</label>
-      <button class="btn-ghost" onclick="resetFilters()"><i class="ti ti-refresh"></i> Reset</button>
-    </div>
-  </div>
-</div>
-
-<!-- Active filter chips -->
-<div class="filter-chips-row" id="filterChipsRow" aria-live="polite"></div>
-
-<!-- ═══════════════════════════════════════
      EVENTS PANEL
 ═══════════════════════════════════════ -->
 <div class="tab-panel active" id="panel-events">
@@ -1650,6 +1517,139 @@ body::before {
     <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
     <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
   </div>
+
+  <!-- ═══════════════════════════════════════
+       FILTER PANEL
+  ═══════════════════════════════════════ -->
+  <button class="mobile-filter-toggle" id="mobileFilterToggle" onclick="toggleMobileFilters()" aria-expanded="false" aria-controls="filterPanel">
+    <i class="ti ti-adjustments-horizontal"></i>
+    Filter Your Trail
+    <span class="filter-toggle-count" id="mobileFilterCount" style="display:none"></span>
+    <i class="ti ti-chevron-down filter-toggle-arrow"></i>
+  </button>
+  <button class="filter-fab hidden" id="filterFab" onclick="toggleMobileFilters()" aria-label="Open filters">
+    <i class="ti ti-adjustments-horizontal"></i> Filters
+    <span class="filter-toggle-count" id="fabFilterCount" style="display:none"></span>
+  </button>
+  <div class="filter-panel" id="filterPanel">
+    <div class="filter-label-row"><i class="ti ti-adjustments-horizontal"></i> Filter Your Trail</div>
+    <div class="distance-hero">
+      <label><i class="ti ti-car"></i> Distance from you <i class="ti ti-info-circle drive-info-tip" title="Enter your zip to calculate from your location, or leave blank to use Grayslake (60030)"></i></label>
+      <div class="distance-hero-controls">
+        <input type="text" id="userZipInput" maxlength="5" placeholder="Your zip" inputmode="numeric" pattern="[0-9]{5}"
+          class="distance-hero-zip"
+          oninput="setUserZip(this.value)" aria-label="Your zip code">
+        <span id="zipValid" class="distance-hero-zipvalid"></span>
+        <select id="filterDrive" aria-label="Filter by distance in miles" onchange="applyFilters()" class="distance-hero-select">
+          <option value="">Any distance</option>
+          <option value="5">≤ 5 mi</option>
+          <option value="10">≤ 10 mi</option>
+          <option value="15">≤ 15 mi</option>
+          <option value="20">≤ 20 mi</option>
+          <option value="30">≤ 30 mi</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-grid">
+      <div class="fg">
+        <label><i class="ti ti-building-community"></i> Organization</label>
+        <select id="filterOrg" aria-label="Filter by organization" onchange="applyFilters()"><option value="">All Organizations</option></select>
+      </div>
+      <div class="fg">
+        <label><i class="ti ti-users"></i> Age Group</label>
+        <select id="filterAge" aria-label="Filter by age group" onchange="applyFilters()">
+          <option value="">All Ages</option>
+          <option value="baby">Babies &amp; Toddlers</option>
+          <option value="preschool">Preschool (3–5)</option>
+          <option value="elementary">Elementary</option>
+          <option value="family">Family / All Ages</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label><i class="ti ti-calendar"></i> Day of Week</label>
+        <select id="filterDay" aria-label="Filter by day of week" onchange="applyFilters()">
+          <option value="">Any Day</option>
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+          <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label><i class="ti ti-clipboard-check"></i> Registration</label>
+        <select id="filterReg" aria-label="Filter by registration requirement" onchange="applyFilters()">
+          <option value="">Any</option>
+          <option value="no">No registration needed</option>
+          <option value="yes">Registration required</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label><i class="ti ti-category"></i> Event Type</label>
+        <div class="type-dropdown" id="typeDropdown">
+          <button type="button" id="typeDropdownBtn" class="type-dropdown-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleTypeDropdown(event)">
+            <span id="typeDropdownLabel">All Types</span>
+            <i class="ti ti-chevron-down"></i>
+          </button>
+          <div class="type-dropdown-panel" id="typeDropdownPanel" role="group" aria-label="Filter by event type (multiple allowed)">
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Storytime" onchange="applyFilters()"> Storytime</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Craft / Art" onchange="applyFilters()"> Craft / Art</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Nature / Outdoors" onchange="applyFilters()"> Nature / Outdoors</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Animals" onchange="applyFilters()"> Animals</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Music / Performance" onchange="applyFilters()"> Music / Performance</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Play / Drop-in" onchange="applyFilters()"> Play / Drop-in</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Movies" onchange="applyFilters()"> Movies</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="STEM / Discovery" onchange="applyFilters()"> STEM / Discovery</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Museums" onchange="applyFilters()"> Museums</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Games & Clubs" onchange="applyFilters()"> Games &amp; Clubs</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Free Meals / Food" onchange="applyFilters()"> Free Meals / Food</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Farmers Markets" onchange="applyFilters()"> Farmers Markets</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Festivals / Celebrations" onchange="applyFilters()"> Festivals / Celebrations</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Movement / Sports" onchange="applyFilters()"> Movement / Sports</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Community Resources" onchange="applyFilters()"> Community Resources</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Camps" onchange="applyFilters()"> Camps</label>
+            <label class="type-opt"><input type="checkbox" class="type-check" value="Family Fun" onchange="applyFilters()"> Family Fun</label>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label><i class="ti ti-clock"></i> Time of Day</label>
+        <select id="filterTime" aria-label="Filter by time of day" onchange="applyFilters()">
+          <option value="">Any Time</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-grid" style="margin-top:0.5rem;">
+      <div class="fg">
+        <label><i class="ti ti-accessible"></i> Accessibility</label>
+        <select id="filterSpecialNeeds" aria-label="Filter by sensory or special needs" onchange="applyFilters()">
+          <option value="">All Events</option>
+          <option value="yes">Sensory / Special Needs only</option>
+        </select>
+      </div>
+      <div class="fg" style="justify-content:flex-end;">
+        <label>&nbsp;</label>
+        <label class="toggle-label">
+          <input type="checkbox" id="filterFree" onchange="applyFilters()">
+          <span>Free events only</span>
+        </label>
+      </div>
+      <div class="fg" style="justify-content:flex-end;">
+        <label>&nbsp;</label>
+        <label class="toggle-label">
+          <input type="checkbox" id="filterNoStory" onchange="applyFilters()">
+          <span>Exclude storytimes</span>
+        </label>
+      </div>
+      <div class="fg" style="justify-content:flex-end;">
+        <label>&nbsp;</label>
+        <button class="btn-ghost" onclick="resetFilters()"><i class="ti ti-refresh"></i> Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active filter chips -->
+  <div class="filter-chips-row" id="filterChipsRow" aria-live="polite"></div>
 
   <!-- ACTION TOOLBAR -->
   <div class="action-toolbar">
