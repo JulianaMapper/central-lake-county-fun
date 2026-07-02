@@ -2155,7 +2155,7 @@ function isRecentlyOver(e, t) {
   const endMin = eventEndMin(e.time);
   if (endMin === null) return false;
   const now = new Date();
-  return (now.getHours() * 60 + now.getMinutes()) - endMin > 15;
+  return (now.getHours() * 60 + now.getMinutes()) - endMin > 30;
 }
 function applyFilters() {
   const org = document.getElementById('filterOrg').value;
