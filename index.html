@@ -2114,6 +2114,23 @@ function timeToMin(t) {
   if (ampm === 'AM' && h === 12) h = 0;
   return h * 60 + min;
 }
+function eventEndMin(t) {
+  if (!t) return null;
+  const matches = [...t.matchAll(/(\d+):?(\d*)\s*(AM|PM)/gi)];
+  if (!matches.length) return null;
+  const m = matches[matches.length - 1];
+  let h = parseInt(m[1]), min = parseInt(m[2]||'0'), ampm = m[3].toUpperCase();
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  return h * 60 + min;
+}
+function isRecentlyOver(e, t) {
+  if (!isToday(e.date)) return false;
+  const endMin = eventEndMin(e.time);
+  if (endMin === null) return false;
+  const now = new Date();
+  return (now.getHours() * 60 + now.getMinutes()) - endMin > 15;
+}
 function applyFilters() {
   const org = document.getElementById('filterOrg').value;
   const age = document.getElementById('filterAge').value;
@@ -2130,6 +2147,7 @@ function applyFilters() {
   filteredEvents = EVENTS.filter(e => {
     const d = parseDate(e.date);
     if (d < t) return false;
+    if (isRecentlyOver(e, t)) return false;
     if (specialNeedsOnly && !e.specialNeeds) return false;
     if (org && e.org !== org) return false;
     if (maxDrive && eventDist(e) > maxDrive) return false;
