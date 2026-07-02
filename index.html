@@ -1505,15 +1505,6 @@ body::before {
     <h2 class="fsf-sec-title">The Lineup · Summer 2026</h2>
   </div>
 
-  <!-- QUICK DATE FILTERS -->
-  <div class="quick-row" role="group" aria-label="Quick date filters">
-    <span class="quick-label">Show me:</span>
-    <button class="trail-chip quick" onclick="quickFilter('today', this)"><i class="ti ti-sun"></i> Today</button>
-    <button class="trail-chip quick" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
-    <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
-    <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
-  </div>
-
   <!-- ═══════════════════════════════════════
        FILTER PANEL
   ═══════════════════════════════════════ -->
@@ -1529,6 +1520,14 @@ body::before {
   </button>
   <div class="filter-panel" id="filterPanel">
     <div class="filter-label-row"><i class="ti ti-adjustments-horizontal"></i> Filter Your Trail</div>
+    <!-- QUICK DATE FILTERS -->
+    <div class="quick-row" role="group" aria-label="Quick date filters">
+      <span class="quick-label">Show me:</span>
+      <button class="trail-chip quick" onclick="quickFilter('today', this)"><i class="ti ti-sun"></i> Today</button>
+      <button class="trail-chip quick" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
+      <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
+      <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
+    </div>
     <div class="distance-hero">
       <label><i class="ti ti-car"></i> Distance from you <i class="ti ti-info-circle drive-info-tip" title="Enter your zip to calculate from your location, or leave blank to use Grayslake (60030)"></i></label>
       <div class="distance-hero-controls">
