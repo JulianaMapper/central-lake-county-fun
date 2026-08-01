@@ -1471,31 +1471,12 @@ body::before {
   </h1>
 </section>
 
-<!-- ═══════════════════════════════════════
-     TICKER
-═══════════════════════════════════════ -->
-<div class="fsf-ticker" aria-hidden="true">
-  <span>🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits <span class="sun-dot"></span> 🚲 Ride your bike <span class="sun-dot"></span> 📚 Library storytime <span class="sun-dot"></span> 🌊 Splash pads <span class="sun-dot"></span> 🌿 Nature walks <span class="sun-dot"></span> 🎨 Free crafts <span class="sun-dot"></span> 🛝 Playground hop <span class="sun-dot"></span> 🦋 Butterfly houses <span class="sun-dot"></span> 🌽 Farm visits</span>
-</div>
-
 <div class="sunburst-divider" aria-hidden="true"></div>
 
 <!-- ═══════════════════════════════════════
      INTRO NOTE
 ═══════════════════════════════════════ -->
-<div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;">
-  <p style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:3px;"></i>Events were gathered using web scraping and automated tools — details may not be complete or fully accurate. Always confirm times, registration, and cost directly with the organizer before you go.</p>
-  <p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p>
-</div>
-
-<div class="coffee-band" id="support">
-  <p class="coffee-msg">If this has been useful to you, we'd love it if you bought us a coffee — or shared it with another parent.</p>
-  <div class="coffee-actions">
-    <a class="coffee-btn coffee-venmo" href="https://venmo.com/juliana-wilhoit" target="_blank" rel="noopener">☕ Coffee via Venmo</a>
-    <a class="coffee-btn coffee-paypal" href="https://paypal.me/mcmillanwilhoit" target="_blank" rel="noopener">☕ Coffee via PayPal</a>
-    <button class="coffee-share-btn" onclick="nativeShare()">↗ Share with a parent</button>
-  </div>
-</div>
+<div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;"><p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p></div>
 
 <!-- ═══════════════════════════════════════
      TAB NAV
@@ -1526,7 +1507,7 @@ body::before {
 
   <div class="fsf-sec-head">
     <span class="fsf-sec-num">01</span>
-    <h2 class="fsf-sec-title">The Lineup · Summer 2026</h2>
+    <h2 class="fsf-sec-title">The Lineup</h2>
   </div>
 
   <!-- ═══════════════════════════════════════
@@ -1548,14 +1529,14 @@ body::before {
     <div class="quick-row" role="group" aria-label="Quick date filters">
       <span class="quick-label">Show me:</span>
       <button class="trail-chip quick" onclick="quickFilter('today', this)"><i class="ti ti-sun"></i> Today</button>
-      <button class="trail-chip quick" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
+      <button class="trail-chip quick active" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
       <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
-      <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
+      <button class="trail-chip quick all" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
     </div>
     <div class="distance-hero">
       <label><i class="ti ti-car"></i> Distance from you <i class="ti ti-info-circle drive-info-tip" title="Enter your zip to calculate from your location, or leave blank to use Grayslake (60030)"></i></label>
       <div class="distance-hero-controls">
-        <input type="text" id="userZipInput" maxlength="5" placeholder="Your zip" inputmode="numeric" pattern="[0-9]{5}"
+        <input type="text" id="userZipInput" maxlength="5" value="60030" placeholder="Your zip" inputmode="numeric" pattern="[0-9]{5}"
           class="distance-hero-zip"
           oninput="setUserZip(this.value)" aria-label="Your zip code">
         <span id="zipValid" class="distance-hero-zipvalid"></span>
@@ -1672,7 +1653,7 @@ body::before {
   <div class="filter-chips-row" id="filterChipsRow" aria-live="polite"></div>
 
   <!-- ACTION TOOLBAR -->
-  <div class="action-toolbar">
+  <div class="action-toolbar" id="actionToolbar" hidden>
     <span class="sel-count" id="selectedCount">0 Selected</span>
     <button class="trail-btn ics" id="btnICS" onclick="downloadICS()" disabled><i class="ti ti-calendar-plus"></i> .ICS</button>
     <button class="trail-btn gcal" id="btnGCal" onclick="addToGCal()" disabled><i class="ti ti-brand-google"></i> Google Cal</button>
@@ -1688,7 +1669,7 @@ body::before {
         <button class="view-btn active" id="btnListView" onclick="setView('list',this)" title="List view" aria-label="Switch to list view"><i class="ti ti-list"></i></button>
         <button class="view-btn" id="btnCalView" onclick="setView('cal',this)" title="Month view" aria-label="Switch to month grid view"><i class="ti ti-calendar-month"></i></button>
       </div>
-      <div class="cal-title" id="calTitle">All Events — Summer 2026</div>
+      <div class="cal-title" id="calTitle">This Weekend</div>
     </div>
     <div class="ev-count" id="resultCount"></div>
   </div>
@@ -1784,6 +1765,17 @@ body::before {
     </div>
   </div>
 </div><!-- /panel-map -->
+
+<div class="coffee-band" id="support">
+  <p class="coffee-msg">If this has been useful to you, we'd love it if you bought us a coffee — or shared it with another parent.</p>
+  <div class="coffee-actions">
+    <a class="coffee-btn coffee-venmo" href="https://venmo.com/juliana-wilhoit" target="_blank" rel="noopener">☕ Coffee via Venmo</a>
+    <a class="coffee-btn coffee-paypal" href="https://paypal.me/mcmillanwilhoit" target="_blank" rel="noopener">☕ Coffee via PayPal</a>
+    <button class="coffee-share-btn" onclick="nativeShare()">↗ Share with a parent</button>
+  </div>
+</div>
+
+
 
 <!-- ═══════════════════════════════════════
      FREE FUN PANEL
@@ -1984,7 +1976,8 @@ body::before {
   </div>
   <span>★ Made for Lake County kids · Vol. I · No. 03 ★</span>
   <span>Out west? → <a href="western-burbs.html">Wheaton, Glen Ellyn &amp; DuPage events</a></span>
-  <span>Central Lake County, IL · Summer 2026 · <a href="#" onclick="openTerms(event)">About &amp; Terms</a></span>
+  <span style="display:block;width:100%;margin-bottom:8px;opacity:.85;">Events are gathered with automated tools, so details may be incomplete — always confirm times, registration and cost with the organizer before you go.</span>
+  <span>Central Lake County, IL · <a href="#" onclick="openTerms(event)">About &amp; Terms</a></span>
   <span class="footer-a11y">This is a personal, non-business project. I&rsquo;ve done my best to make it accessible (WCAG AAA) and I&rsquo;m always working to keep it that way. Spot an accessibility issue? Please DM me on Facebook and I&rsquo;ll fix it.</span>
 </footer>
 
@@ -2113,7 +2106,7 @@ EVENTS.forEach((e, i) => e.id = i + 1);
 // ── STATE ──
 let selectedIds = new Set();
 let filteredEvents = [];
-let activeQuick = 'all';
+let activeQuick = 'weekend';
 let currentView = 'list';
 let calGridMonth = null;
 
@@ -2239,7 +2232,7 @@ function applyFilters() {
     if (a.date !== b.date) return a.date < b.date ? -1 : 1;
     return timeToMin(a.time) - timeToMin(b.time);
   });
-  const titles = { today:'Today',weekend:'This Weekend',week:'This Week',free:'Free Events — All Summer',all:'All Events — Summer 2026' };
+  const titles = { today:'Today',weekend:'This Weekend',week:'This Week',free:'Free Events',all:'All Upcoming Events' };
   document.getElementById('calTitle').textContent = titles[activeQuick]||'Next 4 Weeks';
   renderCal();
   updateToolbar();
@@ -2280,9 +2273,15 @@ function renderFilterChips() {
   const regT = selText('filterReg'); if (regT) add('Reg: '+regT, () => clearFilterById('filterReg'));
   document.querySelectorAll('.type-check:checked').forEach(cb => add('Type: '+cb.value, () => { cb.checked = false; applyFilters(); }));
   const timeT = selText('filterTime'); if (timeT) add('Time: '+timeT, () => clearFilterById('filterTime'));
-  const driveT = selText('filterDrive'); if (driveT) add('Within: '+driveT, () => clearFilterById('filterDrive'));
+  const driveT = selText('filterDrive'); if (driveT)   {
+    const dv = document.getElementById('filterDrive');
+    if (dv && dv.value) {
+      const zi = document.getElementById('userZipInput');
+      const z = (zi && zi.value.length === 5) ? zi.value : '60030';
+      add('Within ' + dv.value + ' mi of ' + z, () => clearFilterById('filterDrive'));
+    }
+  }
   const zipVal = document.getElementById('userZipInput')?.value;
-  if (zipVal && zipVal.length===5 && userZipCoords) add('Zip: '+zipVal, () => { document.getElementById('userZipInput').value=''; setUserZip(''); });
   updateMobileFilterBadge(chips.length);
   if (!chips.length) { row.innerHTML = ''; return; }
   row.innerHTML = '<span class="filter-chips-label">Active filters:</span>' +
@@ -2331,7 +2330,7 @@ function resetFilters() {
   document.querySelectorAll('.type-check').forEach(cb => cb.checked = false);
   const ftd=document.getElementById('filterTime'); if(ftd)ftd.value='';
   const fdr=document.getElementById('filterDrive'); if(fdr)fdr.value='10';
-  const fzi=document.getElementById('userZipInput'); if(fzi){fzi.value=''; setUserZip('');}
+  const fzi=document.getElementById('userZipInput'); if(fzi){fzi.value='60030'; setUserZip('60030');}
   activeQuick = 'all';
   document.querySelectorAll('.trail-chip').forEach(b => b.classList.remove('active'));
   document.querySelector('.trail-chip.all').classList.add('active');
@@ -2422,6 +2421,12 @@ function toggleSel(ev, id) {
   updateToolbar();
 }
 function updateToolbar() {
+  // Dead UI until there's a selection — keep it out of the way on first load.
+  (function(){
+    const tb = document.getElementById('actionToolbar');
+    if (tb) tb.hidden = selectedIds.size === 0;
+  })();
+
   const n = selectedIds.size;
   document.getElementById('selectedCount').textContent = n===0 ? '0 Selected' : `${n} Event${n!==1?'s':''} Selected`;
   document.getElementById('btnICS').disabled = n===0;
@@ -2848,7 +2853,13 @@ function populateOrgs() {
   const sel=document.getElementById('filterOrg');
   orgs.forEach(o=>{ const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt); });
 }
-document.addEventListener('DOMContentLoaded',()=>{ populateOrgs(); applyFilters(); initBucket(); renderGridCal(); });
+document.addEventListener('DOMContentLoaded',()=>{
+  populateOrgs();
+  // Seed the origin from the prefilled zip so the checkmark and the filter
+  // chip agree with what the input actually shows.
+  setUserZip(document.getElementById('userZipInput')?.value || '60030');
+  applyFilters(); initBucket(); renderGridCal();
+});
 
 const PRINT_FOOTER_CSS = `
   .print-footer { margin-top: 18pt; border-top: 1px solid #ccc; padding-top: 8pt;
