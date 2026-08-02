@@ -1529,8 +1529,8 @@ body::before {
     <div class="quick-row" role="group" aria-label="Quick date filters">
       <span class="quick-label">Show me:</span>
       <button class="trail-chip quick" onclick="quickFilter('today', this)"><i class="ti ti-sun"></i> Today</button>
-      <button class="trail-chip quick active" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
-      <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
+      <button class="trail-chip quick" onclick="quickFilter('weekend', this)"><i class="ti ti-calendar-heart"></i> This Weekend</button>
+      <button class="trail-chip quick active" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
       <button class="trail-chip quick all" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Summer</button>
     </div>
     <div class="distance-hero">
@@ -1669,7 +1669,7 @@ body::before {
         <button class="view-btn active" id="btnListView" onclick="setView('list',this)" title="List view" aria-label="Switch to list view"><i class="ti ti-list"></i></button>
         <button class="view-btn" id="btnCalView" onclick="setView('cal',this)" title="Month view" aria-label="Switch to month grid view"><i class="ti ti-calendar-month"></i></button>
       </div>
-      <div class="cal-title" id="calTitle">This Weekend</div>
+      <div class="cal-title" id="calTitle">This Week</div>
     </div>
     <div class="ev-count" id="resultCount"></div>
   </div>
@@ -2106,7 +2106,7 @@ EVENTS.forEach((e, i) => e.id = i + 1);
 // ── STATE ──
 let selectedIds = new Set();
 let filteredEvents = [];
-let activeQuick = 'weekend';
+let activeQuick = 'week';
 let currentView = 'list';
 let calGridMonth = null;
 
