@@ -1745,6 +1745,7 @@ body::before {
         <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 min</button>
       </div>
       <button id="btnTrails" class="map-filter-btn" style="background:var(--paper);color:var(--ink);border-color:var(--ink);" onclick="toggleTrails(this)">🚴 Bike Trails</button>
+      <button id="btnWalk" class="map-filter-btn" style="background:var(--paper);color:var(--ink);border-color:var(--ink);" onclick="toggleWalkingTrails(this)">🚶 Walking Trails</button>
       <button class="map-filter-btn" style="background:var(--ink);color:var(--paper);border-color:var(--ink);margin-left:auto;" onclick="locateUser()">📍 My Location</button>
     </div>
     <div class="map-frame-outer">
@@ -3636,6 +3637,58 @@ window.toggleTrails = function(btn) {
       btn.disabled = false;
       btn.textContent = '🚴 Bike Trails';
       console.error('Trail load failed:', err);
+    });
+};
+
+// ── WALKING TRAILS ───────────────────────────────────────────────────────────
+// Separate layer from the bike one: foot/hiking paths inside preserves and parks,
+// with anything already drawn on the cycle layer stripped out so a shared corridor
+// is not painted twice. Warm brown + dotted so it reads as "on foot" at a glance.
+let _walkLayer = null, _walkVisible = false, _walkLoading = false;
+
+window.toggleWalkingTrails = function(btn) {
+  if (_walkLoading) return;
+  if (_walkVisible && _walkLayer) {
+    _walkLayer.remove();
+    _walkVisible = false;
+    btn.style.background = 'var(--paper)';
+    btn.style.color = 'var(--ink)';
+    return;
+  }
+  if (_walkLayer) {
+    _walkLayer.addTo(_leafletMap);
+    _walkVisible = true;
+    btn.style.background = 'var(--ink)';
+    btn.style.color = 'var(--paper)';
+    return;
+  }
+  _walkLoading = true;
+  btn.textContent = '🚶 Loading…';
+  btn.disabled = true;
+  fetch('walking-trails.geojson')
+    .then(r => r.json())
+    .then(data => {
+      _walkLayer = L.geoJSON(data, {
+        style: { color: '#8a5a2b', weight: 2.5, opacity: 0.8, dashArray: '2,4', lineCap: 'round' },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties;
+          const dist = p.distance ? ` &middot; ${p.distance}` : '';
+          const surface = p.surface ? `<div style="font-size:11px;color:#666;margin-top:2px;">${p.surface}</div>` : '';
+          layer.bindPopup(`<b>${p.name}</b>${dist}${surface}`, {maxWidth: 240});
+        }
+      }).addTo(_leafletMap);
+      _walkVisible = true;
+      _walkLoading = false;
+      btn.disabled = false;
+      btn.style.background = 'var(--ink)';
+      btn.style.color = 'var(--paper)';
+      btn.textContent = '🚶 Walking Trails';
+    })
+    .catch(err => {
+      _walkLoading = false;
+      btn.disabled = false;
+      btn.textContent = '🚶 Walking Trails';
+      console.error('Walking trail load failed:', err);
     });
 };
 </script>
