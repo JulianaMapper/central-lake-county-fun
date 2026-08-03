@@ -1008,6 +1008,7 @@ body::before {
 .map-attr-btn:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 .pp-bath { font-weight: 700; display: block; }
 .pp-bath-note { font-weight: 400; color: var(--ink-soft); }
+.pp-bath-no { color: var(--ink-soft); font-weight: 400; }
 .map-table .mt-bath { font-size: 12px; margin-left: 5px; white-space: nowrap; }
 .map-credit { font-family: "Public Sans", sans-serif; font-size: 12px; color: var(--ink-soft);
   margin-top: 10px; line-height: 1.5; }
@@ -3416,10 +3417,10 @@ function initParksMap() {
     const amenityList = p.amenities ? '<div class="pp-amenities">' + p.amenities.split(',').slice(0,4).map(a => '<span>' + a.trim() + '</span>').join('') + '</div>' : '';
     const agesLine = p.ages ? '<div class="pp-ages"><i class="ti ti-users"></i> ' + p.ages + '</div>' : '';
     const hoursLine = p.hours ? '<div class="pp-ages"><i class="ti ti-clock"></i> ' + p.hours + '</div>' : '';
-    const bathLine = BATH_LABEL[p.bathrooms]
-      ? '<div class="pp-ages pp-bath">' + BATH_LABEL[p.bathrooms]
+    const bathLine = hasBath(p)
+      ? '<div class="pp-ages pp-bath">' + BATH_YES
         + (p.bathNote ? ' <span class="pp-bath-note">— ' + p.bathNote + '</span>' : '') + '</div>'
-      : '';
+      : '<div class="pp-ages pp-bath pp-bath-no">' + BATH_NO + '</div>';
     const ratingLine = '';
     const noteLine = p.notes ? '<div class="pp-note">' + p.notes + '</div>' : '';
     const popup = '<div class="park-popup">' +
@@ -3505,12 +3506,13 @@ window.locateUser = function() {
 
 // ── BATHROOMS ────────────────────────────────────────────────────────────────
 // Cross-cutting attribute on PARKS, not a section: a park keeps its own section
-// colour and ANDs with this toggle. Two values only — `yes` and `unsure` — with the
-// detail (porta potties, short walk, only when the building's open) in `bathNote`.
-// Absent = we have never looked. `unsure` = someone asked and we still don't know.
-const BATH_LABEL = { yes: '🚻 Bathrooms', unsure: '🚻 Bathrooms — not sure' };
-const BATH_CHIP  = { yes: '🚻', unsure: '🚻?' };
-const BATH_MATCH = ['yes'];
+// colour and ANDs with this toggle. Binary — `bathrooms:'yes'` or nothing at all.
+// Anything not tagged yes reads as "No bathrooms", including places we simply have
+// not checked. The detail on a yes (porta potties, short walk, only when the building
+// is open) lives in `bathNote`.
+const BATH_YES = '🚻 Bathrooms';
+const BATH_NO  = '🚫 No bathrooms';
+const hasBath = p => p.bathrooms === 'yes';
 let _bathroomOnly = false;
 
 function toggleBathrooms(btn) {
@@ -3525,7 +3527,7 @@ function applyMapFilters() {
   _allMarkers.forEach(({marker, section, drive, park}) => {
     const secOk = !_activeSection || section === _activeSection;
     const driveOk = drive <= _activeDrive;
-    const bathOk = !_bathroomOnly || BATH_MATCH.indexOf(park.bathrooms) !== -1;
+    const bathOk = !_bathroomOnly || hasBath(park);
     if (secOk && driveOk && bathOk) { marker.addTo(_leafletMap); shown.push(park); }
     else marker.remove();
   });
@@ -3561,9 +3563,9 @@ function renderMapTable(rows) {
     // `ages` carries the "good for" blurb; strip the leading star used on the map.
     const good = (p.ages || '').replace(/^\s*\u2b50\s*/, '');
     const dir = 'https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lon;
-    const bath = BATH_CHIP[p.bathrooms]
-      ? '<span class="mt-bath" title="' + esc(BATH_LABEL[p.bathrooms].replace(/^\S+\s/, '')
-          + (p.bathNote ? ' — ' + p.bathNote : '')) + '">' + BATH_CHIP[p.bathrooms] + '</span>'
+    // Only the positive gets a chip — 219 "no" markers would be noise, not information.
+    const bath = hasBath(p)
+      ? '<span class="mt-bath" title="' + esc('Bathrooms' + (p.bathNote ? ' — ' + p.bathNote : '')) + '">🚻</span>'
       : '';
     return '<tr>'
       + '<td class="mt-name"><span class="mt-sec' + sq + '" style="background:' + color + '"></span>' + esc(p.name) + bath + '</td>'
