@@ -1491,10 +1491,6 @@ body::before {
 
 <div class="sunburst-divider" aria-hidden="true"></div>
 
-<!-- ═══════════════════════════════════════
-     INTRO NOTE
-═══════════════════════════════════════ -->
-<div class="field-note" id="distanceNoticeBlock" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;"><p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p></div>
 
 <!-- ═══════════════════════════════════════
      TAB NAV
@@ -1690,6 +1686,7 @@ body::before {
     </div>
     <div class="ev-count" id="resultCount"></div>
   </div>
+  <div class="field-note" id="distanceNoticeBlock" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:14px 0 4px;"><p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p></div>
   <div id="calContainer" class="cal-list-view"></div>
   <div id="calGridContainer" class="cal-grid-view"></div>
 
@@ -2645,10 +2642,8 @@ function switchTab(tab) {
   }
   const fp = document.getElementById('filterPanel');
   if (fp) fp.style.display = tab==='events' ? '' : 'none';
-  // The "showing events within 10 miles" note describes the EVENTS filters, not the
-  // map's own drive-time filter — leaving it up on the map tab just confuses people.
-  const dn = document.getElementById('distanceNoticeBlock');
-  if (dn) dn.style.display = tab==='events' ? '' : 'none';
+  // The distance note now lives inside the events panel, under "All Upcoming
+  // Events", so it hides with the panel and needs no special handling here.
 }
 
 // ── BUCKET TAB ──
