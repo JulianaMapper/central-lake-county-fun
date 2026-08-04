@@ -1731,7 +1731,7 @@ body::before {
         <span class="map-filter-label"><i class="ti ti-adjustments-horizontal"></i> Show</span>
         <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')"><svg class="map-leg-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" fill="#1a1612" stroke="#1a1612" stroke-width="1.5" stroke-linejoin="round"/></svg> Amazing Parks</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')"><svg class="map-leg-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" fill="#e8a92c" stroke="#7a5410" stroke-width="1.8" stroke-linejoin="round"/></svg> Amazing Parks</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')">🚻 W/ Bathrooms</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')">♿ Accessible</button>
         <button class="map-filter-btn" data-section="INDOOR PLAY PLACES" onclick="filterMapPins(this,'INDOOR PLAY PLACES')"><span class="map-leg-dot indoor"></span> Indoor Play</button>
@@ -3407,14 +3407,16 @@ function initParksMap() {
     let icon;
     if (isAmazing(p)) {
       // Parks LC Park Mom has actually visited get a star instead of a dot, so
-      // they stand out even when no filter is on. Keeps its section colour.
+      // they stand out even when no filter is on. Always brand yellow — a star
+      // means "a parent vouched for this", which is independent of the section,
+      // and one consistent colour reads far faster than six tinted stars.
       const s = 24;
       icon = L.divIcon({
         className: '',
         html: '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" style="display:block;cursor:pointer;'
             + 'filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45));">'
             + '<path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" '
-            + 'fill="' + color + '" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+            + 'fill="#e8a92c" stroke="#7a5410" stroke-width="1.6" stroke-linejoin="round"/></svg>',
         iconSize: [s,s], iconAnchor: [s/2,s/2], popupAnchor: [0,-s/2]
       });
     } else {
