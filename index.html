@@ -994,6 +994,9 @@ body::before {
 .pp-bath { font-weight: 700; display: block; }
 .pp-bath-note { font-weight: 400; color: var(--ink-soft); }
 .pp-bath-no { color: var(--ink-soft); font-weight: 400; }
+.pp-lcpm { color: var(--blue); text-decoration: underline; font-weight: 700; }
+/* Star swatch on the Amazing Parks filter button, matching the map markers. */
+.map-leg-star { width: 13px; height: 13px; display: inline-block; vertical-align: -1px; }
 .map-table .mt-bath { font-size: 12px; margin-left: 5px; white-space: nowrap; }
 .map-credit { font-family: "Public Sans", sans-serif; font-size: 12px; color: var(--ink-soft);
   margin-top: 10px; line-height: 1.5; }
@@ -1728,7 +1731,7 @@ body::before {
         <span class="map-filter-label"><i class="ti ti-adjustments-horizontal"></i> Show</span>
         <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')">⭐ Amazing Parks</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')"><svg class="map-leg-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" fill="#1a1612" stroke="#1a1612" stroke-width="1.5" stroke-linejoin="round"/></svg> Amazing Parks</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')">🚻 W/ Bathrooms</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')">♿ Accessible</button>
         <button class="map-filter-btn" data-section="INDOOR PLAY PLACES" onclick="filterMapPins(this,'INDOOR PLAY PLACES')"><span class="map-leg-dot indoor"></span> Indoor Play</button>
@@ -3401,14 +3404,29 @@ function initParksMap() {
   }).addTo(map);
   PARKS.forEach(p => {
     const color = SECTION_COLORS[p.section] || SECTION_FALLBACK;
-    const size = 14;
-    // Indoor spots get a square pin so they read as "inside" at a glance.
-    const radius = p.section === 'INDOOR PLAY PLACES' ? '3px' : '50%';
-    const icon = L.divIcon({
-      className: '',
-      html: '<div style="width:' + size + 'px;height:' + size + 'px;border-radius:' + radius + ';background:' + color + ';border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);cursor:pointer;"></div>',
-      iconSize: [size,size], iconAnchor: [size/2,size/2], popupAnchor: [0,-size/2]
-    });
+    let icon;
+    if (isAmazing(p)) {
+      // Parks LC Park Mom has actually visited get a star instead of a dot, so
+      // they stand out even when no filter is on. Keeps its section colour.
+      const s = 24;
+      icon = L.divIcon({
+        className: '',
+        html: '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" style="display:block;cursor:pointer;'
+            + 'filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45));">'
+            + '<path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" '
+            + 'fill="' + color + '" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+        iconSize: [s,s], iconAnchor: [s/2,s/2], popupAnchor: [0,-s/2]
+      });
+    } else {
+      const size = 14;
+      // Indoor spots get a square pin so they read as "inside" at a glance.
+      const radius = p.section === 'INDOOR PLAY PLACES' ? '3px' : '50%';
+      icon = L.divIcon({
+        className: '',
+        html: '<div style="width:' + size + 'px;height:' + size + 'px;border-radius:' + radius + ';background:' + color + ';border:2.5px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);cursor:pointer;"></div>',
+        iconSize: [size,size], iconAnchor: [size/2,size/2], popupAnchor: [0,-size/2]
+      });
+    }
     const badges = '';
     const amenityList = p.amenities ? '<div class="pp-amenities">' + p.amenities.split(',').slice(0,4).map(a => '<span>' + a.trim() + '</span>').join('') + '</div>' : '';
     const agesLine = p.ages ? '<div class="pp-ages"><i class="ti ti-users"></i> ' + p.ages + '</div>' : '';
@@ -3419,7 +3437,10 @@ function initParksMap() {
       : '<div class="pp-ages pp-bath pp-bath-no">' + BATH_NO + '</div>';
     const adaLine = isADA(p) ? '<div class="pp-ages pp-bath">♿ ADA accessible</div>' : '';
     // The rating number itself is never shown — only that a real parent reviewed it.
-    const amzLine = isAmazing(p) ? '<div class="pp-ages pp-bath">⭐ Visited &amp; reviewed by LC Park Mom</div>' : '';
+    const amzLine = isAmazing(p)
+      ? '<div class="pp-ages pp-bath">⭐ Visited &amp; reviewed by <a href="' + (p.lcpmUrl || LCPM_FB)
+        + '" target="_blank" rel="noopener" class="pp-lcpm">LC Park Mom</a></div>'
+      : '';
     const ratingLine = '';
     const noteLine = p.notes ? '<div class="pp-note">' + p.notes + '</div>' : '';
     const popup = '<div class="park-popup">' +
@@ -3520,6 +3541,11 @@ let _bathroomOnly = false;
 let _adaOnly = false;
 let _amazingOnly = false;
 const isADA = p => p.ada === true;
+// One place for LC Park Mom's links so the credit block, the park popups and the
+// trail popups can never drift apart. A park may also carry its own `lcpmUrl`
+// pointing at her specific write-up; if it does, that wins over the page link.
+const LCPM_FB = 'https://www.facebook.com/profile.php?id=100089982475891';
+const LCPM_IG = 'https://www.instagram.com/lcparkmom/';
 // "Amazing" = LC Park Mom actually went and reviewed it. The rating itself is
 // never rendered (see the popup builder) — only its presence is used, as a
 // stand-in for "a real parent vouched for this one".
@@ -3761,7 +3787,7 @@ function trailPopup(p, kind) {
     '<div style="margin-top:8px;font-size:12px;line-height:1.7;">'
     + '<a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener">Trail info &amp; photos</a><br>'
     + '<a href="https://www.lcfpd.org/preserves/" target="_blank" rel="noopener">Lake County Forest Preserves</a><br>'
-    + '<a href="https://www.facebook.com/profile.php?id=100089982475891" target="_blank" rel="noopener">Ask LC Park Mom on Facebook</a>'
+    + '<a href="' + LCPM_FB + '" target="_blank" rel="noopener">Ask LC Park Mom on Facebook</a>'
     + '</div>';
   return '<div class="park-popup"><div class="pp-name">' + p.name + '</div>'
     + '<div class="pp-meta">' + label + dist + '</div>'
