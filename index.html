@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="Central Lake County Fun">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="Lake County Events Calendar — Free Family Fun Near Grayslake, IL">
-<meta property="og:description" content="847 free & low-cost events and 425 parks for Lake County, IL families — including 40 playgrounds with real bathrooms. A free events calendar and parks map near Grayslake, updated weekly.">
+<meta property="og:description" content="847 free & low-cost events and 425 parks for Lake County, IL families — including 40 playgrounds with real bathrooms. A free events calendar and fun map near Grayslake, updated weekly.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://julianamapper.github.io/central-lake-county-fun/">
 <meta property="og:image" content="https://julianamapper.github.io/central-lake-county-fun/og-preview.png">
@@ -872,7 +872,6 @@ body::before {
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 0.65rem;
 }
-#bucketTabGrid { display: block; }
 .bb-item.size-wide { grid-column: span 2; flex-direction: row; text-align: left; padding: 0.85rem 1rem; }
 .bb-item.size-wide .bb-label { text-align: left; }
 .bb-item.size-lg .bb-icon { width: 72px; height: 72px; }
@@ -997,6 +996,9 @@ body::before {
 .pp-lcpm { color: var(--blue); text-decoration: underline; font-weight: 700; }
 /* Star swatch on the Amazing Parks filter button, matching the map markers. */
 .map-leg-star { width: 13px; height: 13px; display: inline-block; vertical-align: -1px; }
+/* Filter-button swatches are miniature copies of the actual map pins — same colour,
+   same glyph — so the key and the map can never say different things. */
+.map-leg-pin { width: 14px; height: 14px; display: inline-block; vertical-align: -2px; }
 .map-table .mt-bath { font-size: 12px; margin-left: 5px; white-space: nowrap; }
 .map-credit { font-family: "Public Sans", sans-serif; font-size: 12px; color: var(--ink-soft);
   margin-top: 10px; line-height: 1.5; }
@@ -1255,7 +1257,6 @@ body::before {
   body:not(.printing-badge) #filterChipsRow,
   body:not(.printing-badge) .field-note,
   body:not(.printing-badge) .coffee-band,
-  body:not(.printing-badge) #panel-bucket,
   body:not(.printing-badge) #panel-map,
   body:not(.printing-badge) #panel-freefun { display: none !important; }
 
@@ -1498,14 +1499,11 @@ body::before {
   <button class="fsf-tab active" id="tab-events" role="tab" aria-selected="true" onclick="switchTab('events')">
     <span class="tab-num">01</span> The Lineup
   </button>
-  <button class="fsf-tab" id="tab-bucket" role="tab" aria-selected="false" onclick="switchTab('bucket')">
-    <span class="tab-num">02</span> Bucket List
-  </button>
   <button class="fsf-tab" id="tab-map" role="tab" aria-selected="false" onclick="switchTab('map')">
-    <span class="tab-num">03</span> Parks Map
+    <span class="tab-num">02</span> Fun Map
   </button>
   <button class="fsf-tab" id="tab-freefun" role="tab" aria-selected="false" onclick="switchTab('freefun')">
-    <span class="tab-num">04</span> Free Fun
+    <span class="tab-num">03</span> Free Fun
   </button>
 </nav>
 
@@ -1691,43 +1689,15 @@ body::before {
 
 </div><!-- /panel-events -->
 
-<!-- ═══════════════════════════════════════
-     BUCKET LIST PANEL
-═══════════════════════════════════════ -->
-<div class="tab-panel" id="panel-bucket">
-  <div class="fsf-sec-head">
-    <span class="fsf-sec-num">02</span>
-    <h2 class="fsf-sec-title">Summer Bucket List</h2>
-  </div>
-  <div class="bucket-tab-wrap">
-    <div class="bucket-tab-header">
-      <div>
-        <div class="bucket-tab-title">Build Your Bucket List</div>
-        <div class="bucket-tab-sub">Tap adventures to add them to your family's summer list — then print it out.</div>
-      </div>
-      <div class="bucket-print-bar">
-        <span class="bucket-select-count" id="bucketSelCount">Nothing on your list yet</span>
-        <button class="bucket-select-all" onclick="bucketSelectAll()">Add All</button>
-        <button class="bucket-print-btn" id="bucketPrintBtn" onclick="printBucket()" disabled>
-          <i class="ti ti-printer"></i> Print My List
-        </button>
-      </div>
-    </div>
-    <div class="bucket-badge-grid" id="bucketTabGrid"></div>
-    <div class="trail-progress" style="margin-top:1.5rem">
-      <div class="trail-progress-label" id="bucketLabel">0 adventures on your list</div>
-      <div class="trail-track"><div class="trail-fill" id="bucketFill" style="width:0%"></div></div>
-    </div>
-  </div>
-</div><!-- /panel-bucket -->
+
 
 <!-- ═══════════════════════════════════════
      MAP PANEL
 ═══════════════════════════════════════ -->
 <div class="tab-panel" id="panel-map">
   <div class="fsf-sec-head">
-    <span class="fsf-sec-num">03</span>
-    <h2 class="fsf-sec-title">Parks Map</h2>
+    <span class="fsf-sec-num">02</span>
+    <h2 class="fsf-sec-title">Fun Map</h2>
   </div>
   <div class="map-tab-wrap">
     <div class="map-filter-row">
@@ -1736,21 +1706,22 @@ body::before {
         <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')"><svg class="map-leg-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" fill="#e8a92c" stroke="#7a5410" stroke-width="1.8" stroke-linejoin="round"/></svg> Amazing Parks</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')">🚻 W/ Bathrooms</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')">♿ Accessible</button>
-        <button class="map-filter-btn" data-section="INDOOR PLAY PLACES" onclick="filterMapPins(this,'INDOOR PLAY PLACES')"><span class="map-leg-dot indoor"></span> Indoor Play</button>
-        <button class="map-filter-btn" data-section="SPLASH PADS" onclick="filterMapPins(this,'SPLASH PADS')"><span class="map-leg-dot splash"></span> Splash Pads</button>
-        <button class="map-filter-btn" data-section="BEACHES & LAKES" onclick="filterMapPins(this,'BEACHES & LAKES')"><span class="map-leg-dot beach"></span> Beaches &amp; Lakes</button>
-        <button class="map-filter-btn" data-section="NATURE CENTERS" onclick="filterMapPins(this,'NATURE CENTERS')"><span class="map-leg-dot nature"></span> Nature Centers</button>
-        <button class="map-filter-btn" data-section="FOREST PRESERVES & NATURE AREAS" onclick="filterMapPins(this,'FOREST PRESERVES & NATURE AREAS')"><span class="map-leg-dot forest"></span> Forest Preserves</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1a1612"/><g transform="translate(5.6,5.4) scale(0.0206)" fill="#fff"><circle cx="130.95" cy="46.59" r="46.55"/><path d="M124.5 388.16V549.99C124.26 579.39 80.49 579.39 80.11 549.99V388.16H22.82L84.4 171.9H74.38L38.58 295.07C29.52 322.3-7.31 311.28 1.34 282.18L41.44 148.99C46.05 133.69 65.33 106.68 98.73 106.02H128.8H163.17C195.61 106.68 214.97 133.92 220.46 148.99L260.56 282.18C268.7 311.13 232.15 323.02 223.32 295.07L187.52 171.9H176.06L239.08 388.16H180.36V549.99C180.82 579.39 137.22 579.25 137.39 549.99V388.16H124.5z"/><circle cx="511.91" cy="46.59" r="46.55"/><path d="M462.5 106.02C426.71 106.02 403.78 137.01 403.78 167.6V310.82C403.45 338.8 443.74 338.8 443.88 310.82V179.06H453.9V542.83C453.28 580.81 506.95 579.72 506.89 542.83V330.87H515.49V542.83C516.19 579.72 570.14 580.81 569.91 542.83V179.06H579.93V310.82C579.46 339.02 619.55 339.02 620.03 310.82V167.6C619.46 137.01 595.67 106.57 559.88 106.02H462.5z"/><rect x="297.79" y="5.77" width="53" height="562.84"/></g></svg> W/ Bathrooms</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1f3a6b"/><g transform="translate(4.3,4.3) scale(0.64)" style="fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"><path d="M9 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M11 7l0 8l4 0l4 5"/><path d="M11 11l5 0"/><path d="M7 11.5a5 5 0 1 0 6 7.5"/></g></svg> Accessible</button>
+        <button class="map-filter-btn" data-section="INDOOR PLAY PLACES" onclick="filterMapPins(this,'INDOOR PLAY PLACES')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5" fill="#1f3a6b"/><g transform="translate(6.2,6.2) scale(0.483)" style="fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"><path d="M3 11 12 3l9 8"/><path d="M5.5 10.5V21h13V10.5"/></g></svg> Indoor Play</button>
+        <button class="map-filter-btn" data-section="SPLASH PADS" onclick="filterMapPins(this,'SPLASH PADS')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1f7a8c"/><g transform="translate(6.2,6.2) scale(0.483)" style="fill:#fff;stroke:none"><path d="M12 3C12 3 6 10.2 6 14a6 6 0 0 0 12 0c0-3.8-6-11-6-11z"/></g></svg> Splash Pads</button>
+        <button class="map-filter-btn" data-section="BEACHES & LAKES" onclick="filterMapPins(this,'BEACHES & LAKES')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#e8a92c"/><g transform="translate(6.2,6.2) scale(0.483)" style="fill:#fff;stroke:none"><path d="M12 3a9 9 0 0 0-9 9h18a9 9 0 0 0-9-9z"/><rect x="11.1" y="12" width="1.8" height="9" rx=".9"/></g></svg> Beaches &amp; Lakes</button>
+        <button class="map-filter-btn" data-section="NATURE CENTERS" onclick="filterMapPins(this,'NATURE CENTERS')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#7B5EA7"/><g transform="translate(6.2,6.2) scale(0.483)" style="fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round"><path d="M12 21V11M12 11c0-4 3-7 8-7 0 5-3 8-8 7zM12 14c0-3-2.5-5.5-6.5-5.5C5.5 12.5 8 15 12 14z"/></g></svg> Nature Centers</button>
+        <button class="map-filter-btn" data-section="FOREST PRESERVES & NATURE AREAS" onclick="filterMapPins(this,'FOREST PRESERVES & NATURE AREAS')"><svg class="map-leg-pin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#3D6B4F"/><g transform="translate(6.2,6.2) scale(0.483)" style="fill:#fff;stroke:none"><path d="M12 2 6.5 11h3L5 18h14l-4.5-7h3z"/><rect x="10.8" y="18" width="2.4" height="4"/></g></svg> Forest Preserves</button>
       </div>
       <div class="map-drive-group">
-        <span class="map-filter-label"><i class="ti ti-clock"></i> Within</span>
-        <button class="map-drive-btn active" data-drive="99" onclick="filterMapDrive(this,99)">Any</button>
-        <button class="map-drive-btn" data-drive="10" onclick="filterMapDrive(this,10)">10 min</button>
-        <button class="map-drive-btn" data-drive="15" onclick="filterMapDrive(this,15)">15 min</button>
-        <button class="map-drive-btn" data-drive="20" onclick="filterMapDrive(this,20)">20 min</button>
-        <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 min</button>
+        <span class="map-filter-label"><i class="ti ti-map-pin"></i> Within</span>
+        <button class="map-drive-btn active" data-drive="999" onclick="filterMapDrive(this,999)">Any</button>
+        <button class="map-drive-btn" data-drive="5" onclick="filterMapDrive(this,5)">5 mi</button>
+        <button class="map-drive-btn" data-drive="10" onclick="filterMapDrive(this,10)">10 mi</button>
+        <button class="map-drive-btn" data-drive="15" onclick="filterMapDrive(this,15)">15 mi</button>
+        <button class="map-drive-btn" data-drive="20" onclick="filterMapDrive(this,20)">20 mi</button>
+        <button class="map-drive-btn" data-drive="30" onclick="filterMapDrive(this,30)">30 mi</button>
       </div>
     </div>
     <div class="map-layer-row">
@@ -1782,7 +1753,7 @@ body::before {
         <table class="map-table" id="mapTable">
           <thead><tr>
             <th scope="col">Place</th><th scope="col">What it is</th><th scope="col">Town</th>
-            <th scope="col">Drive</th><th scope="col">Cost</th><th scope="col">Good for</th><th scope="col"></th>
+            <th scope="col">Miles</th><th scope="col">Cost</th><th scope="col">Good for</th><th scope="col"></th>
           </tr></thead>
           <tbody id="mapTableBody"></tbody>
         </table>
@@ -2634,12 +2605,11 @@ function modalSaveOne(id) {
 // ── BUCKET LIST ──
 // ── TABS ──
 function switchTab(tab) {
-  ['events','bucket','map','freefun'].forEach(t => {
+  ['events','map','freefun'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).setAttribute('aria-selected', t===tab);
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
-  if (tab==='bucket') initBucketTab();
   if (tab==='map') {
     setTimeout(() => {
       initParksMap();
@@ -2676,42 +2646,6 @@ function saveBucketChecked(set) {
 }
 let bucketChecked = loadBucketChecked();
 
-function initBucketTab() {
-  const grid = document.getElementById('bucketTabGrid');
-  if (!grid) return;
-  const groups = {};
-  BUCKET.forEach((item,i) => {
-    const c = item.cat || 'More';
-    (groups[c] = groups[c] || []).push({...item, _i: i});
-  });
-  grid.innerHTML = Object.entries(groups).map(([cat, items]) => `
-    <div class="bb-cat-header">${cat} <span>${items.length}</span></div>
-    <div class="bb-cat-grid">
-      ${items.map(item => {
-        const i = item._i;
-        const isChecked = bucketChecked.has(i);
-        const sizeClass = item.size ? ` size-${item.size}` : '';
-        return `<div class="bb-item${isChecked?' checked':''}${sizeClass}" onclick="toggleBucketSel(${i})" id="bb-${i}" role="button" tabindex="0" aria-pressed="${isChecked}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBucketSel(${i});}">
-          <div class="bb-icon${isChecked?' earned':''}"><i class="ti ${item.icon}"></i></div>
-          <div class="bb-label">${item.text}</div>
-          <div class="bb-check-badge" aria-hidden="true">★</div>
-        </div>`;
-      }).join('')}
-    </div>
-  `).join('');
-  // Add reset link once
-  const wrap = grid.parentElement;
-  if (wrap && !document.getElementById('bucketResetBtn')) {
-    const btn = document.createElement('button');
-    btn.id = 'bucketResetBtn';
-    btn.className = 'bucket-reset';
-    btn.textContent = 'Clear my list';
-    btn.onclick = resetBucketProgress;
-    wrap.appendChild(btn);
-  }
-  updateBucketSelCount();
-  updateBucket(bucketChecked.size);
-}
 
 function toggleBucketSel(i) {
   if (bucketChecked.has(i)) bucketChecked.delete(i);
@@ -2751,7 +2685,6 @@ function resetBucketProgress() {
   if (!confirm('Clear your bucket list? This removes all adventures from your list.')) return;
   bucketChecked.clear();
   saveBucketChecked(bucketChecked);
-  initBucketTab();
 }
 
 function updateBucketSelCount() {
@@ -2792,7 +2725,6 @@ function printBucket() {
   sheet.style.display = 'none';
 }
 
-function initBucket() { /* handled by initBucketTab() on tab switch */ }
 function toggleBucket(i) {
   const done=JSON.parse(localStorage.getItem('bucket_done')||'[]');
   const idx=done.indexOf(i); idx>-1?done.splice(idx,1):done.push(i);
@@ -3382,7 +3314,7 @@ function filterMAPMap(btn, filter) {
 let _mapInited = false;
 let _leafletMap = null;
 let _allMarkers = [];
-let _activeDrive = 99;
+let _activeDrive = 999;   // now MILES, not minutes
 let _activeSection = '';
 
 // ── SECTION COLOURS — SINGLE SOURCE OF TRUTH ─────────────────────────────────
@@ -3414,11 +3346,36 @@ const SECTION_GLYPH = {
 };
 const GLYPH_STROKE = { 'NATURE CENTERS': true, 'INDOOR PLAY PLACES': true };  // these read better as line art
 
+// Badge glyphs, inlined so they render identically everywhere rather than waiting
+// on the icon webfont. Wheelchair is Tabler's icon-tabler-disabled (stroked); the
+// restroom mark is the standard two-figure pictogram (filled).
+const BADGE_ART = {
+  ada: {bg:'#1f3a6b', vb:'0 0 24 24', stroke:true,
+    d:'<path d="M9 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M11 7l0 8l4 0l4 5"/>'
+      + '<path d="M11 11l5 0"/><path d="M7 11.5a5 5 0 1 0 6 7.5"/>'},
+  bath: {bg:'#1a1612', vb:'0 0 620 572', stroke:false,
+    d:'<circle cx="130.95" cy="46.59" r="46.55"/>'
+      + '<path d="M124.5 388.16V549.99C124.26 579.39 80.49 579.39 80.11 549.99V388.16H22.82L84.4 171.9H74.38L38.58 295.07C29.52 322.3-7.31 311.28 1.34 282.18L41.44 148.99C46.05 133.69 65.33 106.68 98.73 106.02H128.8H163.17C195.61 106.68 214.97 133.92 220.46 148.99L260.56 282.18C268.7 311.13 232.15 323.02 223.32 295.07L187.52 171.9H176.06L239.08 388.16H180.36V549.99C180.82 579.39 137.22 579.25 137.39 549.99V388.16H124.5z"/>'
+      + '<circle cx="511.91" cy="46.59" r="46.55"/>'
+      + '<path d="M462.5 106.02C426.71 106.02 403.78 137.01 403.78 167.6V310.82C403.45 338.8 443.74 338.8 443.88 310.82V179.06H453.9V542.83C453.28 580.81 506.95 579.72 506.89 542.83V330.87H515.49V542.83C516.19 579.72 570.14 580.81 569.91 542.83V179.06H579.93V310.82C579.46 339.02 619.55 339.02 620.03 310.82V167.6C619.46 137.01 595.67 106.57 559.88 106.02H462.5z"/>'
+      + '<rect x="297.79" y="5.77" width="53" height="562.84"/>'}
+};
+function pinBadge(kind, side, PAD) {
+  const a = BADGE_ART[kind];
+  const style = a.stroke
+    ? 'fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round'
+    : 'fill:#fff';
+  return '<span style="position:absolute;z-index:2;bottom:' + (PAD - 4) + 'px;' + side + ':' + (PAD - 4) + 'px;'
+    + 'width:13px;height:13px;border-radius:50%;background:' + a.bg + ';border:1.5px solid #fff;'
+    + 'display:flex;align-items:center;justify-content:center;'
+    + 'box-shadow:0 1px 2px rgba(0,0,0,.35);pointer-events:none;">'
+    + '<svg viewBox="' + a.vb + '" width="8.5" height="8.5" style="' + style + '">' + a.d + '</svg></span>';
+}
 // Builds a pin: coloured disc + optional section glyph, with small white badges for
 // the two things parents ask about first — a bathroom and step-free access. Badges
 // sit outside the disc so they never obscure the glyph.
 function pinIcon(p, color) {
-  const S = 22, PAD = 7;                 // PAD leaves room for the badges
+  const S = 16, PAD = 6;                 // PAD leaves room for the badges
   const box = S + PAD * 2;
   const g = SECTION_GLYPH[p.section];
   // Parks LC Park Mom has visited replace the coloured disc with a gold star, so they
@@ -3428,37 +3385,27 @@ function pinIcon(p, color) {
   // their bathroom badge).
   if (isAmazing(p)) {
     const star = '<svg width="' + (S+4) + '" height="' + (S+4) + '" viewBox="0 0 24 24" '
-      + 'style="position:absolute;left:' + (PAD-2) + 'px;top:' + (PAD-2) + 'px;'
+      + 'style="position:absolute;z-index:1;left:' + (PAD-2) + 'px;top:' + (PAD-2) + 'px;'
       + 'filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));">'
       + '<path d="M12 1.5l3.09 6.9 7.41.83-5.5 5.02L18.5 21.5 12 17.77 5.5 21.5l1.5-7.25-5.5-5.02 7.41-.83z" '
       + 'fill="#e8a92c" stroke="#7a5410" stroke-width="1.6" stroke-linejoin="round"/></svg>';
-    const bdg = (emoji, side) =>
-      '<span style="position:absolute;bottom:' + (PAD - 5) + 'px;' + side + ':' + (PAD - 5) + 'px;'
-      + 'width:14px;height:14px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.28);'
-      + 'font-size:9px;line-height:12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.3);'
-      + 'pointer-events:none;">' + emoji + '</span>';
     return { html: '<div style="position:relative;width:' + box + 'px;height:' + box + 'px;cursor:pointer;">'
-      + star + (hasBath(p) ? bdg('🚻','right') : '') + (isADA(p) ? bdg('♿','left') : '') + '</div>',
+      + star + (hasBath(p) ? pinBadge('bath','right',PAD) : '') + (isADA(p) ? pinBadge('ada','left',PAD) : '') + '</div>',
       iconSize: [box, box], iconAnchor: [box/2, box/2], popupAnchor: [0, -box/2] };
   }
   const glyph = g
-    ? '<svg viewBox="0 0 24 24" width="13" height="13" style="position:absolute;left:' + (PAD + (S-13)/2) + 'px;top:' + (PAD + (S-13)/2) + 'px;'
+    ? '<svg viewBox="0 0 24 24" width="10" height="10" style="position:absolute;left:' + (PAD + (S-10)/2) + 'px;top:' + (PAD + (S-10)/2) + 'px;'
       + 'fill:' + (GLYPH_STROKE[p.section] ? 'none' : '#fff') + ';stroke:#fff;stroke-width:'
       + (GLYPH_STROKE[p.section] ? '2.1' : '0') + ';stroke-linecap:round;stroke-linejoin:round;pointer-events:none;">' + g + '</svg>'
     : '';
-  const badge = (emoji, side) =>
-    '<span style="position:absolute;bottom:' + (PAD - 5) + 'px;' + side + ':' + (PAD - 5) + 'px;'
-    + 'width:14px;height:14px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.28);'
-    + 'font-size:9px;line-height:12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.3);'
-    + 'pointer-events:none;">' + emoji + '</span>';
   const html =
     '<div style="position:relative;width:' + box + 'px;height:' + box + 'px;cursor:pointer;">'
     + '<div style="position:absolute;left:' + PAD + 'px;top:' + PAD + 'px;width:' + S + 'px;height:' + S + 'px;'
     + 'border-radius:' + (p.section === 'INDOOR PLAY PLACES' ? '5px' : '50%') + ';background:' + color
-    + ';border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.32);"></div>'
+    + ';border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.32);"></div>'
     + glyph
-    + (hasBath(p) ? badge('🚻', 'right') : '')
-    + (isADA(p)   ? badge('♿', 'left')  : '')
+    + (hasBath(p) ? pinBadge('bath', 'right', PAD) : '')
+    + (isADA(p)   ? pinBadge('ada', 'left', PAD)  : '')
     + '</div>';
   return { html, iconSize: [box, box], iconAnchor: [box/2, box/2], popupAnchor: [0, -box/2] };
 }
@@ -3494,7 +3441,7 @@ function initParksMap() {
       '<div class="pp-header">' +
         '<div class="pp-name">' + p.name + '</div>' + badges +
       '</div>' +
-      '<div class="pp-meta">' + p.city + ' &middot; ' + p.drive + ' min &middot; ' + p.cost + '</div>' +
+      '<div class="pp-meta">' + p.city + ' &middot; ' + parkMiles(p).toFixed(1) + ' mi &middot; ' + p.cost + '</div>' +
       '<div class="pp-type">' + p.type + '</div>' +
       agesLine + hoursLine + amzLine + bathLine + adaLine + amenityList + ratingLine + noteLine +
       '<a class="pp-dir" href="https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lon + '" target="_blank" rel="noopener"><i class="ti ti-navigation"></i> Directions</a>' +
@@ -3588,6 +3535,13 @@ let _bathroomOnly = false;
 let _adaOnly = false;
 let _amazingOnly = false;
 const isADA = p => p.ada === true;
+// Straight-line miles from the visitor's zip (or Grayslake 60030). Parks store a
+// `drive` in minutes that was itself derived from miles, so filtering on minutes
+// implied a precision we never had — measure the miles directly instead.
+function parkMiles(p) {
+  const o = (typeof userZipCoords !== 'undefined' && userZipCoords) || ZIP_CENTROIDS['60030'];
+  return haversineZip(o[0], o[1], p.lat, p.lon);
+}
 // One place for LC Park Mom's links so the credit block, the park popups and the
 // trail popups can never drift apart. A park may also carry its own `lcpmUrl`
 // pointing at her specific write-up; if it does, that wins over the page link.
@@ -3647,7 +3601,7 @@ function applyMapFilters() {
   const shown = [];
   _allMarkers.forEach(({marker, section, drive, park}) => {
     const secOk = !_activeSection || section === _activeSection;
-    const driveOk = drive <= _activeDrive;
+    const driveOk = _activeDrive >= 999 || parkMiles(park) <= _activeDrive;
     const bathOk = !_bathroomOnly || hasBath(park);
     const adaOk  = !_adaOnly || isADA(park);
     const amzOk  = !_amazingOnly || isAmazing(park);
@@ -3663,7 +3617,7 @@ function renderMapTable(rows) {
   const body = document.getElementById('mapTableBody');
   const count = document.getElementById('mapTableCount');
   if (!body) return;
-  rows = rows.slice().sort((a, b) => (a.drive - b.drive) || a.name.localeCompare(b.name));
+  rows = rows.slice().sort((a, b) => (parkMiles(a) - parkMiles(b)) || a.name.localeCompare(b.name));
   if (count) {
     const noun = _activeSection
       ? _activeSection.toLowerCase().replace(/&/g, 'and')
@@ -3672,7 +3626,7 @@ function renderMapTable(rows) {
       + (_bathroomOnly ? ' with bathrooms' : '')
       + (_adaOnly ? ' that are ADA accessible' : '')
       + (_amazingOnly ? ' reviewed by LC Park Mom' : '')
-      + (_activeDrive < 90 ? ' within ' + _activeDrive + ' min drive' : '');
+      + (_activeDrive < 999 ? ' within ' + _activeDrive + ' miles' : '');
   }
   if (!rows.length) {
     body.innerHTML = '<tr><td colspan="7" class="map-table-empty">No spots match these filters — try a longer drive time.</td></tr>';
@@ -3694,7 +3648,7 @@ function renderMapTable(rows) {
       + '<td class="mt-name"><span class="mt-sec' + sq + '" style="background:' + color + '"></span>' + esc(p.name) + amz + bath + ada + '</td>'
       + '<td>' + esc(p.type || '') + '</td>'
       + '<td>' + esc(p.city || '') + '</td>'
-      + '<td>' + (p.drive != null ? p.drive + ' min' : '') + '</td>'
+      + '<td>' + parkMiles(p).toFixed(1) + ' mi</td>'
       + '<td>' + esc(p.cost || '') + '</td>'
       + '<td class="mt-good">' + esc(good) + '</td>'
       + '<td><a class="mt-go" href="' + dir + '" target="_blank" rel="noopener">Directions</a></td>'
