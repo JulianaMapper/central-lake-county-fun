@@ -984,12 +984,12 @@ body::before {
 }
 .map-leg-item { display: inline-flex; align-items: center; gap: 0.4rem; }
 .map-leg-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.2); }
-.map-leg-dot.playground { background: #2C3E2A; }
-.map-leg-dot.splash     { background: #1f3a6b; }
+/* Must match SECTION_COLORS in the map JS — that object is the source of truth. */
+.map-leg-dot.playground { background: #c1342a; }
+.map-leg-dot.splash     { background: #1f7a8c; }
 .map-leg-dot.beach      { background: #e8a92c; }
-.map-leg-dot.nature     { background: #4A7C59; }
+.map-leg-dot.nature     { background: #7B5EA7; }
 .map-leg-dot.forest     { background: #3D6B4F; }
-.map-leg-dot.home       { background: #c1342a; }
 .map-leg-dot.indoor     { background: #1f3a6b; border-radius: 3px; }
 .pp-bath { font-weight: 700; display: block; }
 .pp-bath-note { font-weight: 400; color: var(--ink-soft); }
@@ -1482,7 +1482,7 @@ body::before {
 <!-- ═══════════════════════════════════════
      INTRO NOTE
 ═══════════════════════════════════════ -->
-<div class="field-note" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;"><p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p></div>
+<div class="field-note" id="distanceNoticeBlock" style="flex-direction:column;align-items:flex-start;gap:0.4rem;padding:20px 56px;"><p id="distanceNotice" style="margin:0;font-size:1.05em;opacity:0.95;"><i class="ti ti-car" style="vertical-align:-2px;margin-right:3px;"></i>Showing events <b>within 10 miles of Grayslake (60030)</b> by default. Type your own zip code or change the distance in <b>Filter Your Trail</b> below to see more.</p></div>
 
 <!-- ═══════════════════════════════════════
      TAB NAV
@@ -1728,8 +1728,9 @@ body::before {
         <span class="map-filter-label"><i class="ti ti-adjustments-horizontal"></i> Show</span>
         <button class="map-filter-btn active" data-section="" onclick="filterMapPins(this,'')">All</button>
         <button class="map-filter-btn" data-section="PLAYGROUNDS & PARKS" onclick="filterMapPins(this,'PLAYGROUNDS & PARKS')"><span class="map-leg-dot playground"></span> Playgrounds</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')"><span class="map-leg-dot playground"></span> 🚻 Playgrounds w/ Bathrooms</button>
-        <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')"><span class="map-leg-dot playground"></span> ♿ Accessible Playgrounds</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+AMAZING" onclick="filterMapPins(this,'PLAYGROUNDS+AMAZING')">⭐ Amazing Parks</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+BATHROOMS" onclick="filterMapPins(this,'PLAYGROUNDS+BATHROOMS')">🚻 W/ Bathrooms</button>
+        <button class="map-filter-btn" data-section="PLAYGROUNDS+ADA" onclick="filterMapPins(this,'PLAYGROUNDS+ADA')">♿ Accessible</button>
         <button class="map-filter-btn" data-section="INDOOR PLAY PLACES" onclick="filterMapPins(this,'INDOOR PLAY PLACES')"><span class="map-leg-dot indoor"></span> Indoor Play</button>
         <button class="map-filter-btn" data-section="SPLASH PADS" onclick="filterMapPins(this,'SPLASH PADS')"><span class="map-leg-dot splash"></span> Splash Pads</button>
         <button class="map-filter-btn" data-section="BEACHES & LAKES" onclick="filterMapPins(this,'BEACHES & LAKES')"><span class="map-leg-dot beach"></span> Beaches &amp; Lakes</button>
@@ -1755,6 +1756,7 @@ body::before {
       <div class="map-corner br"></div>
       <div id="parksMap" style="height:500px;border:2px solid var(--ink);"></div>
     </div>
+    <p class="map-note" id="mapPrefsNote" style="display:none"><i class="ti ti-bookmark"></i> Showing the filters you used last time. <a href="#" onclick="clearMapPrefs();return false;" style="color:var(--blue);text-decoration:underline;">Show everything</a></p>
     <p class="map-note"><i class="ti ti-info-circle"></i> Drive times approximate from Grayslake. Click any pin for details.</p>
     <p class="map-credit">A lot of the playground detail here — the swings, the ground material, which parks
       actually have bathrooms — comes from <strong>LC Park Mom</strong>, who visits and writes up Lake County
@@ -2639,6 +2641,10 @@ function switchTab(tab) {
   }
   const fp = document.getElementById('filterPanel');
   if (fp) fp.style.display = tab==='events' ? '' : 'none';
+  // The "showing events within 10 miles" note describes the EVENTS filters, not the
+  // map's own drive-time filter — leaving it up on the map tab just confuses people.
+  const dn = document.getElementById('distanceNoticeBlock');
+  if (dn) dn.style.display = tab==='events' ? '' : 'none';
 }
 
 // ── BUCKET TAB ──
@@ -3369,6 +3375,22 @@ let _allMarkers = [];
 let _activeDrive = 99;
 let _activeSection = '';
 
+// ── SECTION COLOURS — SINGLE SOURCE OF TRUTH ─────────────────────────────────
+// These used to be defined three separate times (legend CSS, pin colours, table
+// chips) and had drifted badly: Beaches read amber in the legend, olive on the
+// pins and blue in the table. Everything now reads from here. The hues are
+// deliberately far apart — the old set had four near-identical greens, so the
+// legend told you nothing. Keep one green only.
+const SECTION_COLORS = {
+  'PLAYGROUNDS & PARKS':             '#c1342a',  // brand red — the biggest, most-wanted set
+  'SPLASH PADS':                     '#1f7a8c',  // teal
+  'BEACHES & LAKES':                 '#e8a92c',  // brand sun
+  'NATURE CENTERS':                  '#7B5EA7',  // purple
+  'FOREST PRESERVES & NATURE AREAS': '#3D6B4F',  // the one green
+  'INDOOR PLAY PLACES':              '#1f3a6b'   // navy, drawn as a square
+};
+const SECTION_FALLBACK = '#3D6B4F';
+
 function initParksMap() {
   if (_mapInited) return;
   _mapInited = true;
@@ -3377,16 +3399,8 @@ function initParksMap() {
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 18
   }).addTo(map);
-  const colors = {
-    'PLAYGROUNDS & PARKS': '#2C3E2A',
-    'SPLASH PADS': '#486A78',
-    'BEACHES & LAKES': '#C39A3F',
-    'NATURE CENTERS': '#4A7C59',
-    'FOREST PRESERVES & NATURE AREAS': '#3D6B4F',
-    'INDOOR PLAY PLACES': '#1f3a6b'
-  };
   PARKS.forEach(p => {
-    const color = colors[p.section] || '#2C3E2A';
+    const color = SECTION_COLORS[p.section] || SECTION_FALLBACK;
     const size = 14;
     // Indoor spots get a square pin so they read as "inside" at a glance.
     const radius = p.section === 'INDOOR PLAY PLACES' ? '3px' : '50%';
@@ -3404,6 +3418,8 @@ function initParksMap() {
         + (p.bathNote ? ' <span class="pp-bath-note">— ' + p.bathNote + '</span>' : '') + '</div>'
       : '<div class="pp-ages pp-bath pp-bath-no">' + BATH_NO + '</div>';
     const adaLine = isADA(p) ? '<div class="pp-ages pp-bath">♿ ADA accessible</div>' : '';
+    // The rating number itself is never shown — only that a real parent reviewed it.
+    const amzLine = isAmazing(p) ? '<div class="pp-ages pp-bath">⭐ Visited &amp; reviewed by LC Park Mom</div>' : '';
     const ratingLine = '';
     const noteLine = p.notes ? '<div class="pp-note">' + p.notes + '</div>' : '';
     const popup = '<div class="park-popup">' +
@@ -3412,7 +3428,7 @@ function initParksMap() {
       '</div>' +
       '<div class="pp-meta">' + p.city + ' &middot; ' + p.drive + ' min &middot; ' + p.cost + '</div>' +
       '<div class="pp-type">' + p.type + '</div>' +
-      agesLine + hoursLine + bathLine + adaLine + amenityList + ratingLine + noteLine +
+      agesLine + hoursLine + amzLine + bathLine + adaLine + amenityList + ratingLine + noteLine +
       '<a class="pp-dir" href="https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lon + '" target="_blank" rel="noopener"><i class="ti ti-navigation"></i> Directions</a>' +
       '</div>';
     const marker = L.marker([p.lat, p.lon], {icon}).addTo(map).bindPopup(popup, {maxWidth: 280});
@@ -3420,6 +3436,7 @@ function initParksMap() {
   });
   // Populate the table under the map on first load, not just on filter change.
   renderMapTable(_allMarkers.map(m => m.park));
+  restoreMapPrefs();
 
   // Load bike trails on by default
   fetch('trails.geojson')
@@ -3432,10 +3449,7 @@ function initParksMap() {
           return { color, weight: n === 'rcn' ? 3 : 2, opacity: 0.75, dashArray: n === 'rcn' ? null : '5,4' };
         },
         onEachFeature: function(feature, layer) {
-          const p = feature.properties;
-          const dist = p.distance ? ' &middot; ' + p.distance : '';
-          const surface = p.surface ? '<div style="font-size:11px;color:#666;margin-top:2px;">' + p.surface + '</div>' : '';
-          layer.bindPopup('<b>' + p.name + '</b>' + dist + surface, {maxWidth: 240});
+          layer.bindPopup(trailPopup(feature.properties, 'bike'), {maxWidth: 260});
         }
       }).addTo(map);
       _trailsVisible = true;
@@ -3452,7 +3466,7 @@ window.locateUser = function() {
     if (window._userMarker) window._userMarker.remove();
     if (window._radiusRings) window._radiusRings.forEach(r => r.remove());
     if (window._radiusLabels) window._radiusLabels.forEach(l => l.remove());
-    const icon = L.divIcon({className:'',html:'<div style="width:16px;height:16px;background:#c1342a;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #c1342a;"></div>',iconSize:[16,16],iconAnchor:[8,8]});
+    const icon = L.divIcon({className:'',html:'<div style="width:16px;height:16px;background:#1a1612;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 3px #1a1612;"></div>',iconSize:[16,16],iconAnchor:[8,8]});
     window._userMarker = L.marker([lat,lng],{icon:icon,zIndexOffset:1000}).addTo(_leafletMap).bindPopup('<b>Your location</b>').openPopup();
     const miToM = 1609.34;
     const ringStyles = [
@@ -3501,9 +3515,54 @@ const hasBath = p => p.bathrooms === 'yes';
 // section plus the bathroom predicate. filterMapPins() is what translates it.
 const PSEUDO_BATHROOMS = 'PLAYGROUNDS+BATHROOMS';
 const PSEUDO_ADA = 'PLAYGROUNDS+ADA';
+const PSEUDO_AMAZING = 'PLAYGROUNDS+AMAZING';
 let _bathroomOnly = false;
 let _adaOnly = false;
+let _amazingOnly = false;
 const isADA = p => p.ada === true;
+// "Amazing" = LC Park Mom actually went and reviewed it. The rating itself is
+// never rendered (see the popup builder) — only its presence is used, as a
+// stand-in for "a real parent vouched for this one".
+const isAmazing = p => !!(p.rating && String(p.rating).trim());
+
+// ── FILTER MEMORY ────────────────────────────────────────────────────────────
+// Remember how someone left the map so they don't re-pick "playgrounds with
+// bathrooms within 15 min" on every visit. We store the button's own value
+// (including the pseudo-sections) rather than the expanded section, so restore
+// can just re-click the right button. Wrapped in try/catch because Safari
+// private mode throws on localStorage access rather than returning null.
+const MAP_PREFS_KEY = 'clcf.mapFilters.v1';
+let _activeFilterKey = '';   // what the Show row currently has selected
+let _prefsReady = false;     // suppresses saves while restoring
+
+function saveMapPrefs() {
+  if (!_prefsReady) return;
+  try {
+    localStorage.setItem(MAP_PREFS_KEY, JSON.stringify({
+      section: _activeFilterKey,
+      drive: _activeDrive,
+      bike: _trailsVisible,
+      walk: _walkVisible
+    }));
+  } catch (e) { /* storage unavailable — filters just won't persist */ }
+}
+
+function readMapPrefs() {
+  try {
+    const raw = localStorage.getItem(MAP_PREFS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+window.clearMapPrefs = function() {
+  try { localStorage.removeItem(MAP_PREFS_KEY); } catch (e) {}
+  const all = document.querySelector('.map-filter-btn[data-section=""]');
+  const any = document.querySelector('.map-drive-btn[data-drive="99"]');
+  if (all) filterMapPins(all, '');
+  if (any) filterMapDrive(any, 99);
+  const n = document.getElementById('mapPrefsNote');
+  if (n) n.style.display = 'none';
+};
 
 function applyMapFilters() {
   const shown = [];
@@ -3512,17 +3571,15 @@ function applyMapFilters() {
     const driveOk = drive <= _activeDrive;
     const bathOk = !_bathroomOnly || hasBath(park);
     const adaOk  = !_adaOnly || isADA(park);
-    if (secOk && driveOk && bathOk && adaOk) { marker.addTo(_leafletMap); shown.push(park); }
+    const amzOk  = !_amazingOnly || isAmazing(park);
+    if (secOk && driveOk && bathOk && adaOk && amzOk) { marker.addTo(_leafletMap); shown.push(park); }
     else marker.remove();
   });
   renderMapTable(shown);
 }
 
 // The table under the map always mirrors whatever the map is currently showing.
-const MAP_TABLE_COLORS = {
-  'PLAYGROUNDS & PARKS': '#c1342a', 'SPLASH PADS': '#1f7a8c', 'BEACHES & LAKES': '#2d6a8f',
-  'NATURE CENTERS': '#5a8f3d', 'FOREST PRESERVES & NATURE AREAS': '#3D6B4F', 'INDOOR PLAY PLACES': '#1f3a6b'
-};
+// Chip colours come from SECTION_COLORS so the table dot always matches its pin.
 function renderMapTable(rows) {
   const body = document.getElementById('mapTableBody');
   const count = document.getElementById('mapTableCount');
@@ -3535,6 +3592,7 @@ function renderMapTable(rows) {
     count.textContent = rows.length + ' ' + noun
       + (_bathroomOnly ? ' with bathrooms' : '')
       + (_adaOnly ? ' that are ADA accessible' : '')
+      + (_amazingOnly ? ' reviewed by LC Park Mom' : '')
       + (_activeDrive < 90 ? ' within ' + _activeDrive + ' min drive' : '');
   }
   if (!rows.length) {
@@ -3542,7 +3600,7 @@ function renderMapTable(rows) {
     return;
   }
   body.innerHTML = rows.map(p => {
-    const color = MAP_TABLE_COLORS[p.section] || '#3D6B4F';
+    const color = SECTION_COLORS[p.section] || SECTION_FALLBACK;
     const sq = p.section === 'INDOOR PLAY PLACES' ? ' sq' : '';
     // `ages` carries the "good for" blurb; strip the leading star used on the map.
     const good = (p.ages || '').replace(/^\s*\u2b50\s*/, '');
@@ -3552,8 +3610,9 @@ function renderMapTable(rows) {
       ? '<span class="mt-bath" title="' + esc('Bathrooms' + (p.bathNote ? ' — ' + p.bathNote : '')) + '">🚻</span>'
       : '';
     const ada = isADA(p) ? '<span class="mt-bath" title="ADA accessible">♿</span>' : '';
+    const amz = isAmazing(p) ? '<span class="mt-bath" title="Visited &amp; reviewed by LC Park Mom">⭐</span>' : '';
     return '<tr>'
-      + '<td class="mt-name"><span class="mt-sec' + sq + '" style="background:' + color + '"></span>' + esc(p.name) + bath + ada + '</td>'
+      + '<td class="mt-name"><span class="mt-sec' + sq + '" style="background:' + color + '"></span>' + esc(p.name) + amz + bath + ada + '</td>'
       + '<td>' + esc(p.type || '') + '</td>'
       + '<td>' + esc(p.city || '') + '</td>'
       + '<td>' + (p.drive != null ? p.drive + ' min' : '') + '</td>'
@@ -3573,8 +3632,13 @@ function filterMapPins(btn, section) {
   btn.classList.add('active');
   _bathroomOnly = section === PSEUDO_BATHROOMS;
   _adaOnly      = section === PSEUDO_ADA;
-  _activeSection = (_bathroomOnly || _adaOnly) ? 'PLAYGROUNDS & PARKS' : section;
+  _amazingOnly  = section === PSEUDO_AMAZING;
+  // Amazing spans every section (beaches and splash pads get reviewed too), so
+  // unlike the other two it does NOT pin you to PLAYGROUNDS & PARKS.
+  _activeSection = _amazingOnly ? '' : ((_bathroomOnly || _adaOnly) ? 'PLAYGROUNDS & PARKS' : section);
+  _activeFilterKey = section;
   applyMapFilters();
+  saveMapPrefs();
 }
 
 function filterMapDrive(btn, drive) {
@@ -3582,6 +3646,29 @@ function filterMapDrive(btn, drive) {
   btn.classList.add('active');
   _activeDrive = drive;
   applyMapFilters();
+  saveMapPrefs();
+}
+
+// Re-apply whatever the visitor last chose. Called once, after the markers exist.
+function restoreMapPrefs() {
+  const p = readMapPrefs();
+  _prefsReady = true;
+  if (!p) return;
+  let touched = false;
+  if (p.section) {
+    const btn = document.querySelector('.map-filter-btn[data-section="' + p.section.replace(/"/g, '\\"') + '"]');
+    if (btn) { filterMapPins(btn, p.section); touched = true; }
+  }
+  if (p.drive && p.drive !== 99) {
+    const btn = document.querySelector('.map-drive-btn[data-drive="' + p.drive + '"]');
+    if (btn) { filterMapDrive(btn, p.drive); touched = true; }
+  }
+  if (p.walk) { const b = document.getElementById('btnWalk'); if (b) { toggleWalkingTrails(b); touched = true; } }
+  if (p.bike === false && _trailLayer) {
+    const b = document.getElementById('btnTrails'); if (b) { toggleTrails(b); touched = true; }
+  }
+  const note = document.getElementById('mapPrefsNote');
+  if (note && touched) note.style.display = '';
 }
 
 let _trailLayer = null;
@@ -3593,6 +3680,7 @@ window.toggleTrails = function(btn) {
   if (_trailsVisible && _trailLayer) {
     _trailLayer.remove();
     _trailsVisible = false;
+    saveMapPrefs();
     btn.style.background = 'var(--paper)';
     btn.style.color = 'var(--ink)';
     btn.textContent = '🚴 Bike Trails';
@@ -3601,6 +3689,7 @@ window.toggleTrails = function(btn) {
   if (_trailLayer) {
     _trailLayer.addTo(_leafletMap);
     _trailsVisible = true;
+    saveMapPrefs();
     btn.style.background = 'var(--ink)';
     btn.style.color = 'var(--paper)';
     return;
@@ -3619,10 +3708,7 @@ window.toggleTrails = function(btn) {
           return { color, weight: n === 'rcn' ? 3 : 2, opacity: 0.75, dashArray: n === 'rcn' ? null : '5,4' };
         },
         onEachFeature: function(feature, layer) {
-          const p = feature.properties;
-          const dist = p.distance ? ` &middot; ${p.distance}` : '';
-          const surface = p.surface ? `<div style="font-size:11px;color:#666;margin-top:2px;">${p.surface}</div>` : '';
-          layer.bindPopup(`<b>${p.name}</b>${dist}${surface}`, {maxWidth: 240});
+          layer.bindPopup(trailPopup(feature.properties, 'bike'), {maxWidth: 260});
         }
       }).addTo(_leafletMap);
       _trailsVisible = true;
@@ -3646,11 +3732,48 @@ window.toggleTrails = function(btn) {
 // is not painted twice. Warm brown + dotted so it reads as "on foot" at a glance.
 let _walkLayer = null, _walkVisible = false, _walkLoading = false;
 
+// Shared popup for both trail layers. OSM gives us little beyond name/surface/
+// length, so we add plain-language guidance and outbound links people can
+// actually use — LC Park Mom for parent-level detail, LCFPD for the official
+// preserve page, and a Google search fallback for everything else.
+const SURFACE_PLAIN = {
+  asphalt: 'Paved — stroller and balance-bike friendly',
+  paved: 'Paved — stroller and balance-bike friendly',
+  concrete: 'Paved — stroller and balance-bike friendly',
+  compacted: 'Packed gravel — usually fine for a sturdy stroller',
+  fine_gravel: 'Fine gravel — usually fine for a sturdy stroller',
+  gravel: 'Gravel — bumpy for strollers, fine for little walkers',
+  ground: 'Natural dirt path — not stroller friendly',
+  dirt: 'Natural dirt path — not stroller friendly',
+  grass: 'Grass — not stroller friendly',
+  wood: 'Boardwalk',
+  boardwalk: 'Boardwalk'
+};
+function trailPopup(p, kind) {
+  const label = kind === 'walking' ? '🚶 Walking trail' : '🚴 Bike trail';
+  const dist = p.distance ? ' &middot; ' + p.distance : '';
+  const plain = SURFACE_PLAIN[(p.surface || '').toLowerCase()];
+  const surfaceLine = plain
+    ? '<div style="font-size:12px;color:#4a4034;margin-top:4px;">' + plain + '</div>'
+    : (p.surface ? '<div style="font-size:11px;color:#666;margin-top:4px;">Surface: ' + p.surface + '</div>' : '');
+  const q = encodeURIComponent(p.name + ' Lake County Illinois trail');
+  const links =
+    '<div style="margin-top:8px;font-size:12px;line-height:1.7;">'
+    + '<a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener">Trail info &amp; photos</a><br>'
+    + '<a href="https://www.lcfpd.org/preserves/" target="_blank" rel="noopener">Lake County Forest Preserves</a><br>'
+    + '<a href="https://www.facebook.com/profile.php?id=100089982475891" target="_blank" rel="noopener">Ask LC Park Mom on Facebook</a>'
+    + '</div>';
+  return '<div class="park-popup"><div class="pp-name">' + p.name + '</div>'
+    + '<div class="pp-meta">' + label + dist + '</div>'
+    + surfaceLine + links + '</div>';
+}
+
 window.toggleWalkingTrails = function(btn) {
   if (_walkLoading) return;
   if (_walkVisible && _walkLayer) {
     _walkLayer.remove();
     _walkVisible = false;
+    saveMapPrefs();
     btn.style.background = 'var(--paper)';
     btn.style.color = 'var(--ink)';
     return;
@@ -3658,6 +3781,7 @@ window.toggleWalkingTrails = function(btn) {
   if (_walkLayer) {
     _walkLayer.addTo(_leafletMap);
     _walkVisible = true;
+    saveMapPrefs();
     btn.style.background = 'var(--ink)';
     btn.style.color = 'var(--paper)';
     return;
@@ -3671,13 +3795,11 @@ window.toggleWalkingTrails = function(btn) {
       _walkLayer = L.geoJSON(data, {
         style: { color: '#8a5a2b', weight: 2.5, opacity: 0.8, dashArray: '2,4', lineCap: 'round' },
         onEachFeature: function(feature, layer) {
-          const p = feature.properties;
-          const dist = p.distance ? ` &middot; ${p.distance}` : '';
-          const surface = p.surface ? `<div style="font-size:11px;color:#666;margin-top:2px;">${p.surface}</div>` : '';
-          layer.bindPopup(`<b>${p.name}</b>${dist}${surface}`, {maxWidth: 240});
+          layer.bindPopup(trailPopup(feature.properties, 'walking'), {maxWidth: 260});
         }
       }).addTo(_leafletMap);
       _walkVisible = true;
+      saveMapPrefs();
       _walkLoading = false;
       btn.disabled = false;
       btn.style.background = 'var(--ink)';
