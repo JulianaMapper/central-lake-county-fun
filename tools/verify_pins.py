@@ -125,7 +125,10 @@ def main():
             refs.append(("county GIS", miles(pin, hit)))
 
         addr = (p.get("address") or "").strip()
-        if addr and not re.search(r"&|and\b", addr):      # skip intersections
+        # \band\b, not and\b — the loose version also matched "Rand Rd", "Grand Ave"
+        # and "Sand Lake Rd", so real addresses were skipped and wrongly counted
+        # UNVERIFIABLE. That inflated the unverifiable total by ~27.
+        if addr and not re.search(r"&|\band\b", addr):    # skip true intersections
             c = census(f"{addr}, {p.get('city','')}, IL")
             time.sleep(0.25)
             if c:
