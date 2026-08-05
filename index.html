@@ -527,6 +527,38 @@ body::before {
   border: 2px solid var(--ink);
   background: var(--paper-light); color: var(--ink);
 }
+/* Keyword search over the events. People come looking for a thing by its name —
+   "bingo", "lego", "touch-a-truck" — and none of those are Event Type buckets, so
+   the type dropdown could never answer the question they actually have. */
+.cal-search {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cal-search > label {
+  font-family: "Special Elite", monospace;
+  font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.cal-search-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cal-search-input {
+  flex: 1 1 260px; min-width: 200px;
+  padding: 12px 16px;
+  font-family: "Special Elite", monospace;
+  font-size: 15px; letter-spacing: 0.06em;
+  border: 2px solid var(--ink);
+  background: var(--paper-light); color: var(--ink);
+}
+.cal-search-input::placeholder { color: var(--ink); opacity: 0.5; }
+.cal-search-input:focus { outline: none; border-color: var(--red); }
+.cal-search-hint {
+  font-family: "Special Elite", monospace; font-size: 12px; letter-spacing: 0.03em;
+  color: var(--ink); margin: 0; display: flex; align-items: center; gap: 0.35rem;
+}
+.cal-search-hint a { color: var(--blue); text-decoration: underline; }
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -1572,6 +1604,18 @@ body::before {
       <button class="trail-chip quick" onclick="quickFilter('week', this)"><i class="ti ti-calendar-week"></i> This Week</button>
       <button class="trail-chip quick all active" onclick="quickFilter('all', this)"><i class="ti ti-list"></i> All Upcoming</button>
     </div>
+    <!-- KEYWORD SEARCH -->
+    <div class="cal-search">
+      <label for="calSearch"><i class="ti ti-search"></i> Search events by keyword</label>
+      <div class="cal-search-controls">
+        <input type="text" id="calSearch" class="cal-search-input" autocomplete="off"
+          placeholder="bingo, lego, dinosaurs, touch-a-truck…"
+          aria-label="Search events by keyword" oninput="setCalQuery(this.value)">
+        <button type="button" class="btn-ghost" id="calSearchClear" style="display:none"
+          onclick="clearCalQuery()"><i class="ti ti-x"></i> Clear</button>
+      </div>
+      <p class="cal-search-hint" id="calSearchHint" style="display:none" aria-live="polite"></p>
+    </div>
     <div class="distance-hero">
       <label><i class="ti ti-car"></i> Distance from you <i class="ti ti-info-circle drive-info-tip" title="Enter your zip to calculate from your location, or leave blank to use Grayslake (60030)"></i></label>
       <div class="distance-hero-controls">
@@ -2393,6 +2437,83 @@ function regMatches(e, want) {
   if (want === 'yes') return /yes|required/i.test(e.reg);
   return true;
 }
+// ── EVENT KEYWORD SEARCH ─────────────────────────────────────────────────────
+// Search every text field on the event, not just the name: "makerspace" lives in
+// the location, "sensory friendly" in the notes, "Ela" in the org. The haystack is
+// cached because this runs over every event on every pause in typing.
+let _calQuery = '';
+const _eventBlobs = new WeakMap();
+function eventBlob(e) {
+  let b = _eventBlobs.get(e);
+  if (b === undefined) {
+    b = [e.name, e.type, e.org, e.location, e.age, e.audience, e.notes, e.cost, e.day, e.timeOfDay]
+      .filter(Boolean).join(' ')
+      // Strip the HTML in `notes` so a search can't match a stray <a href>.
+      .replace(/<[^>]*>/g, ' ')
+      .toLowerCase();
+    _eventBlobs.set(e, b);
+  }
+  return b;
+}
+// Every word has to appear somewhere, so "bingo teen" narrows rather than widens.
+function matchesCalQuery(e) {
+  if (!_calQuery) return true;
+  const blob = eventBlob(e);
+  return _calQuery.split(/\s+/).every(w => blob.includes(w));
+}
+let _calQueryTimer = null;
+function setCalQuery(q) {
+  // Re-filtering and re-rendering on every keystroke is fine on a laptop and
+  // sluggish on a phone, so wait for a pause in the typing.
+  clearTimeout(_calQueryTimer);
+  _calQueryTimer = setTimeout(() => {
+    _calQuery = (q || '').trim().toLowerCase();
+    applyFilters();
+  }, 140);
+}
+function clearCalQuery() {
+  const el = document.getElementById('calSearch');
+  if (el) el.value = '';
+  clearTimeout(_calQueryTimer);
+  _calQuery = '';
+  applyFilters();
+  if (el) el.focus();
+}
+// A search that matches 40 events but shows 3 reads as "there is no bingo around
+// here" when really the 10-mile default is doing it. Say so, and offer the way out.
+function renderCalSearchHint(shown) {
+  const clear = document.getElementById('calSearchClear');
+  if (clear) clear.style.display = _calQuery ? '' : 'none';
+  const hint = document.getElementById('calSearchHint');
+  if (!hint) return;
+  if (!_calQuery) { hint.style.display = 'none'; hint.innerHTML = ''; return; }
+  const t = todayDate();
+  const total = EVENTS.filter(e =>
+    parseDate(e.date) >= t && !isRecentlyOver(e, t) && matchesCalQuery(e)).length;
+  const q = escHtml(_calQuery);
+  hint.style.display = '';
+  if (!total) {
+    hint.innerHTML = `<i class="ti ti-mood-empty"></i> Nothing upcoming matches “${q}” — try a shorter word.`;
+  } else if (shown < total) {
+    hint.innerHTML = `<i class="ti ti-info-circle"></i> Showing ${shown} of ${total} matches — your other filters are hiding the rest. ` +
+      `<a href="#" onclick="searchEverywhere();return false;">Show all ${total}</a>`;
+  } else {
+    hint.innerHTML = `<i class="ti ti-check"></i> ${total} match${total !== 1 ? 'es' : ''} for “${q}”.`;
+  }
+}
+// Drop every other filter but keep what was typed — plain resetFilters() would wipe
+// the search mid-use, and it would leave the 10-mile default in place, which is
+// usually the very thing that was hiding the matches.
+function searchEverywhere() {
+  const q = document.getElementById('calSearch')?.value || '';
+  resetFilters();
+  const dr = document.getElementById('filterDrive'); if (dr) dr.value = '';
+  const el = document.getElementById('calSearch');
+  if (el) el.value = q;
+  _calQuery = q.trim().toLowerCase();
+  applyFilters();
+}
+
 function applyFilters() {
   const orgs = msValues('org');
   const ages = msValues('age');
@@ -2412,6 +2533,7 @@ function applyFilters() {
     const d = parseDate(e.date);
     if (d < t) return false;
     if (isRecentlyOver(e, t)) return false;
+    if (!matchesCalQuery(e)) return false;
     if (specialNeedsOnly && !e.specialNeeds) return false;
     if (orgs.length && !orgs.includes(e.org)) return false;
     if (maxDrive && eventDist(e) > maxDrive) return false;
@@ -2442,6 +2564,7 @@ function applyFilters() {
   renderCal();
   updateToolbar();
   renderFilterChips();
+  renderCalSearchHint(filteredEvents.length);
   saveCalPrefs();
 }
 
@@ -2464,6 +2587,7 @@ function renderFilterChips() {
     return opt ? opt.text : el.value;
   };
   const add = (label, onClear) => chips.push({ label, onClear });
+  if (_calQuery) add('Search: ' + _calQuery, () => clearCalQuery());
   if (document.getElementById('filterFree')?.checked) {
     add('Free only', () => clearFilterById('filterFree', true, false));
   }
@@ -2533,6 +2657,8 @@ function updateMobileFilterBadge(count) {
   if (fab && count > 0) fab.classList.remove('hidden');
 }
 function resetFilters() {
+  const cs = document.getElementById('calSearch'); if (cs) cs.value = '';
+  clearTimeout(_calQueryTimer); _calQuery = '';
   document.querySelectorAll('.ms-check').forEach(cb => cb.checked = false);
   document.querySelectorAll('.ms-search').forEach(s => { s.value = ''; });
   MS_KEYS.forEach(k => filterMsOptions(MS_FILTERS[k].dd, ''));
