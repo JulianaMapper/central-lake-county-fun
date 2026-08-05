@@ -1200,21 +1200,6 @@ body::before {
 }
 
 /* ── FOOTER ── */
-.fsf-footer {
-  padding: 28px 56px;
-  border-top: 2px solid var(--ink);
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: "Special Elite", monospace;
-  font-size: 11px; letter-spacing: 0.18em;
-  text-transform: uppercase; background: var(--paper);
-}
-.footer-l { display: flex; align-items: center; gap: 14px; }
-.footer-word { font-family: "DM Serif Display", serif; font-size: 22px; letter-spacing: -0.015em; text-transform: none; }
-.footer-word em { font-style: normal; color: var(--red); }
-.fsf-footer a { color: var(--red); text-decoration: none; }
-.fsf-footer a:hover { text-decoration: underline; }
-.footer-a11y { flex-basis: 100%; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(26,22,18,0.25); font-family: "Public Sans", sans-serif; font-size: 12px; line-height: 1.6; letter-spacing: normal; text-transform: none; color: var(--ink); max-width: 760px; }
-
 /* ── MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
@@ -1293,7 +1278,6 @@ body::before {
   body:not(.printing-badge) .filter-panel,
   body:not(.printing-badge) .action-toolbar,
   body:not(.printing-badge) .basecamp-section,
-  body:not(.printing-badge) .fsf-footer,
   body:not(.printing-badge) .ev-check,
   body:not(.printing-badge) .modal-overlay,
   body:not(.printing-badge) .fsf-masthead,
@@ -1391,7 +1375,6 @@ body::before {
   .cal-grid-view { padding: 0 24px 32px; }
   .map-tab-wrap { padding: 1rem 24px 2rem; }
   .bucket-tab-wrap { padding: 1.5rem 24px 3rem; }
-  .fsf-footer { padding: 20px 24px; flex-wrap: wrap; gap: 12px; font-size: 10px; }
   .basecamp-section { padding: 36px 24px; }
   .fsf-sec-head { padding: 24px 24px 16px; }
   .filter-grid { grid-template-columns: 1fr 1fr; }
@@ -1788,8 +1771,6 @@ body::before {
 
 </div><!-- /panel-events -->
 
-
-
 <!-- ═══════════════════════════════════════
      MAP PANEL
 ═══════════════════════════════════════ -->
@@ -1882,8 +1863,6 @@ body::before {
     <button class="coffee-share-btn" onclick="nativeShare()">↗ Share with a parent</button>
   </div>
 </div>
-
-
 
 <!-- ═══════════════════════════════════════
      FREE FUN PANEL
@@ -2074,20 +2053,7 @@ body::before {
 <!-- ═══════════════════════════════════════
      FOOTER
 ═══════════════════════════════════════ -->
-<footer class="fsf-footer">
-  <div class="footer-l">
-    <svg viewBox="0 0 100 100" width="36" height="36" aria-hidden="true" focusable="false">
-      <circle cx="50" cy="50" r="34" fill="#e8a92c" stroke="#1a1612" stroke-width="3"/>
-      <text x="50" y="58" text-anchor="middle" font-family="DM Serif Display, serif" font-size="26" fill="#1a1612" letter-spacing="-0.02em">FSF</text>
-    </svg>
-    <span class="footer-word"><em>Free</em> Summer Fun</span>
-  </div>
-  <span>★ Made for Lake County kids · Vol. I · No. 03 ★</span>
-  <span>Out west? → <a href="western-burbs.html">Wheaton, Glen Ellyn &amp; DuPage events</a></span>
-  <span style="display:block;width:100%;margin-bottom:8px;opacity:.85;">Events are gathered with automated tools, so details may be incomplete — always confirm times, registration and cost with the organizer before you go.</span>
-  <span>Central Lake County, IL · <a href="#" onclick="openTerms(event)">About &amp; Terms</a></span>
-  <span class="footer-a11y">This is a personal, non-business project. I&rsquo;ve done my best to make it accessible (WCAG AAA) and I&rsquo;m always working to keep it that way. Spot an accessibility issue? Please DM me on Facebook and I&rsquo;ll fix it.</span>
-</footer>
+
 
 <!-- TERMS MODAL -->
 <div class="modal-overlay" id="termsOverlay" onclick="if(event.target===this) closeTerms()" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
