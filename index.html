@@ -2409,7 +2409,12 @@ function isRecentlyOver(e, t) {
 // Everything else is a plain equality test against a field.
 function ageMatches(e, want) {
   if (want === 'teen' || want === 'homeschool') return matchesAudience(e, want);
-  return classAge(e.age) === want;
+  const cls = classAge(e.age);
+  // A Storytime whose age tag is too generic to classify (e.g. "Youth") is
+  // still a storytime — those are almost always for babies/preschoolers/families,
+  // so let it count for those three buckets instead of vanishing into 'other'.
+  if (cls === 'other' && e.type === 'Storytime' && (want === 'baby' || want === 'preschool' || want === 'family')) return true;
+  return cls === want;
 }
 function regMatches(e, want) {
   if (want === 'no') return !/yes|required|recommended/i.test(e.reg);
