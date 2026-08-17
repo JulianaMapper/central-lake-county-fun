@@ -2210,29 +2210,84 @@ function orgType(org) {
 }
 
 // ── AGE ──
-// Order matters: the most specific audience wins. Homeschool and teen are checked
-// FIRST because their source text usually also says "grades" or "kids", which the
-// older rules would have swallowed into 'elementary' or 'preschool'. This calendar
-// used to exclude everything past age 5; it now runs through high school.
-function classAge(age) {
-  const a = (age || '').toLowerCase();
-  if (/home ?-? ?school/.test(a)) return 'homeschool';
-  if (/teen|tween|young adult|grades? (6|7|8|9|1[0-2])\b|ages? 1[0-8]\b|middle school|high school/.test(a)) return 'teen';
-  if (/baby|toddler|infant|0.*18|19.*36|birth.*2/.test(a)) return 'baby';
-  if (/preschool|3.*5|pre.?k|early childhood|tots/.test(a)) return 'preschool';
-  if (/elementary|school age|grade|\bk\s*[-–]\s*\d/.test(a)) return 'elementary';
-  // A numeric range reaching 6-12 is elementary even when the label just says
-  // "Children" — e.g. "Children (ages 0-12)", which several libraries stamp on
-  // every youth program. Without this it fell through to the generic
-  // kids/children rule below and was filed as preschool.
-  const range = a.match(/(\d{1,2})\s*[-–—]\s*(\d{1,2})/);
-  if (range) {
-    const hi = parseInt(range[2], 10);
-    if (hi >= 6 && hi <= 13) return 'elementary';
+// An age tag names a SET of audiences, not one. Libraries routinely stamp an event
+// "Teens, Kids, Family, Adults" — one event for everybody — and the old first-match-wins
+// classAge() filed that as 'teen' alone, hiding 221 events from the Babies / Preschool /
+// Elementary / Family filters (found 2026-08-17: WNPL's "SGA Youth & Family Services"
+// and Round Lake's "Lego Club" were invisible to a family-only filter). A further 65
+// vanished into 'other' because the baby rule wanted the literal word "baby/toddler",
+// so bare ranges like "Ages 0-1" and "ages 0-36 months" matched nothing at all.
+//
+// So: return a Set, and add every bucket the text supports. The 2026-08-04 intent —
+// that homeschool and teen must not be swallowed by the words "grades" or "kids" —
+// still holds, because they get their own additive rules; they are simply no longer
+// exclusive of the younger buckets.
+const BUCKET_YEARS = { baby: [0, 2], preschool: [3, 5], elementary: [6, 12], teen: [13, 18] };
+
+// Add every bucket a lo–hi age span overlaps.
+function addAgeSpan(set, lo, hi) {
+  if (hi < lo) { const t = lo; lo = hi; hi = t; }
+  for (const b in BUCKET_YEARS) {
+    const [blo, bhi] = BUCKET_YEARS[b];
+    if (lo <= bhi && hi >= blo) set.add(b);
   }
-  if (/family|all ages|all|families/.test(a)) return 'family';
-  if (/kids|children/.test(a)) return 'preschool';
-  return 'other';
+}
+
+function ageBuckets(age) {
+  const a = (age || '').toLowerCase();
+  const out = new Set();
+  if (!a) return out;
+  if (/home ?-? ?school/.test(a)) out.add('homeschool');
+  if (/\bbab(?:y|ies)\b|toddler|infant|lapsit|newborn|\btots?\b|tummy time/.test(a)) out.add('baby');
+  if (/preschool|pre-?k|prek|early childhood|kindergarten/.test(a)) out.add('preschool');
+  if (/elementary|school[- ]age/.test(a)) out.add('elementary');
+  if (/teen|tween|young adult|middle school|high school/.test(a)) out.add('teen');
+  // Bare "All" / "All abilities" means everybody — the old rule matched a lone
+  // "all" and 10 events still rely on it.
+  if (/family|families|all ages|\ball\b|everyone|multi-?age|intergenerational/.test(a)) out.add('family');
+  // Grades are matched as GRADE BANDS, not converted to ages: K-5 is elementary and
+  // 6-12 is teen. Converting grade→age instead put grade 6 at age 11, which overlaps
+  // the elementary age band and dumped 96 "Teens Grades 6th - 12th" events into the
+  // Elementary filter. This runs BEFORE the bare numeric pass so "Grades 3-5" is not
+  // mistaken for 3-5 year olds. Two shapes in the wild: "Grades 3-5" (word first)
+  // and "K - 5th Grade" (word last).
+  let sawGrade = false;
+  const gnum = v => (v === 'k' ? 0 : parseInt(v, 10));
+  const GRADE_SPANS = [
+    /gr(?:ade)?s?\.?\s*(k|\d{1,2})(?:\s*(?:st|nd|rd|th))?\s*(?:[-–—]|\s+to\s+)\s*(k|\d{1,2})(?:\s*(?:st|nd|rd|th))?/g,
+    /\b(k|\d{1,2})(?:st|nd|rd|th)?\s*(?:[-–—]|\s+to\s+)\s*(k|\d{1,2})(?:st|nd|rd|th)?\s*gr(?:ade)?/g,
+    /\bgr(?:ade)?s?\.?\s*(k|\d{1,2})(?:st|nd|rd|th)?\b/g,
+    /\b(k|\d{1,2})(?:st|nd|rd|th)\s*gr(?:ade)?/g,
+  ];
+  for (const re of GRADE_SPANS) {
+    let m;
+    while ((m = re.exec(a))) {
+      sawGrade = true;
+      let lo = gnum(m[1]), hi = gnum(m[2] == null ? m[1] : m[2]);
+      if (hi < lo) { const t = lo; lo = hi; hi = t; }
+      if (lo <= 5) out.add('elementary');
+      if (hi >= 6) out.add('teen');
+    }
+  }
+  // Bare numeric ranges: "Ages 0-1", "ages 3 to 5", "ages 0-36 months",
+  // "Ages 13+", "3 and under".
+  if (!sawGrade) {
+    const months = /month/.test(a);
+    const yrs = n => (months ? Math.max(0, Math.ceil(n / 12) - 1) : n);
+    let m;
+    const re = /(\d{1,2})\s*(?:1\/2)?\s*(?:[-–—]|\s+to\s+)\s*(\d{1,2})/g;
+    while ((m = re.exec(a))) addAgeSpan(out, yrs(+m[1]), yrs(+m[2]));
+    if ((m = a.match(/(\d{1,2})\s*(?:\+|and up|and older|or older|and over)/))) addAgeSpan(out, yrs(+m[1]), 18);
+    if ((m = a.match(/(\d{1,2})\s*(?:and under|and younger|or under|or younger)/))) addAgeSpan(out, 0, yrs(+m[1]));
+  }
+  // "Children" / "Kids" / "Youth" with nothing more specific spans roughly 0-12 at
+  // every library here, so count it for both younger buckets rather than guessing
+  // one — it used to fall through to 'preschool' alone.
+  if (!out.has('baby') && !out.has('preschool') && !out.has('elementary')
+      && /\bkids?\b|\bchildren\b|\bchild\b|\byouth\b/.test(a)) {
+    out.add('preschool'); out.add('elementary');
+  }
+  return out;
 }
 // An event counts for these audiences if EITHER its age text says so or it carries an
 // explicit audience tag from the scrape — the tag is more reliable than free text.
@@ -2409,13 +2464,17 @@ function isRecentlyOver(e, t) {
 // Age and Registration can't be compared with ===, so each gets a per-value predicate.
 // Everything else is a plain equality test against a field.
 function ageMatches(e, want) {
+  // The scrape's own audience tag is more reliable than free text where it exists
+  // (only 'teen', 'elementary' and 'homeschool' are ever set).
+  if (e.audience === want) return true;
+  const buckets = ageBuckets(e.age);
+  if (buckets.has(want)) return true;
   if (want === 'teen' || want === 'homeschool') return matchesAudience(e, want);
-  const cls = classAge(e.age);
   // A Storytime whose age tag is too generic to classify (e.g. "Youth") is
   // still a storytime — those are almost always for babies/preschoolers/families,
-  // so let it count for those three buckets instead of vanishing into 'other'.
-  if (cls === 'other' && e.type === 'Storytime' && (want === 'baby' || want === 'preschool' || want === 'family')) return true;
-  return cls === want;
+  // so let it count for those three buckets instead of vanishing entirely.
+  if (!buckets.size && e.type === 'Storytime' && (want === 'baby' || want === 'preschool' || want === 'family')) return true;
+  return false;
 }
 function regMatches(e, want) {
   if (want === 'no') return !/yes|required|recommended/i.test(e.reg);
@@ -2814,8 +2873,8 @@ const ORG_ADDRESSES = {
   'Zion-Benton Public Library District':   'Zion-Benton Public Library, 2400 Gabriel Ave, Zion, IL 60099'};
 const ORG_DRIVE = {"Art Institute of Chicago": 55, "Adler Planetarium": 55, "American Writers Museum": 55, "Cantigny Park": 50, "Chicago Botanic Garden": 35, "Driehaus Museum": 50, "DuSable Black History Museum": 55, "Field Museum": 55, "Gichigamiin Indigenous Nations Museum": 40, "Illinois Holocaust Museum": 40, "Lizzadro Museum of Lapidary Art": 50, "Museum of Contemporary Art Chicago": 55, "Museum of Science and Industry (Chicago)": 60, "National Museum of Mexican Art": 55, "Peggy Notebaert Nature Museum": 50, "Shedd Aquarium": 55, "Antioch Park District": 22, "Antioch Public Library District": 22, "Barrington Area Library": 25, "Cook Memorial Public Library District": 12, "Deerfield Public Library": 30, "Ela Area Public Library": 22, "Fox Lake District Library": 18, "Fremont Public Library": 20, "Glen Ellyn Public Library": 50, "Grayslake Area Public Library District": 4, "Grayslake Park District": 4, "Gurnee Park District": 15, "Highland Park Public Library": 30, "Lake County Forest Preserves": 15, "Lake Forest Library": 25, "Lake Villa District Library": 10, "Lindenhurst Park District": 10, "Mundelein Park & Recreation District": 20, "Round Lake Area Park District": 10, "Round Lake Area Public Library": 10, "Vernon Area Public Library": 22, "Vernon Hills Park District": 22, "Village of Grayslake / Heritage Center / Festivals": 4, "Village of Libertyville": 12, "Village of Mundelein": 20, "Warren-Newport Public Library": 15, "Wauconda Area Public Library": 18, "Wauconda Park District": 18, "Waukegan Park District": 22, "Waukegan Public Library": 22, "Wheaton Public Library": 55, "Wildwood Park District": 8, "Zion-Benton Public Library District": 25, "Heller Nature Center (Park District of Highland Park)": 30, "Forest Preserve District of DuPage County": 50, "McHenry County Conservation District": 30, "Crystal Lake Park District": 35, "River Trail Nature Center (Forest Preserves of Cook County)": 30, "Crabtree Nature Center (Forest Preserves of Cook County)": 25, "College of Lake County": 8, "Lake Bluff Park District": 20, "Zion Park District": 22, "McHenry Public Library District": 25, "Cary Area Public Library": 28, "Highwood Public Library": 28, "Deerfield Park District": 30, "Johnsburg Public Library District": 28, "Indian Trails Public Library District": 30, "Community Library (Salem Lakes, WI)": 28, "Palatine Public Library District": 30, "Crystal Lake Public Library": 32, "Nippersink District Library": 32, "Glencoe Public Library": 35, "City of Lake Forest Parks and Recreation": 25, "Village of Lincolnshire Parks & Recreation": 22, "Grayslake Feed Sales": 5};
 
-const ORG_ZIP = {"Antioch Park District": "60002", "Antioch Public Library District": "60002", "Barrington Area Library": "60010", "Chuck E. Cheese (Gurnee)": "60031", "City of Waukegan": "60085", "Cook Memorial Public Library District": "60048", "Crabtree Nature Center (Forest Preserves of Cook County)": "60010", "Crystal Lake Park District": "60014", "Deerfield Public Library": "60015", "Ela Area Public Library": "60047", "Field Museum (Chicago)": "60605", "Forest Preserve District of DuPage County": "60187", "Fox Lake District Library": "60020", "Fox Valley Trolley Museum": "60177", "Frankfort Special Needs Group": "60423", "Fremont Public Library": "60060", "Glen Ellyn Public Library": "60137", "Grayslake Area Public Library District": "60030", "Grayslake Park District": "60030", "Gurnee Park District": "60031", "Heller Nature Center (Park District of Highland Park)": "60035", "Highland Park Public Library": "60035", "Lake County Forest Preserves": "60030", "Lake Forest Library": "60045", "Lake Villa District Library": "60046", "Lindenfest": "60046", "Lindenhurst Park District": "60046", "McHenry County Conservation District": "60014", "Multi-Chamber": "60014", "Mundelein Park & Recreation District": "60060", "Museum of Science and Industry (Chicago)": "60637", "Peggy Notebaert Nature Museum": "60614", "River Trail Nature Center (Forest Preserves of Cook County)": "60062", "Round Lake Area Park District": "60073", "Round Lake Area Public Library": "60073", "Round Lake Beach Cultural & Civic Center": "60073", "Sensory Friendly Play (Rockford)": "61108", "Special Needs Bowling (Rockford)": "61108", "Special Recreation Association of Central Lake County (SRACLC)": "60061", "Special Recreation Services of Northern Lake County (SRSNLC)": "60046", "Vernon Area Public Library": "60061", "Vernon Hills Park District": "60061", "Village of Antioch": "60002", "Village of Fox Lake": "60020", "Village of Grayslake / Heritage Center / Festivals": "60030", "Village of Gurnee": "60031", "Village of Lake Villa": "60046", "Village of Libertyville": "60048", "Village of Mundelein": "60060", "Volo Museum / Jurassic Gardens": "60073", "Warren Special Recreation Association (WSRA)": "60031", "Warren-Newport Public Library": "60031", "Wauconda Area Public Library": "60084", "Wauconda Park District": "60084", "Waukegan Park District": "60085", "Waukegan Public Library": "60085", "Wheaton Public Library": "60187", "Wildwood Park District": "60030", "Zion-Benton Public Library District": "60099", "Kenosha Public Library": "53140", "Kenosha Public Museum": "53140", "Chicago Botanic Garden": "60022", "Lake Bluff Public Library": "60044", "Buffalo Grove Park District": "60089", "Buffalo Grove": "60089", "Village of Grayslake": "60030", "Grayslake": "60030", "Lake County Fair": "60030", "Village of Wauconda": "60084", "Wauconda": "60084", "MainStreet Libertyville": "60048", "Libertyville": "60048", "Village of Lake Zurich": "60047", "Lake Zurich": "60047", "Gurnee Farmers Market": "60031", "Gurnee": "60031", "Six Flags Great America": "60031", "Museum of Contemporary Art Chicago": "60605", "Driehaus Museum": "60605", "Field Museum": "60605", "Art Institute of Chicago": "60605", "Shedd Aquarium": "60605", "Adler Planetarium": "60605", "American Writers Museum": "60605", "Cantigny Park": "60187", "Lizzadro Museum of Lapidary Art": "60137", "DuSable Black History Museum": "60637", "Village of Hawthorn Woods": "60047", "Hawthorn Woods": "60047", "Historic Downtown Long Grove": "60047", "Village of Vernon Hills": "60061", "Vernon Hills": "60061", "North Chicago Public Library": "60064", "Village of Round Lake Beach": "60073", "Round Lake Beach": "60073", "Palatine Park District": "60067", "Village of Island Lake": "60042", "City of Zion": "60099", "Zion": "60099", "City of Highland Park": "60035", "Waukegan Historical Museum at the Carnegie": "60085", "Waukegan": "60085", "Gichigamiin Indigenous Nations Museum": "60201", "Illinois Holocaust Museum": "60077", "Fox Lake": "60020", "Pistakee Bay": "60020", "Mundelein Park District": "60060", "Mundelein": "60060", "Antioch": "60002", "Barrington": "60010", "Lake Forest": "60045", "Lincolnshire": "60069", "Spring Grove": "60081", "Lakemoor": "60051", "College of Lake County": "60030", "Lake Bluff Park District": "60044", "Zion Park District": "60099", "McHenry Public Library District": "60050", "Cary Area Public Library": "60013", "Highwood Public Library": "60040", "Deerfield Park District": "60015", "Johnsburg Public Library District": "60051", "Indian Trails Public Library District": "60090", "Community Library (Salem Lakes, WI)": "53168", "Palatine Public Library District": "60067", "Crystal Lake Public Library": "60014", "Nippersink District Library": "60071", "Glencoe Public Library": "60022", "City of Lake Forest Parks and Recreation": "60045", "Village of Lincolnshire Parks & Recreation": "60069", "Grayslake Feed Sales": "60030"};
-const ZIP_CENTROIDS = {"60002": [42.476, -88.096], "60010": [42.154, -88.136], "60013": [42.213, -88.237], "60014": [42.241, -88.316], "60015": [42.172, -87.849], "60020": [42.399, -88.183], "60030": [42.341, -88.017], "60031": [42.37, -87.928], "60035": [42.184, -87.8], "60040": [42.198, -87.809], "60041": [42.278, -88.198], "60044": [42.279, -87.833], "60045": [42.259, -87.84], "60046": [42.417, -88.082], "60047": [42.195, -88.094], "60048": [42.284, -87.953], "60051": [42.333, -88.304], "60060": [42.264, -88.004], "60061": [42.225, -87.967], "60062": [42.128, -87.827], "60064": [42.325, -87.845], "60069": [42.199, -87.926], "60073": [42.353, -88.093], "60081": [42.441, -88.226], "60083": [42.427, -87.942], "60084": [42.258, -88.141], "60085": [42.364, -87.855], "60087": [42.387, -87.878], "60088": [42.299, -87.859], "60089": [42.166, -87.96], "60099": [42.446, -87.832], "60137": [41.876, -88.065], "60177": [42.042, -88.324], "60187": [41.866, -88.107], "60423": [41.496, -87.846], "60605": [41.866, -87.617], "60614": [41.922, -87.64], "60637": [41.791, -87.582], "61108": [42.26, -88.989], "53140": [42.585, -87.821], "60022": [42.135, -87.759], "60067": [42.118, -88.034], "60042": [42.276, -88.192], "60201": [42.045, -87.688], "60077": [42.034, -87.733], "60090": [42.133062, -87.946432], "60050": [42.338848, -88.274682], "60071": [42.465082, -88.30006], "53168": [42.546464, -88.106279]};
+const ORG_ZIP = {"Antioch Park District": "60002", "Antioch Public Library District": "60002", "Barrington Area Library": "60010", "Chuck E. Cheese (Gurnee)": "60031", "City of Waukegan": "60085", "Cook Memorial Public Library District": "60048", "Crabtree Nature Center (Forest Preserves of Cook County)": "60010", "Crystal Lake Park District": "60014", "Deerfield Public Library": "60015", "Ela Area Public Library": "60047", "Field Museum (Chicago)": "60605", "Forest Preserve District of DuPage County": "60187", "Fox Lake District Library": "60020", "Fox Valley Trolley Museum": "60177", "Frankfort Special Needs Group": "60423", "Fremont Public Library": "60060", "Glen Ellyn Public Library": "60137", "Grayslake Area Public Library District": "60030", "Grayslake Park District": "60030", "Gurnee Park District": "60031", "Heller Nature Center (Park District of Highland Park)": "60035", "Highland Park Public Library": "60035", "Lake County Forest Preserves": "60030", "Lake Forest Library": "60045", "Lake Villa District Library": "60046", "Lindenfest": "60046", "Lindenhurst Park District": "60046", "McHenry County Conservation District": "60014", "Multi-Chamber": "60014", "Mundelein Park & Recreation District": "60060", "Museum of Science and Industry (Chicago)": "60637", "Peggy Notebaert Nature Museum": "60614", "River Trail Nature Center (Forest Preserves of Cook County)": "60062", "Round Lake Area Park District": "60073", "Round Lake Area Public Library": "60073", "Round Lake Beach Cultural & Civic Center": "60073", "Sensory Friendly Play (Rockford)": "61108", "Special Needs Bowling (Rockford)": "61108", "Special Recreation Association of Central Lake County (SRACLC)": "60061", "Special Recreation Services of Northern Lake County (SRSNLC)": "60046", "Vernon Area Public Library": "60061", "Vernon Hills Park District": "60061", "Village of Antioch": "60002", "Village of Fox Lake": "60020", "Village of Grayslake / Heritage Center / Festivals": "60030", "Village of Gurnee": "60031", "Village of Lake Villa": "60046", "Village of Libertyville": "60048", "Village of Mundelein": "60060", "Volo Museum / Jurassic Gardens": "60073", "Warren Special Recreation Association (WSRA)": "60031", "Warren-Newport Public Library": "60031", "Wauconda Area Public Library": "60084", "Wauconda Park District": "60084", "Waukegan Park District": "60085", "Waukegan Public Library": "60085", "Wheaton Public Library": "60187", "Wildwood Park District": "60030", "Zion-Benton Public Library District": "60099", "Kenosha Public Library": "53140", "Kenosha Public Museum": "53140", "Chicago Botanic Garden": "60022", "Lake Bluff Public Library": "60044", "Buffalo Grove Park District": "60089", "Buffalo Grove": "60089", "Village of Grayslake": "60030", "Grayslake": "60030", "Lake County Fair": "60030", "Village of Wauconda": "60084", "Wauconda": "60084", "MainStreet Libertyville": "60048", "Libertyville": "60048", "Village of Lake Zurich": "60047", "Lake Zurich": "60047", "Gurnee Farmers Market": "60031", "Gurnee": "60031", "Six Flags Great America": "60031", "Museum of Contemporary Art Chicago": "60605", "Driehaus Museum": "60605", "Field Museum": "60605", "Art Institute of Chicago": "60605", "Shedd Aquarium": "60605", "Adler Planetarium": "60605", "American Writers Museum": "60605", "Cantigny Park": "60187", "Lizzadro Museum of Lapidary Art": "60137", "DuSable Black History Museum": "60637", "Village of Hawthorn Woods": "60047", "Hawthorn Woods": "60047", "Historic Downtown Long Grove": "60047", "Village of Vernon Hills": "60061", "Vernon Hills": "60061", "North Chicago Public Library": "60064", "Village of Round Lake Beach": "60073", "Round Lake Beach": "60073", "Palatine Park District": "60067", "Village of Island Lake": "60042", "City of Zion": "60099", "Zion": "60099", "City of Highland Park": "60035", "Waukegan Historical Museum at the Carnegie": "60085", "Waukegan": "60085", "Gichigamiin Indigenous Nations Museum": "60201", "Illinois Holocaust Museum": "60077", "Fox Lake": "60020", "Pistakee Bay": "60020", "Mundelein Park District": "60060", "Mundelein": "60060", "Antioch": "60002", "Barrington": "60010", "Lake Forest": "60045", "Lincolnshire": "60069", "Spring Grove": "60081", "Lakemoor": "60051", "College of Lake County": "60030", "Lake Bluff Park District": "60044", "Zion Park District": "60099", "McHenry Public Library District": "60050", "Cary Area Public Library": "60013", "Highwood Public Library": "60040", "Deerfield Park District": "60015", "Johnsburg Public Library District": "60051", "Indian Trails Public Library District": "60090", "Community Library (Salem Lakes, WI)": "53168", "Palatine Public Library District": "60067", "Crystal Lake Public Library": "60014", "Nippersink District Library": "60071", "Glencoe Public Library": "60022", "City of Lake Forest Parks and Recreation": "60045", "Village of Lincolnshire Parks & Recreation": "60069", "Grayslake Feed Sales": "60030", "Adler Arts Center": "60048", "Arlington Heights Park District": "60004", "Chicago History Museum": "60614", "Deerfield Area Historical Society": "60015", "Ela Historical Society": "60047", "Historic Wagner Farm (Glenview Park District)": "60025", "James Lumber Center / College of Lake County": "60030", "Long Grove Park District": "60047", "Moraine Hills State Park (IDNR)": "60051", "Northbrook Park District": "60062", "University of Illinois Extension, Lake County": "60030", "Village of Pleasant Prairie": "53158", "Woodstock Recreation": "60098"};
+const ZIP_CENTROIDS = {"60002": [42.476, -88.096], "60010": [42.154, -88.136], "60013": [42.213, -88.237], "60014": [42.241, -88.316], "60015": [42.172, -87.849], "60020": [42.399, -88.183], "60030": [42.341, -88.017], "60031": [42.37, -87.928], "60035": [42.184, -87.8], "60040": [42.198, -87.809], "60041": [42.278, -88.198], "60044": [42.279, -87.833], "60045": [42.259, -87.84], "60046": [42.417, -88.082], "60047": [42.195, -88.094], "60048": [42.284, -87.953], "60051": [42.333, -88.304], "60060": [42.264, -88.004], "60061": [42.225, -87.967], "60062": [42.128, -87.827], "60064": [42.325, -87.845], "60069": [42.199, -87.926], "60073": [42.353, -88.093], "60081": [42.441, -88.226], "60083": [42.427, -87.942], "60084": [42.258, -88.141], "60085": [42.364, -87.855], "60087": [42.387, -87.878], "60088": [42.299, -87.859], "60089": [42.166, -87.96], "60099": [42.446, -87.832], "60137": [41.876, -88.065], "60177": [42.042, -88.324], "60187": [41.866, -88.107], "60423": [41.496, -87.846], "60605": [41.866, -87.617], "60614": [41.922, -87.64], "60637": [41.791, -87.582], "61108": [42.26, -88.989], "53140": [42.585, -87.821], "60022": [42.135, -87.759], "60067": [42.118, -88.034], "60042": [42.276, -88.192], "60201": [42.045, -87.688], "60077": [42.034, -87.733], "60090": [42.133062, -87.946432], "60050": [42.338848, -88.274682], "60071": [42.465082, -88.30006], "53168": [42.546464, -88.106279], "60004": [42.086598, -87.980531], "60025": [42.082328, -87.780999], "60098": [42.313714, -88.448154], "53158": [42.527145, -87.853879], "60021": [42.194762, -88.217181], "60074": [42.131462, -88.026329], "60096": [42.479722, -87.824805], "60075": [42.490576, -87.912577]};
 let userZipCoords = null;
 function haversineZip(lat1,lon1,lat2,lon2){const R=3958.8,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function updateDistanceNotice(maxDrive){const el=document.getElementById('distanceNotice');if(!el)return;const zipEl=document.getElementById('userZipInput');const zip=(userZipCoords&&zipEl&&zipEl.value.length===5)?zipEl.value:'60030';const from=zip==='60030'?'Grayslake (60030)':'zip '+zip;el.innerHTML=maxDrive
