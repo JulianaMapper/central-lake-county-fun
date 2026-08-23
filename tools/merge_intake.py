@@ -115,10 +115,16 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
     '60050': [42.338848, -88.274682],     # McHenry
     '60071': [42.465082, -88.300060],     # Richmond
     '53168': [42.546464, -88.106279],     # Salem, WI
+    # Nominatim (the Census geocoder returns no match for this zip), 2026-08-22
+    '60142': [42.169124, -88.425285],     # Huntley
 }
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.
 NEW_ORG_ZIP = {
+    # added 2026-08-22 sweep
+    'Huntley Park District':                  ('60142', 45),   # EST, McHenry County
+    'Wheeling Park District':                 ('60090', 30),   # matches Indian Trails PLD
+    'Cuba Township':                          ('60010', 25),   # matches Barrington
     'College of Lake County':                ('60030',  8),   # EST, Grayslake campus
     'Lake Bluff Park District':               ('60044', 20),   # EST
     'Zion Park District':                     ('60099', 22),   # EST
@@ -171,32 +177,160 @@ def main():
     # Late drop net: library-service and adult-civic rows that slipped past the
     # scrapers' own filters. Logged, never silent.
     LATE_DROP = re.compile(r'book (?:&|and)? ?media (?:flash )?sale|used book|book sale|'
-                           r'friends of the library|curbside|notary|proctor', re.I)
+                           r'friends of the library|curbside|notary|proctor|'
+                           # added 2026-08-22: these reached index.html and only the
+                           # age-reachability check caught them, because their age
+                           # strings ("Adults", "Public Meeting") match no bucket.
+                           # 21 rows — board business, an adult mental-health support
+                           # group, adult game nights and R-rated film discussions.
+                           r'board of trustees|budget (?:&|and) appropriation|'
+                           r'\bnami\b|for grown-?ups|grown-?ups only|'
+                           r'library closes|closing at \d|staff (?:use|training)', re.I)
 
-    rows, parked, late = [], [], []
+    # A source that announces a cancellation in the title must never be injected
+    # as an event — it would publish a row literally called "CANCELLED Knitting
+    # 101". A RESCHEDULED row, by contrast, is a REAL event at its new date, so
+    # keep it and just strip the announcement prefix off the title.
+    CANCELLED = re.compile(r'^\s*(?:cancell?ed|postponed)\b[\s:–—-]*', re.I)
+    RESCHED = re.compile(r'^\s*rescheduled\b[\s:–—-]*', re.I)
+
+    rows, parked, late, cancelled = [], [], [], []
     for f in sorted(glob.glob(os.path.join(intake_dir, '*.ndjson'))):
         if os.path.basename(f).startswith('_'): continue
         for ln in io.open(f, encoding='utf-8'):
             if not ln.strip(): continue
             r = json.loads(ln)
+            r['_file'] = os.path.basename(f)      # provenance, for reconcile below
+            if CANCELLED.search(r['name']):
+                cancelled.append(r); continue
+            r['name'] = RESCHED.sub('', r['name']) or r['name']
             if LATE_DROP.search(r['name']):
                 late.append(r); continue
             (parked if r.get('audience') == 'adult' else rows).append(r)
 
     print(f"intake {stamp}: {len(rows)} to merge, {len(parked)} adult rows parked")
+    if cancelled:
+        print(f"  {len(cancelled)} rows announce a CANCELLATION — not injected:")
+        for r in cancelled:
+            print(f"     {r['date']}  {r['org'][:30]:30} {r['name'][:46]}")
+        print("     ^ if any of these is already live on the site, pull it.")
     if late:
         print(f"  late-dropped {len(late)} library-service rows:")
         for r in sorted({x['name'] for x in late}): print(f"     - {r[:56]}")
 
     # ── dedupe against what is already live
+    #
+    # ⚠️ Exact title matching is NOT enough. Sources reword their own listings
+    # between sweeps, and our scrapers fold age/room text into the name, so the
+    # SAME event arrives with a drifted title and sails through an exact-key
+    # check as "new":
+    #
+    #   live   "Navy Band Great Lakes Jazz Combo"
+    #   intake "Navy Band Great Lakes Jazz Combo - *OUTDOORS* Bring a chair"
+    #   live   "Farmers Market"        intake "Farmers Market - MainStreet"
+    #
+    # Measured on the 2026-08-22 batch: exact matching called 3,533 rows new, of
+    # which **414 were already on the site** under a drifted title. Injecting
+    # those would have put 414 duplicate rows on the calendar — the same event
+    # twice on the same day, which looks like a data-quality failure to a parent
+    # scanning the list.
+    #
+    # So: exact key first (cheap), then a normalized token-subset check against
+    # everything already live on that date for that org. Shares its logic with
+    # tools/stale_check.py, which needed the identical fix in the other direction.
+    def norm_title(n):
+        n = n.lower()
+        n = re.sub(r'\s*[-–—]\s*\[[^\]]*\]', '', n)
+        n = re.sub(r'\s*\([^)]*\)', '', n)
+        n = re.sub(r'[^a-z0-9]+', ' ', n)
+        return frozenset(n.split())
+
+    def same_event(a, candidates):
+        """a: title tokens. candidates: token sets already live that date+org."""
+        if not a:
+            return False
+        for b in candidates:
+            if a == b:
+                return True
+            if len(a) >= 2 and a <= b:
+                return True
+            if len(b) >= 2 and b <= a:
+                return True
+        return False
+
+    # ── RECONCILE multi-file orgs BEFORE deduping.
+    #
+    # One org now commonly has 2-3 intake files: the original sweep, a
+    # `-dayfeed` re-scrape, a `-refetch`. They overlap heavily and they DISAGREE:
+    # a row's age/cost/url can differ between files, and at Lake Forest the day
+    # feed returned FEWER rows than the grid. Without this step the row that
+    # reaches the site is whichever file `glob` happened to read first — i.e.
+    # filesystem order decides what a parent sees. That is not a choice, it is an
+    # accident.
+    #
+    # So group the batch by (date, org, normalized title) and pick a winner on
+    # explicit criteria: most complete row first, then a method preference, then
+    # filename for a stable tiebreak. Union across DIFFERENT events is preserved
+    # untouched — this only picks between competing copies of the SAME event.
+    METHOD_RANK = {'refetch': 0, 'dayfeed': 1, 'recovered': 2}   # lower = preferred
+
+    def completeness(r):
+        return sum(1 for f in ('url', 'age', 'cost', 'time', 'location', 'notes')
+                   if (r.get(f) or '').strip())
+
+    def method_rank(r):
+        src = r.get('_file', '')
+        for k, v in METHOD_RANK.items():
+            if k in src:
+                return v
+        return 3                                   # original sweep
+
+    groups = collections.defaultdict(list)
+    for r in rows:
+        groups[(r['date'], r['org'].strip().lower(), norm_title(r['name']))].append(r)
+
+    reconciled, contested = [], 0
+    for _, cands in groups.items():
+        if len(cands) > 1:
+            contested += 1
+            # ⚠️ METHOD RANK COMES FIRST, completeness only breaks ties inside a
+            # method. Ranking completeness first looks smarter and is wrong: a
+            # buggy parser produces MORE fields, not fewer, so scoring on field
+            # count actively prefers bad data.
+            #
+            # Real case (2026-08-22): cook-libnet.ndjson suffered card-bleed —
+            # "Baby Story Time @ Aspen (birth-12 mos)" carried a neighbouring
+            # event's text, giving it `cost: "$20"` from an adults' AARP
+            # driver-safety course. cook-refetch.ndjson fixed the parse and
+            # correctly left cost empty. Completeness-first would have published
+            # a $20 price on a free baby storytime, sourced from another event.
+            cands = sorted(cands, key=lambda r: (method_rank(r), -completeness(r),
+                                                 r.get('_file', ''), -len(r['name'])))
+        reconciled.append(cands[0])
+    if contested:
+        print(f"  reconciled {contested} events that appeared in more than one intake file")
+    rows = reconciled
+
     have = {(e['date'], e['name'].strip().lower(), e['org'].strip().lower()) for e in EV}
-    fresh, dupes = [], 0
+    by_day = collections.defaultdict(list)
+    for e in EV:
+        by_day[(e['date'], e['org'].strip().lower())].append(norm_title(e['name']))
+
+    fresh, dupes, drifted = [], 0, 0
     seen = set()
     for r in rows:
-        k = (r['date'], r['name'].strip().lower(), r['org'].strip().lower())
+        org = r['org'].strip().lower()
+        k = (r['date'], r['name'].strip().lower(), org)
         if k in have or k in seen:
             dupes += 1; continue
+        toks = norm_title(r['name'])
+        if same_event(toks, by_day.get((r['date'], org), [])):
+            drifted += 1; continue          # already live under a different label
+        # guard against two drifted spellings of one event WITHIN this batch
+        by_day[(r['date'], org)].append(toks)
         seen.add(k); fresh.append(r)
+    if drifted:
+        print(f"  {drifted} rows already live under a DRIFTED title (not re-injected)")
     print(f"  {dupes} already present or intra-batch duplicates -> {len(fresh)} new")
 
     # ── distance wiring
@@ -226,7 +360,25 @@ def main():
             'location': r.get('location', ''),
             'age': r.get('age', '') or 'Youth/Family',
             'ageGroup': derive_age_group(r.get('age', ''), r['audience'], r['name']),
-            'cost': r.get('cost') or 'Free',
+            # Carry the scraper's EXPLICIT audience tag through to the site.
+            # `matchesAudience()` in index.html checks `e.audience === want` FIRST
+            # and only then falls back to a regex over age/name/notes. Dropping
+            # this field (as this script did until 2026-08-22) forces every teen
+            # and homeschool event to be re-guessed from free text — so a teen
+            # program whose title says "Anime Club" and whose age says "Grades
+            # 6-12" survives, but one tagged only `Teen` by its source does not.
+            # 391 teen + 3 homeschool rows in this batch depend on it.
+            **({'audience': r['audience']} if r.get('audience') in
+               ('teen', 'homeschool', 'family', 'kids') else {}),
+            # ⚠️ NEVER default an unknown cost to 'Free'. This line used to read
+            # `r.get('cost') or 'Free'`, which undid the whole point of teaching the
+            # scrapers not to guess: an unread price became a published claim that
+            # the event is free. On the 2026-08-22 batch that would have mislabeled
+            # hundreds of rows (Cary alone had 62 with no price on the listing).
+            # 'Check website' is honest, and it does NOT match the site's
+            # /free/i "Free only" filter, so an unpriced event is never advertised
+            # as free — it just doesn't appear when someone filters for free things.
+            'cost': (r.get('cost') or '').strip() or 'Check website',
             'reg': derive_reg(r.get('reg')),
             'regStatus': '',
             'url': r.get('url', ''),
