@@ -50,7 +50,7 @@ TYPE_RULES = [
                           r'\bcolor\b|colour'),
  ('Games & Clubs',        r'\bclub\b|\bgames?\b|chess|bingo|puzzle|trivia|pok[eé]mon|board game'),
  ('Movement / Sports',    r'\byoga\b|\bdance\b|fitness|\bsports?\b|\bswim|soccer|movement|zumba|'
-                          r'\bfun run\b|\b5k\b|in motion|\bsteps?\b'),
+                          r'\bfun run\b|\b5k\b|in motion|\bsteps?\b|\bclimb(?:ing)?\b|\bbelay'),
  ('Nature / Outdoors',    r'\bnature\b|\bhike\b|\bwalk\b|\bgarden|\btrail|forest|\bbeach\b|'
                           r'outdoor|\bbees?\b|night sky|\bstars?\b|\bpark opening\b|'
                           r'muddy munchkins|al fresco|\bbay day\b'),
@@ -117,10 +117,16 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
     '53168': [42.546464, -88.106279],     # Salem, WI
     # Nominatim (the Census geocoder returns no match for this zip), 2026-08-22
     '60142': [42.169124, -88.425285],     # Huntley
+    # Nominatim postcode centroid, 2026-08-25
+    '60005': [42.063467, -87.982421],      # Arlington Heights
 }
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.
 NEW_ORG_ZIP = {
+    # added 2026-08-25, First Ascent homeschool flyer
+    'First Ascent Arlington Heights':         ('60005', 30),   # EST, matches Palatine PLD (~19mi)
+    # added 2026-08-25, pre-existing QA gate failure (no usable zip -> hidden at every radius)
+    'Purple Me Green - The Science Center and Store': ('60004', 28),  # EST (~17.7mi)
     # added 2026-08-22 sweep
     'Huntley Park District':                  ('60142', 45),   # EST, McHenry County
     'Wheeling Park District':                 ('60090', 30),   # matches Indian Trails PLD
