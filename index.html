@@ -1536,6 +1536,9 @@ body::before {
   <button class="fsf-tab" id="tab-freefun" role="tab" aria-selected="false" onclick="switchTab('freefun')">
     <span class="tab-num">03</span> Free Fun
   </button>
+  <button class="fsf-tab" id="tab-homeschool" role="tab" aria-selected="false" onclick="switchTab('homeschool')">
+    <span class="tab-num">04</span> Homeschool
+  </button>
 </nav>
 
 <!-- ═══════════════════════════════════════
@@ -2093,6 +2096,56 @@ body::before {
 
       <p style="font-family:'Special Elite',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-soft); margin-top:24px; padding-top:16px; border-top:1px solid var(--ink);">Last updated Summer 2026 &middot; Provided as-is, with love, for the neighborhood.</p>
     </div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-homeschool">
+  <div class="fsf-sec-head">
+    <span class="fsf-sec-num">05</span>
+    <h2 class="fsf-sec-title">Homeschool Resources</h2>
+  </div>
+  <div class="map-tab-wrap" style="max-width:860px;">
+
+    <p style="font-size:0.95rem;line-height:1.7;color:var(--ink);margin:0 0 2rem;">Standing, recurring programs for homeschool families &mdash; daytime classes, gym-credit options, and per-request sessions. These run on a weekly schedule rather than a single date, so they live here instead of on the main calendar.</p>
+
+    <div style="background:var(--sun);border:2px solid var(--ink);padding:16px 20px;margin-bottom:2rem;font-size:0.9rem;line-height:1.6;color:var(--ink);">
+      <strong>Looking for dated homeschool programs instead?</strong> Things like First Ascent's Homeschool Days climbing series, Wauconda Park District homeschool science labs, Lake County Forest Preserves homeschool days, and library homeschool programs <em>do</em> have specific dates, so they're on the main calendar &mdash; open <strong>The Lineup</strong> tab and check <strong>&ldquo;Homeschool (daytime)&rdquo;</strong> under the Age Group filter.
+    </div>
+
+    <!-- Libertyville Gymnastics Academy -->
+    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
+      <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Libertyville &middot; Ages 4&ndash;18</div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--ink);margin:0 0 10px;">Homeschool Gymnastics &mdash; Libertyville Gymnastics Academy</h3>
+      <p style="font-size:0.95rem;line-height:1.6;color:var(--ink);margin:0 0 14px;">Weekly classes to develop skills, fulfill gym credits, and make friends.</p>
+      <div style="font-size:0.9rem;line-height:1.9;color:var(--ink);margin-bottom:16px;">
+        <div><strong>Shooting Stars</strong> &mdash; ages 4&frac12;&ndash;6 &mdash; Mon 11:30am, Tues 10:30am</div>
+        <div><strong>Shining Stars</strong> &mdash; co-ed, ages 6+ &mdash; Tues 11:30am, Mon 11:30am</div>
+        <div><strong>Acro Stars</strong> &mdash; ages 6+ &mdash; Wed 1:00pm</div>
+      </div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.88rem;color:var(--ink);">
+        <span><i class="ti ti-mail"></i> office@lga-gymnastics.com</span>
+        <span><i class="ti ti-phone"></i> 847-816-6618</span>
+        <span><i class="ti ti-world"></i> <a href="https://www.lga-gymnastics.com" target="_blank" rel="noopener" style="color:var(--ink);">lga-gymnastics.com</a></span>
+      </div>
+    </div>
+
+    <!-- Lake Forest Gymnastics Academy -->
+    <div style="background:var(--paper);border:2px solid var(--ink);padding:28px 32px;margin-bottom:2rem;">
+      <div style="font-family:'Special Elite',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;">Lake Forest &middot; Ages 4&ndash;18</div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--ink);margin:0 0 10px;">Homeschool Gymnastics &mdash; Lake Forest Gymnastics Academy</h3>
+      <p style="font-size:0.95rem;line-height:1.6;color:var(--ink);margin:0 0 14px;">Weekly classes to develop skills and gain a physical activity credit; a per-request slot is available if the standing classes don't fit.</p>
+      <div style="font-size:0.9rem;line-height:1.9;color:var(--ink);margin-bottom:16px;">
+        <div><strong>Shooting Stars</strong> &mdash; ages 4&frac12;&ndash;6 &mdash; Wed 10:30am</div>
+        <div><strong>Shining Stars</strong> &mdash; co-ed, ages 6+ &mdash; Mon 1:00pm, Tues 2:00pm</div>
+        <div><strong>Acro Stars</strong> &mdash; ages 6+ &mdash; Wed 11:30am</div>
+        <div><strong>Per request</strong> &mdash; Thurs 9:30am, 11:30am, 2:00pm, 3:00pm</div>
+      </div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.88rem;color:var(--ink);">
+        <span><i class="ti ti-phone"></i> 847-367-6555</span>
+        <span><i class="ti ti-world"></i> <a href="https://www.lfgagymnastics.com" target="_blank" rel="noopener" style="color:var(--ink);">lfgagymnastics.com</a></span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -3002,7 +3055,7 @@ function modalSaveOne(id) {
 // ── BUCKET LIST ──
 // ── TABS ──
 function switchTab(tab) {
-  ['events','map','freefun'].forEach(t => {
+  ['events','map','freefun','homeschool'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).setAttribute('aria-selected', t===tab);
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
