@@ -27,6 +27,11 @@ TYPES = ['Storytime','Craft / Art','Nature / Outdoors','Animals','Music / Perfor
 TYPE_RULES = [
  ('Farmers Markets',      r'farmers?[ -]market|mercadito'),
  ('Free Meals / Food',    r'\blunch|\bmeals?\b|almuerzo|food pantry|breakfast|snack'),
+ # BEFORE Storytime: a "Baby & Me Music & Movement" class is a music class, and
+ # the bare `baby` token in the Storytime rule would otherwise file it as a
+ # storytime -- misleading a parent who filters on either chip.
+ ('Music / Performance',  r'music (?:&|and) movement|movement (?:&|and) music|'
+                          r'bab(?:y|ies) (?:&|and) me music'),
  ('Storytime',            r'story\w*|\bstories\b|lapsit|\bbab(?:y|ies)\b|rhyme|cuento|'
                           r'hora del cuento|toddler time|bounce & books|\bsign with\b|'
                           r'\bread(?:ing)? (?:to|with)\b'),
@@ -123,6 +128,10 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.
 NEW_ORG_ZIP = {
+    # added 2026-09-03, Andre Alfonso Music "Baby and Me" flyer. Private music
+    # studio in Lake Villa; 60046 is already in ZIP_CENTROIDS and 10 min is the
+    # value Lake Villa District Library / Lindenhurst PD already carry.
+    'Andre Alfonso Music':                    ('60046', 10),   # matches Lake Villa District Library
     # added 2026-09-02, Volo Bog / IDNR flyer. Org default is Volo Bog's own zip
     # (10.2 mi from origin -> ~15 min); the three Moraine Hills State Park dates
     # carry their own row-level "zip":"60050" (13.2 mi -> ~19 min), since MHSP is
