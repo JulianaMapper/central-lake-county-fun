@@ -123,6 +123,11 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.
 NEW_ORG_ZIP = {
+    # added 2026-09-02, Volo Bog / IDNR flyer. Org default is Volo Bog's own zip
+    # (10.2 mi from origin -> ~15 min); the three Moraine Hills State Park dates
+    # carry their own row-level "zip":"60050" (13.2 mi -> ~19 min), since MHSP is
+    # a different physical location than Volo Bog itself.
+    'Volo Bog State Natural Area (Illinois DNR)': ('60041', 15),  # EST, haversine from ZIP_CENTROIDS
     # added 2026-08-25, First Ascent homeschool flyer
     'First Ascent Arlington Heights':         ('60005', 30),   # EST, matches Palatine PLD (~19mi)
     # added 2026-08-25, pre-existing QA gate failure (no usable zip -> hidden at every radius)
