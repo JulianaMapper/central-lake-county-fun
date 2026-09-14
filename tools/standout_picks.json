@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-22",
-  "method": "LLM pass over all unique upcoming titles. 2026-08-05: 1,042 titles. 2026-08-22: re-run over the 1,731 titles unstarred after the 50-source fall sweep, split across 4 reviewers using the taste rubric in CLAUDE.md.",
+  "generated": "2026-09-11",
+  "method": "LLM pass over all unique upcoming titles. 2026-08-05: 1,042 titles. 2026-08-22: re-run over the 1,731 titles unstarred after the 50-source fall sweep, split across 4 reviewers using the taste rubric in CLAUDE.md. 2026-09-11: sweep-session LLM pass over new Sept-Dec 2026 titles from the fall sweep (Grayslake, Fox Lake, Wauconda, Vernon Area, Barrington, Lake Forest, Warren-Newport, Fremont, Cook Memorial, Round Lake Area, Deerfield, Zion-Benton, Ela Area, Waukegan libraries + Gurnee/Lindenhurst/Cuba/Avon township-park feeds), prioritizing picks within ~15 mi of Grayslake per Juliana instruction, without hard-excluding strong farther picks. Continuation pass same day: park districts within 15mi of Grayslake (Waukegan, Grayslake, Vernon Hills, Wauconda PDs), Zion PD, Deerfield PD, Grandwood Park PD, and U of I Extension re-check — 24 new events, standout picks weighted toward the 15mi radius per Juliana instruction.",
   "tiers": {
     "A. Performers & touring shows": [
       "Firefly Family Theatre presents The Harvest Moon (10 am)",
@@ -11,9 +11,9 @@
       "Sugar Skull! A Dia de Muertos Musical Adventure",
       "Jump Rope Show with The Rope Warrior",
       "Nanny Nikki",
-      "Paddy Lynn\u2019s Interactive Stories",
-      "Children\u2019s Concert Series \u2013 Miss Jamie & the Farm Hands (FREE)",
-      "Children\u2019s Performances (FREE)",
+      "Paddy Lynn’s Interactive Stories",
+      "Children’s Concert Series – Miss Jamie & the Farm Hands (FREE)",
+      "Children’s Performances (FREE)",
       "Family Concert: Alina Celeste & Mi Amigo Hamlet",
       "Family Concert: Justin Roberts",
       "Family Concert: Laura Doherty Duo",
@@ -38,10 +38,10 @@
       "&#8220;Beetlejuice JR.&#8221; Presented by Northbrook Theatre Youth Company",
       "Elf Jr. The Musical",
       "Family Rock (ages 1-5) - with Rock 'n' Kids",
-      "\u201cBeetlejuice JR.\u201d Presented by Northbrook Theatre Youth Company",
+      "“Beetlejuice JR.” Presented by Northbrook Theatre Youth Company",
       "Concert in the Park",
-      "Summer Concert in the Park \u2013 Jon Hayes",
-      "Summer Concert in the Park \u2013 Mr Myers",
+      "Summer Concert in the Park – Jon Hayes",
+      "Summer Concert in the Park – Mr Myers",
       "Outdoor Concert -- Denny Diamond",
       "It's Thursday Concert - Mike and Joe (Modern Rock Cover)",
       "Summer in the Shire - Free Community Concert Series (The Wayouts)",
@@ -61,7 +61,7 @@
       "Miss Jamie Concert",
       "First Friday Concert: Fox Crossing Stringband",
       "Huitzillin Mexican Dancers",
-      "Ballet Folkl\u00f3rico Erandi - Kids & Families"
+      "Ballet Folklórico Erandi - Kids & Families"
     ],
     "B. Zoo-to-you, animals & therapy dogs": [
       "Amazing Axolotls in Action (grades K-5)",
@@ -81,7 +81,7 @@
       "Read to Rover",
       "Read Fur Fun",
       "Good Boy, Good Book",
-      "Read With Me\u2122 - Therapy Dogs (Gr 1-5)"
+      "Read With Me™ - Therapy Dogs (Gr 1-5)"
     ],
     "C. Dinosaurs & paleo": [
       "Dinovember with the T-Rexplorers",
@@ -89,7 +89,7 @@
       "Dino-STEAM",
       "Dinotales",
       "Paint a Ceramic Dinosuar",
-      "Lowe's Kids Club \u2014 PAW Patrol: The Dino Movie Volcano (Vernon Hills)",
+      "Lowe's Kids Club — PAW Patrol: The Dino Movie Volcano (Vernon Hills)",
       "Dinosaur Detectives (Grades K-2)",
       "Dinosaur Detectives (Grades 3-5)",
       "Dino Story Time",
@@ -97,7 +97,8 @@
       "Dino-vember - Ages 4 - 6",
       "Dinosaur Discoveries with T-Rexplorers",
       "Sensory Sunday at Jurassic Gardens",
-      "Dino-ArtPlay"
+      "Dino-ArtPlay",
+      "Dinosaur Scavenger Hunt"
     ],
     "D. Nature with a hook": [
       "Guided Nature Paddle",
@@ -105,14 +106,14 @@
       "Muddy Munchkins",
       "Nature's Preschool: Sensory Safaris",
       "Let's Go Find Some Bugs",
-      "Let\u2019s Go Find Some Bugs",
+      "Let’s Go Find Some Bugs",
       "River Monsters",
       "The Buzz on Bees",
       "Wee Wandering Wednesdays",
       "Evening Bird Walk",
       "Junior Naturalist Walk",
       "Baby Buds",
-      "Children\u2019s Nature Walk with Brushwood \u2022 Caminata por la Naturaleza para Ni\u00f1os con Brushwood",
+      "Children’s Nature Walk with Brushwood • Caminata por la Naturaleza para Niños con Brushwood",
       "Cemetery Walk with Wauconda Township Historical Society",
       "Full Moon Hike and Campfire",
       "Waterfowl Watch",
@@ -125,7 +126,7 @@
       "River Trail Nightlife: Owl Prowl",
       "Nocturnal Hunters: Owls",
       "Nature Center Discovery Day-Migratory Birds",
-      "Solar Day \u2013 Drop-in",
+      "Solar Day – Drop-in",
       "Sugar Shack Time Machine",
       "National Hummingbird Day",
       "Birdwatching Hot Spots: Pine Dunes",
@@ -157,7 +158,8 @@
       "Native Night Sky",
       "Long Grove Apple Fest",
       "Pumpkin Jubilee",
-      "Chalk the Walk"
+      "Chalk the Walk",
+      "LEGO Train Exhibit"
     ],
     "F. Wow science & gloriously messy": [
       "Potions Lab",
@@ -176,8 +178,8 @@
       "Family Maker @ the Library! Blast Off Cup Rockets Session 2",
       "Family Maker @ the Library! Blast Off Cup Rockets Session 1 - (family)",
       "Family Maker @ the Library! Blast Off Cup Rockets Session 2 - (family)",
-      "Family STEAM Night: LEGO\u00ae Bridge Challenge",
-      "Family STEAM Night: Lego\u00ae Boat Challenge",
+      "Family STEAM Night: LEGO® Bridge Challenge",
+      "Family STEAM Night: Lego® Boat Challenge",
       "Homeschool Enrichment: Pumpkin Palooza",
       "Homeschool Enrichment: Spy School",
       "Ice Cream in a Bag",
@@ -185,38 +187,39 @@
       "Black Light Bingo"
     ],
     "G. Characters, costumes & fairy-tale": [
-      "Jedi Training (Grades 2\u20135)",
-      "Jedi Training (Pre-K\u2013Grade 2)",
+      "Jedi Training (Grades 2–5)",
+      "Jedi Training (Pre-K–Grade 2)",
       "Bilingual Ukrainian Toy Story Party",
       "Toy Story Dance Class (Ages 18 mos. - 8 years)",
       "Cuentos en Disfraces",
-      "\u00a1Aventura de Peluches en Pijamas!",
+      "¡Aventura de Peluches en Pijamas!",
       "Mo Willems Storytime",
       "Meet American Girl of 2026 Raquel Reyes",
       "100 Years of Winnie the Pooh",
       "Let's Wish Winnie the Pooh a Happy 100th Birthday!",
-      "Mu\u00f1eca Mar\u00eda: Doll Workshop and History",
+      "Muñeca María: Doll Workshop and History",
       "Haunted Library",
       "Halloween Howl",
       "Wicked Wonderland",
-      "Santa's Workshop"
+      "Santa's Workshop",
+      "Elephant & Piggie Celebration"
     ],
     "H. Free hardware-store builds": [
-      "Home Depot Kids Workshop \u2014 Christmas Car Ornament (Gurnee)",
-      "Home Depot Kids Workshop \u2014 Christmas Car Ornament (Round Lake Beach)",
-      "Home Depot Kids Workshop \u2014 Dump Truck (Gurnee)",
-      "Home Depot Kids Workshop \u2014 Dump Truck (Round Lake Beach)",
-      "Home Depot Kids Workshop \u2014 Holiday Train (Gurnee)",
-      "Home Depot Kids Workshop \u2014 Holiday Train (Round Lake Beach)",
-      "Home Depot Kids Workshop \u2014 School Bus Organizer (Gurnee)",
-      "Home Depot Kids Workshop \u2014 School Bus Organizer (Round Lake Beach)",
-      "Home Depot Kids Workshop \u2014 Witch Candy Box (Gurnee)",
-      "Home Depot Kids Workshop \u2014 Witch Candy Box (Round Lake Beach)",
-      "Lowe's Kids Club \u2014 Firefighting Plane (Vernon Hills)",
-      "Lowe's Kids Club \u2014 Haunted House (Vernon Hills)",
-      "Lowe's Kids Club \u2014 Holiday Engine (Vernon Hills)",
-      "Lowe's Kids Club \u2014 Holiday Trolley Car (Vernon Hills)",
-      "Lowe's Kids Club \u2014 MrBeast Swarm Twister Workshop (Vernon Hills)"
+      "Home Depot Kids Workshop — Christmas Car Ornament (Gurnee)",
+      "Home Depot Kids Workshop — Christmas Car Ornament (Round Lake Beach)",
+      "Home Depot Kids Workshop — Dump Truck (Gurnee)",
+      "Home Depot Kids Workshop — Dump Truck (Round Lake Beach)",
+      "Home Depot Kids Workshop — Holiday Train (Gurnee)",
+      "Home Depot Kids Workshop — Holiday Train (Round Lake Beach)",
+      "Home Depot Kids Workshop — School Bus Organizer (Gurnee)",
+      "Home Depot Kids Workshop — School Bus Organizer (Round Lake Beach)",
+      "Home Depot Kids Workshop — Witch Candy Box (Gurnee)",
+      "Home Depot Kids Workshop — Witch Candy Box (Round Lake Beach)",
+      "Lowe's Kids Club — Firefighting Plane (Vernon Hills)",
+      "Lowe's Kids Club — Haunted House (Vernon Hills)",
+      "Lowe's Kids Club — Holiday Engine (Vernon Hills)",
+      "Lowe's Kids Club — Holiday Trolley Car (Vernon Hills)",
+      "Lowe's Kids Club — MrBeast Swarm Twister Workshop (Vernon Hills)"
     ],
     "I. Destination & night storytimes": [
       "Storytime Under the Stars",
@@ -243,7 +246,8 @@
       "PJs, Popcorn and the Polar Express",
       "Luminaria Walk (lit trail with activities)",
       "Oaks & Acorns Storytime at Sunrise of Buffalo Grove",
-      "Jolly Jammies - The Polar Express (Rated G)"
+      "Jolly Jammies - The Polar Express (Rated G)",
+      "Calls from Santa (3+ yrs)"
     ],
     "J. Free outdoor movies": [
       "Movies in the Park: The SpongeBob Movie: Search for SquarePants (PG)",
@@ -276,7 +280,7 @@
       "Live Interactive Reptile Meet & Greet at Jurassic Gardens"
     ],
     "E. Spectacle": [
-      "Free Admission Day \u2014 Chicago Botanic Garden",
+      "Free Admission Day — Chicago Botanic Garden",
       "Free Wednesday at the Children's Neighborhood Museum",
       "Weird but True museum - Youth All Ages - Family Friendly",
       "Kohl Children's Museum: Mobile Learning Lab",
@@ -298,17 +302,19 @@
       "K-Pop Star Dance Party",
       "The Un-Haunted Forest",
       "Behind-the-Scenes Trick or Treating at the Library",
-      "Gurnee Days Car Show \u2013 NEW LOCATION!",
+      "Gurnee Days Car Show – NEW LOCATION!",
       "Kiwanis Kite Fly",
       "Tasty Thursday Finale with Tethered Hot Air Balloons and Glow",
       "Vintage Car Show at St. John's North Lot",
       "Wauconda Big Bang Fireworks Show",
-      "WPL Thanksgiving Parade - Kids & Families"
+      "WPL Thanksgiving Parade - Kids & Families",
+      "GO WAUKEGAN: Zombie Walk",
+      "Halloween Trick or Treat Trail"
     ],
     "G. Characters, costumes & tea parties": [
       "Saint Lucia Swedish Holiday Tea",
       "Boo Bash",
-      "Pumpkin Party for Ages 0\u20135",
+      "Pumpkin Party for Ages 0–5",
       "Halloween Bash",
       "Tea-Rex Tea Party",
       "Princess Storytime with Belle",
@@ -336,18 +342,18 @@
       "Fall Festival",
       "Noon Year's Eve",
       "Family Fun Friday - Day of the Dead Celebration",
-      "Community Ofrenda - Celebrate D\u00eda de los Muertos",
+      "Community Ofrenda - Celebrate Día de los Muertos",
       "Mundelein Community Connection (MCC) - Santa's Cottage",
       "Party for the Preserves",
       "Barn Dance Night",
       "Family Gingerbread House Decorating",
       "Mundelein Community Connection - Mundelein Arts Festival",
       "15th Annual Mundelein Fine Arts Festival",
-      "26th Annual Ray Bradbury\u2019s Dandelion Wine Arts & Music Festival",
+      "26th Annual Ray Bradbury’s Dandelion Wine Arts & Music Festival",
       "Diwali - Festival of Lights",
       "Library at Buffalo Grove Diwali Festival",
-      "\u00a1QUE VIVA M\u00c9XICO! Fiesta de la Independencia",
-      "Party at the Feed Store \u2014 Grayslake Feed Sales 86th Anniversary",
+      "¡QUE VIVA MÉXICO! Fiesta de la Independencia",
+      "Party at the Feed Store — Grayslake Feed Sales 86th Anniversary",
       "Annual Celebration of Fall",
       "Family Fall Extravaganza",
       "Northbrook Autumnfest",
@@ -382,11 +388,15 @@
       "Diary of a Wimpy Kid: Fight Or Flight Launch Party!",
       "Merry Makers Market",
       "Deerfield Harvest Fest",
-      "Festival of Lights - Diwali Celebration"
+      "Festival of Lights - Diwali Celebration",
+      "2026 Día de Muertos (Day of the Dead) Community Celebration",
+      "17th Annual Kids Fishing Derby (5-15 yrs)",
+      "Holly Jolly Holiday - free family fun at Community Center",
+      "Cookies & Milk with Santa"
     ],
     "L. Standout teen programming": [
       "3D Printing and Product Design",
-      "3D Print a Jack-O'-Lantern for Grades 5\u20138 with a Caregiver",
+      "3D Print a Jack-O'-Lantern for Grades 5–8 with a Caregiver",
       "3D Printing for Families",
       "Explore Robotics in Lake County",
       "Manga & Ramen Night",
@@ -408,7 +418,7 @@
       "Demolition Bots Workshop",
       "Fruit Rocketships",
       "Bubble Dance Party - Ages 0-5",
-      "Let It Slime! - \u00a1A Hacer Slime!",
+      "Let It Slime! - ¡A Hacer Slime!",
       "Mad Science Cooking Lab - Kids Night Out"
     ]
   }
