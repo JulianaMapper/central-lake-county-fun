@@ -204,6 +204,16 @@ def main():
     if dupes:
         warn("%d exact duplicate rows (date+name+org+time), e.g. %r" % (len(dupes), dupes[:2]))
 
+    # Near-duplicates: same date+org+start time, one title a word-superset of the
+    # other ("DIY Stuffies" vs "DIY Stuffies - Grades K-5"). A parent sees the same
+    # event twice. Fix with `python3 tools/dedupe_events.py --write`.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from dedupe_events import find_duplicates
+    near = find_duplicates(EV)
+    if near:
+        fail("%d near-duplicate events (run tools/dedupe_events.py), e.g. %r"
+             % (len(near), [EV[i]["name"] for i in near[0]]))
+
     report()
 
 
