@@ -204,6 +204,14 @@ def main():
     if dupes:
         warn("%d exact duplicate rows (date+name+org+time), e.g. %r" % (len(dupes), dupes[:2]))
 
+    # Passive month-long items (self-guided scavenger hunts, Book of the Month
+    # displays) aren't events: they repeat on every date and crowd the calendar.
+    passive = sorted({e["name"] for e in EV
+                      if re.search(r"scavenger hunt|i-?spy board|dino hunt|book of the month", e.get("name", ""), re.I)
+                      and re.match(r"all day", str(e.get("time", "")), re.I)})
+    if passive:
+        fail("%d passive all-day items (not events; remove): %r" % (len(passive), passive[:5]))
+
     # Near-duplicates: same date+org+start time, one title a word-superset of the
     # other ("DIY Stuffies" vs "DIY Stuffies - Grades K-5"). A parent sees the same
     # event twice. Fix with `python3 tools/dedupe_events.py --write`.
