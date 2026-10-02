@@ -274,10 +274,24 @@ def main():
             v = (e.get("location") or e["org"]).split(",")[0]
             n, d = last.get(v, (0, ""))
             last[v] = (n + 1, max(d, e.get("date", "")))
+    # Where to look up each venue's next free days (official pages only).
+    FREE_DAY_SOURCES = {
+        "Museum of Science and Industry": "https://www.griffinmsi.org/zipcode-validation",
+        "Field Museum": "https://www.fieldmuseum.org/our-events/free-wednesdays",
+        "Shedd Aquarium": "https://www.sheddaquarium.org/plan-a-visit/get-tickets/discounts-and-free-hours/illinois-resident-free-hours",
+        "Adler Planetarium": "https://www.adlerplanetarium.org/tickets/",
+        "Art Institute of Chicago": "https://www.artic.edu/events/6437/uniqlo-third-thursdays",
+        "Museum of Contemporary Art Chicago": "https://mcachicago.org/Visit",
+        "Chicago History Museum": "http://www.chicagohistory.org/visit-us/",
+        "Peggy Notebaert Nature Museum": "https://naturemuseum.org/plan-your-visit",
+        "Chicago Botanic Garden": "https://www.chicagobotanic.org/visit/free-admission-opportunities",
+        "Lizzadro Museum of Lapidary Art": "https://lizzadromuseum.org/",
+    }
     ending = sorted((d, v) for v, (n, d) in last.items() if n >= 4 and today <= d < soon)
     if ending:
         warn("%d recurring free-day venues run out of dates within 30 days — look up the next month:\n%s"
-             % (len(ending), "\n".join("      last %s  %s" % (d, v) for d, v in ending)))
+             % (len(ending), "\n".join("      last %s  %s%s" % (d, v, ("  → " + FREE_DAY_SOURCES[v]) if v in FREE_DAY_SOURCES else "")
+                                       for d, v in ending)))
 
     # Near-duplicates: same date+org+start time, one title a word-superset of the
     # other ("DIY Stuffies" vs "DIY Stuffies - Grades K-5"). A parent sees the same
