@@ -127,6 +127,8 @@ const out = EVENTS.map((e, i) => {
     age: e.age || '',
     cost: e.cost || '',
     time: e.time || '',
+    location: e.location || '',
+    ownZip: !!e.zip,
     zip: zip,
     zipKnown: !!(zip && ZIP_CENTROIDS[zip]),
     buckets: [...API.ageBuckets(e.age)].sort(),

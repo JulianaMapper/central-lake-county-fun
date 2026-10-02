@@ -166,7 +166,8 @@ def main():
         m_ev = re.search(r"const EVENTS = (\[.*?\]);\n", txt, re.S)
         EV = json.loads(m_ev.group(1)) if m_ev else []
         EV = [{"org": e.get("org", ""), "type": e.get("type", ""), "age": e.get("age", ""),
-               "date": e.get("date", ""), "name": e.get("name", ""), "time": e.get("time", "")}
+               "date": e.get("date", ""), "name": e.get("name", ""), "time": e.get("time", ""),
+               "cost": e.get("cost", ""), "location": e.get("location", ""), "ownZip": bool(e.get("zip"))}
               for e in EV]
 
     if not EV:
@@ -211,6 +212,72 @@ def main():
                       and re.match(r"all day", str(e.get("time", "")), re.I)})
     if passive:
         fail("%d passive all-day items (not events; remove): %r" % (len(passive), passive[:5]))
+
+    # ── 5. intake rules (added 2026-10-02 after a cleanup pass) ────────────────
+    import datetime
+    today = datetime.date.today().isoformat()
+    soon = (datetime.date.today() + datetime.timedelta(days=30)).isoformat()
+    upcoming = [e for e in EV if e.get("date", "") >= today]
+
+    def span_mins(t):
+        m = re.match(r"^(\d{1,2})(?::(\d\d))?\s*(am|pm)\s*[-–]\s*(\d{1,2})(?::(\d\d))?\s*(am|pm)", str(t), re.I)
+        if not m:
+            return 0
+        f = lambda h, mi, ap: (int(h) % 12 + (12 if ap.lower() == "pm" else 0)) * 60 + int(mi or 0)
+        return f(m.group(4), m.group(5), m.group(6)) - f(m.group(1), m.group(2), m.group(3))
+    all_day_ish = lambda e: re.match(r"all day", str(e.get("time", "")), re.I) or span_mins(e.get("time")) >= 300
+
+    # 5a. month-long passive items ("Spooky Scavenger Hunt - October 1-31").
+    MONTHS = r"(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*"
+    month_long = sorted({e["name"] for e in upcoming if all_day_ish(e) and re.search(
+        MONTHS + r"\s+\d{1,2}\s*[-–]\s*(" + MONTHS + r"\s+)?\d{1,2}\b|\ball month\b|\bmonth[- ]long\b",
+        e.get("name", ""), re.I)})
+    if month_long:
+        fail("%d month-long passive items (not events; remove): %r" % (len(month_long), month_long[:5]))
+
+    # 5b. take-home kits the Crafts tab didn't catch. KIT_RE mirrors the one in
+    # index.html (search "const KIT_RE") — keep the two in sync.
+    KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take\s*(and|&|-)?\s*make|take\s*home craft|"
+                        r"to[\s-]go\b|stem kit|little play box|\bkit\b", re.I)
+    kitish = re.compile(r"\bkits?\b|\bbags?\b|to[\s-]?go|take[\s-]?home|grab|pick[\s-]?up", re.I)
+    missed = sorted({"%s @ %s" % (e["name"], e["org"]) for e in upcoming
+                     if all_day_ish(e) and e.get("type") != "Museums"
+                     and kitish.search(e.get("name", "")) and not KIT_RE.search(e.get("name", ""))})
+    if missed:
+        warn("%d all-day kit-like items NOT on the Crafts tab (extend KIT_RE in index.html + here, or leave):\n%s"
+             % (len(missed), "\n".join("      " + m for m in missed[:15])))
+
+    # 5c. multi-site agencies: the org fallback zip is just their office, which
+    # put Ryerson (Riverwoods) at 0 mi from Grayslake. Each event needs its own zip.
+    MULTI_SITE = {"Lake County Forest Preserves", "Illinois Department of Natural Resources",
+                  "McHenry County Conservation District", "Forest Preserves of Cook County"}
+    if "ownZip" in (EV[0] if EV else {}):
+        nozip = Counter("%s — %s" % (e["org"], (e.get("location") or "?").split(",")[0])
+                        for e in upcoming if e["org"] in MULTI_SITE and not e.get("ownZip"))
+        if nozip:
+            fail("%d multi-site-agency events have no zip of their own (add \"zip\" for the actual site):\n%s"
+                 % (sum(nozip.values()), "\n".join("      %4d  %s" % (n, k) for k, n in nozip.most_common(15))))
+
+    # 5d. free museum / nature-center days must carry real hours for the band.
+    RANGE = re.compile(r"^\d{1,2}(:\d\d)?\s*(AM|PM)\s*-\s*\d{1,2}(:\d\d)?\s*(AM|PM)$", re.I)
+    nohours = Counter("%s (%s)" % ((e.get("location") or e["org"]).split(",")[0], e.get("time"))
+                      for e in upcoming if e.get("type") == "Museums" and re.search("free", e.get("cost", ""), re.I)
+                      and not RANGE.match(str(e.get("time", ""))))
+    if nohours:
+        fail("%d free museum/nature days without a clean 'H:MM AM - H:MM PM' time:\n%s"
+             % (sum(nohours.values()), "\n".join("      %4d  %s" % (n, k) for k, n in nohours.most_common(15))))
+
+    # 5e. recurring free-day venues about to run out of dates.
+    last = {}
+    for e in EV:
+        if e.get("type") == "Museums" and re.search("free", e.get("cost", ""), re.I):
+            v = (e.get("location") or e["org"]).split(",")[0]
+            n, d = last.get(v, (0, ""))
+            last[v] = (n + 1, max(d, e.get("date", "")))
+    ending = sorted((d, v) for v, (n, d) in last.items() if n >= 4 and today <= d < soon)
+    if ending:
+        warn("%d recurring free-day venues run out of dates within 30 days — look up the next month:\n%s"
+             % (len(ending), "\n".join("      last %s  %s" % (d, v) for d, v in ending)))
 
     # Near-duplicates: same date+org+start time, one title a word-superset of the
     # other ("DIY Stuffies" vs "DIY Stuffies - Grades K-5"). A parent sees the same
