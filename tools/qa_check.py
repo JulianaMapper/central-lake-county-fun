@@ -286,6 +286,10 @@ def main():
         "Peggy Notebaert Nature Museum": "https://naturemuseum.org/plan-your-visit",
         "Chicago Botanic Garden": "https://www.chicagobotanic.org/visit/free-admission-opportunities",
         "Lizzadro Museum of Lapidary Art": "https://lizzadromuseum.org/",
+        "Obama Presidential Center": "https://www.obama.org/visit/museum-ticket-discounts/illinois-free-days/",
+        "DuSable Black History Museum": "https://dusablemuseum.org/visitor/",
+        "Swedish American Museum": "https://swedishamericanmuseum.org/hours-admission",
+        "American Writers Museum": "https://americanwritersmuseum.org/chicago-museum-free-days/",
     }
     ending = sorted((d, v) for v, (n, d) in last.items() if n >= 4 and today <= d < soon)
     if ending:
