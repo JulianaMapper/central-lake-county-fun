@@ -15,7 +15,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LIB = os.path.dirname(REPO)
 SHAREABLE = os.path.join(LIB, "library_events_2026_summer_SHAREABLE.csv")
 INDEX = os.path.join(REPO, "index.html")
-SITE = "https://julianamapper.github.io/central-lake-county-fun/"
+SITE = "https://fun.julianamapper.com/"
 
 TODAY = datetime.date(2026, 6, 13)          # "now" for this build
 WINDOW_DAYS = 30                            # upcoming events to emit as Event schema

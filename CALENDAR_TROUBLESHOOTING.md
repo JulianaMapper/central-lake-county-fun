@@ -192,5 +192,5 @@ hook in this repo so a commit physically can't be made with a broken script.
 | Map markers | `const MAP_LOCATIONS = [...]` — JS-format ⚠ (apostrophe danger) |
 | Source CSVs | `../library_events_2026_*.csv` (one level up, OneDrive folder) |
 | Site repo | `central-lake-county-fun/` |
-| Live URL | https://julianamapper.github.io/central-lake-county-fun/ |
+| Live URL | https://fun.julianamapper.com/ |
 | Syntax check | `tools/check_syntax.py` |
