@@ -3263,8 +3263,23 @@ function switchTab(tab) {
   // Events", so it hides with the panel and needs no special handling here.
 }
 
-// Shareable link straight to the crafts tab: …/#crafts
-window.addEventListener('load', () => { if (location.hash === '#crafts') switchTab('crafts'); });
+// Each tab has its own address: /calendar/, /map/, /free-fun/, /crafts/.
+// Those folders hold stub pages that bounce to …/#map etc.; on load we read
+// the hash, open that tab, then rewrite the address bar to the pretty path.
+// The old …/#crafts links keep working.
+const TAB_SLUG = {events:'calendar', map:'map', freefun:'free-fun', crafts:'crafts'};
+const SLUG_TAB = Object.fromEntries(Object.entries(TAB_SLUG).map(([t,s]) => [s,t]));
+const SITE_BASE = location.pathname.replace(/index\.html$/, '');
+function setTabUrl(tab) {
+  const slug = TAB_SLUG[tab];
+  if (!slug || !history.replaceState) return;
+  try { history.replaceState(null, '', SITE_BASE + slug + '/'); } catch (e) {}
+}
+document.querySelectorAll('.fsf-tab').forEach(b => b.addEventListener('click', () => setTabUrl(b.id.replace('tab-',''))));
+window.addEventListener('load', () => {
+  const tab = SLUG_TAB[location.hash.slice(1)] || (location.hash === '#crafts' ? 'crafts' : null);
+  if (tab) { switchTab(tab); setTabUrl(tab); }
+});
 
 // ── BUCKET TAB ──
 const BUCKET_STORAGE_KEY = 'clcf-bucket-v1';
