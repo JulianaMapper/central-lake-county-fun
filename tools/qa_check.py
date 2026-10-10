@@ -200,6 +200,16 @@ def main():
     if baddate:
         fail("%d events with a malformed date, e.g. %r" % (len(baddate), baddate[:3]))
 
+    # A url with no scheme ("www.fllib.org", "fox") is read as a path on OUR site, so the
+    # link 404s. 98 Fox Lake / Wauconda rows shipped this way until 2026-10-06.
+    # (EV above is a projection without `url`, so read the raw array.)
+    m_raw = re.search(r"const EVENTS = (\[.*?\]);\n", txt, re.S)
+    raw = json.loads(m_raw.group(1)) if m_raw else []
+    badurl = [e for e in raw if e.get("url") and not str(e["url"]).startswith(("http://", "https://"))]
+    if badurl:
+        fail("%d events have a url with no http(s):// (links resolve to our own site), e.g. %r"
+             % (len(badurl), [(e["org"], e["url"]) for e in badurl[:3]]))
+
     dupes = [k for k, n in Counter(
         (e.get("date"), e.get("name"), e.get("org"), e.get("time")) for e in EV).items() if n > 1]
     if dupes:
@@ -238,7 +248,7 @@ def main():
     # 5b. take-home kits the Crafts tab didn't catch. KIT_RE mirrors the one in
     # index.html (search "const KIT_RE") — keep the two in sync.
     KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take\s*(and|&|-)?\s*make|take\s*home craft|"
-                        r"to[\s-]go\b|stem kit|little play box|\bkit\b", re.I)
+                        r"to[\s-]go\b|stem kit|little play box|\bkit\b|project of the week", re.I)
     kitish = re.compile(r"\bkits?\b|\bbags?\b|to[\s-]?go|take[\s-]?home|grab|pick[\s-]?up", re.I)
     missed = sorted({"%s @ %s" % (e["name"], e["org"]) for e in upcoming
                      if all_day_ish(e) and e.get("type") != "Museums"

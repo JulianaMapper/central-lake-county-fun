@@ -1,0 +1,258 @@
+{
+ "nature": "Prairie Grass Nature Museum, Round Lake (Wed–Sat 11–4, Sun 12–4) · Volo Bog Visitor Center (9–3) · Ryerson Woods Welcome Center (Fri–Sun 9–5) · Illinois Beach Nature Center (9–4:30). Hours can change, so check the site.",
+ "events": [
+  {
+   "date": "2026-10-07",
+   "time": "9:30am",
+   "emoji": "🎵",
+   "name": "Music & Movement (ages 3–5)",
+   "place": "Gurnee Library"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "10:00am",
+   "emoji": "🌳",
+   "name": "Wee Wandering Wednesdays",
+   "place": "Crabtree Nature Center"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "12:30pm",
+   "emoji": "🏛️",
+   "name": "Free Wednesday at Children’s Neighborhood Museum",
+   "place": "Round Lake"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "1:00pm",
+   "emoji": "🔬",
+   "name": "X-Lab: Spooky Candle Holder",
+   "place": "Round Lake Library"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "1:00pm",
+   "emoji": "👻",
+   "name": "Macramé Ghost",
+   "place": "Wauconda Library"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "5:30pm",
+   "emoji": "🎃",
+   "name": "Pumpkin Painting",
+   "place": "Fremont Library, Mundelein"
+  },
+  {
+   "date": "2026-10-07",
+   "time": "6:30pm",
+   "emoji": "🦇",
+   "name": "Incredible Bats",
+   "place": "Antioch Library"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "7am",
+   "emoji": "🥕",
+   "name": "Libertyville Farmers Market",
+   "place": "Libertyville"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "9:30am",
+   "emoji": "🔬",
+   "name": "Kohl Children’s Museum Mobile Learning Lab",
+   "place": "Round Lake Library"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "10:00am",
+   "emoji": "🐣",
+   "name": "Wigglers & Wobblers (15–36 months)",
+   "place": "Gurnee Library"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "1:30pm",
+   "emoji": "🧸",
+   "name": "Learning Adventure / Aprendizaje Aventura",
+   "place": "Wauconda Library"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "3:00pm",
+   "emoji": "🎃",
+   "name": "Free Pumpkin Painting",
+   "place": "Sunset Grill"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "5:00pm",
+   "emoji": "🍪",
+   "name": "Cookies and Crafts",
+   "place": "Antioch Library"
+  },
+  {
+   "date": "2026-10-08",
+   "time": "5:30pm",
+   "emoji": "👻",
+   "name": "Creator’s Corner: Ghost Paintings",
+   "place": "Fremont Library"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "9:30am",
+   "emoji": "🧩",
+   "name": "Friday Fun: Play-Doh Palooza",
+   "place": "Lake Villa Library"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "10:00am",
+   "emoji": "🧸",
+   "name": "Playtime drop-in",
+   "place": "Lake Forest Library"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "1:30pm",
+   "emoji": "🎃",
+   "name": "Homeschool Enrichment: Pumpkin Palooza",
+   "place": "Fremont Library"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "4:30pm",
+   "emoji": "🐶",
+   "name": "Cirque du Canine with Jared the Juggler",
+   "place": "Lake Villa Library"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "5:30pm",
+   "emoji": "🎬",
+   "name": "Movie in the Park: Halloweentown",
+   "place": "Wheeling"
+  },
+  {
+   "date": "2026-10-09",
+   "time": "5:45pm",
+   "emoji": "🌅",
+   "name": "Rust at Dusk",
+   "place": "Crabtree Nature Center"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "10:00am",
+   "emoji": "🎶",
+   "name": "Little Lunas Concert",
+   "place": "Fremont Library, Mundelein"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "10:00am",
+   "emoji": "🥕",
+   "name": "Grayslake Farmers Market",
+   "place": "Grayslake"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "10:00am",
+   "emoji": "🎨",
+   "name": "Preschool Paint and Sip",
+   "place": "Antioch Library"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "11:00am",
+   "emoji": "💃",
+   "name": "Bollywood Dance Celebration",
+   "place": "Vernon Area Library"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "1:00pm",
+   "emoji": "🪔",
+   "name": "Diwali: Festival of Lights",
+   "place": "Grayslake Library"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "1:00pm",
+   "emoji": "🍂",
+   "name": "Cuba Township Fall Festival",
+   "place": "Cuba Township"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "1:00pm",
+   "emoji": "🥾",
+   "name": "Guided Hike: Van Patten Woods",
+   "place": "Lake County Forest Preserves"
+  },
+  {
+   "date": "2026-10-10",
+   "time": "2:30pm",
+   "emoji": "🧱",
+   "name": "All Ages LEGO Club",
+   "place": "Antioch Library"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "7:00am",
+   "emoji": "🐦",
+   "name": "The Big Sit",
+   "place": "McHenry County Conservation District"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "10:00am",
+   "emoji": "🐕",
+   "name": "Howl-O-Ween Dog Parade & Expo",
+   "place": "Lake Zurich"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "10:00am",
+   "emoji": "🎣",
+   "name": "Fall Fishing Fest",
+   "place": "Northbrook"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "10:30am",
+   "emoji": "🍁",
+   "name": "Fall Color Walk",
+   "place": "River Trail Nature Center"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "1:00pm",
+   "emoji": "🧩",
+   "name": "Breakout EDU Escape Box",
+   "place": "Lake Forest Library"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "1:30pm",
+   "emoji": "🧱",
+   "name": "Lego Club Sundays",
+   "place": "Grayslake Library"
+  },
+  {
+   "date": "2026-10-11",
+   "time": "3:00pm",
+   "emoji": "🥾",
+   "name": "Guided Hike: Half Day Forest Preserve",
+   "place": "Lake County Forest Preserves"
+  }
+ ],
+ "nature_title": "🌲 Free nature centers, open most days:",
+ "kicker": "FREE FAMILY FUN · LAKE COUNTY & NEARBY",
+ "title": [
+  "What’s Happening",
+  "This Week"
+ ],
+ "footer_line": "Hundreds more events, plus a 🗺️ park map & playgrounds ⭐ and indoor play areas",
+ "footer_url": "fun.julianamapper.com"
+}

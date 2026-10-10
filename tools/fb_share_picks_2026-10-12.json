@@ -1,0 +1,69 @@
+{
+ "kicker": "FREE FAMILY FUN · LAKE COUNTY & NEARBY",
+ "title": [
+  "Free Things To Do",
+  "on Monday"
+ ],
+ "nature_title": "🌲 Free nature centers open today:",
+ "nature": "Illinois Beach Nature Center, Zion (9–4:30) · Crystal Lake Nature Center (10–5). Hours can change, so check the site.",
+ "footer_line": "Hundreds more events, plus a 🗺️ park map & playgrounds ⭐ and indoor play areas",
+ "footer_url": "fun.julianamapper.com",
+ "events": [
+  {
+   "date": "2026-10-12",
+   "time": "9:30am",
+   "emoji": "🐸",
+   "name": "Amazing Axolotls in Action (grades K–5)",
+   "place": "Ela Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "10:00am",
+   "emoji": "🧸",
+   "name": "Winnie the Pooh’s 100th Birthday Party",
+   "place": "Lake Forest Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "10:00am",
+   "emoji": "🍂",
+   "name": "Walks with a Naturalist",
+   "place": "Moraine Hills State Park"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "11:00am",
+   "emoji": "🦉",
+   "name": "Raptors in Your Neighborhood: Wings & Talons",
+   "place": "Lake Villa Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "1:00pm",
+   "emoji": "🎃",
+   "name": "Crafts Galore: Halloween",
+   "place": "Round Lake Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "1:30pm",
+   "emoji": "👻",
+   "name": "Andertoons Cartooning Workshop: Spooky Stories",
+   "place": "Wauconda Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "2:30pm",
+   "emoji": "🧪",
+   "name": "Potions Lab",
+   "place": "Deerfield Library"
+  },
+  {
+   "date": "2026-10-12",
+   "time": "6:30pm",
+   "emoji": "💀",
+   "name": "La Bella Catrina (The Beautiful Catrina)",
+   "place": "Warren-Newport Library"
+  }
+ ]
+}
