@@ -215,6 +215,7 @@ def main():
     if dupes:
         warn("%d exact duplicate rows (date+name+org+time), e.g. %r" % (len(dupes), dupes[:2]))
 
+    import datetime
     # Passive month-long items (self-guided scavenger hunts, Book of the Month
     # displays) aren't events: they repeat on every date and crowd the calendar.
     passive = sorted({e["name"] for e in EV
@@ -222,6 +223,20 @@ def main():
                       and re.match(r"all day", str(e.get("time", "")), re.I)})
     if passive:
         fail("%d passive all-day items (not events; remove): %r" % (len(passive), passive[:5]))
+
+    # Passive / non-event all-day rows (added 2026-10-10): contests, challenges, "Begins/Ends" markers,
+    # self-guided field items, ofrenda displays, closures, "of the month" clubs. They carry "All Day" only
+    # because they are ongoing; they are not events. Take-home kits are NOT in this list (Crafts tab).
+    PASSIVE_ALLDAY = re.compile(r"contest|challenge|scavenger hunt|i-?spy|dino hunt|book of the month|(?:mystery|romance|poetry|cookbook|thriller)\W+of the month|\bof the month club\b|\b(?:begins|ends|continues)\b(?!\s+at)|foxy in the field|drop[- ]?off period|\bofrenda\b|altar display|mini altar|decorate the library|dino disguise|estimation jar|clpl is haunted|teen zone|activity spot|writing celebration|collection begins|foyer sales|book sale|\(virtual\)|27-hole|championship|^(?:christmas|new years?|thanksgiving)\b|^elections?$|spice[- ]sations|spice club|book club|we read", re.I)
+    PASSIVE_KEEP = re.compile(r"halloween on the square|trick-or-treat!|halloween movie marathon|indigenous peoples", re.I)
+    KIT_FOR_PASSIVE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take[\s-]*(and|&)?[\s-]*make|take[\s-]*home craft|takeout packs?|to[\s-]go\b|stem kit|science in a bag|little play box|\bkits?\b|project of the week", re.I)
+    passive_ad = sorted({e["name"] for e in EV
+                         if e.get("date", "") >= datetime.date.today().isoformat()
+                         and re.match(r"all day", str(e.get("time", "")), re.I) and e.get("type") != "Museums"
+                         and PASSIVE_ALLDAY.search(e.get("name", "")) and not PASSIVE_KEEP.search(e.get("name", ""))
+                         and not KIT_FOR_PASSIVE.search(e.get("name", ""))})
+    if passive_ad:
+        fail("%d passive/non-event all-day items (remove): %r" % (len(passive_ad), passive_ad[:6]))
 
     # ── 5. intake rules (added 2026-10-02 after a cleanup pass) ────────────────
     import datetime
@@ -247,8 +262,8 @@ def main():
 
     # 5b. take-home kits the Crafts tab didn't catch. KIT_RE mirrors the one in
     # index.html (search "const KIT_RE") — keep the two in sync.
-    KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take\s*(and|&|-)?\s*make|take[\s-]*home craft|"
-                        r"to[\s-]go\b|stem kit|science in a bag|little play box|\bkits?\b|project of the week", re.I)
+    KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take[\s-]*(and|&)?[\s-]*make|take[\s-]*home craft|"
+                        r"to[\s-]go\b|takeout packs?|stem kit|science in a bag|little play box|\bkits?\b|project of the week", re.I)
     kitish = re.compile(r"\bkits?\b|\bbags?\b|to[\s-]?go|take[\s-]?home|grab|pick[\s-]?up", re.I)
     missed = sorted({"%s @ %s" % (e["name"], e["org"]) for e in upcoming
                      if all_day_ish(e) and e.get("type") != "Museums"
