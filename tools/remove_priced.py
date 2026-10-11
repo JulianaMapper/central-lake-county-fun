@@ -69,7 +69,10 @@ def main(write):
     open(INDEX, 'w', encoding='utf-8').write(s[:m.start(2)] + body + s[m.end(2):])
     out = os.path.join(ROOT, 'intake', today, '_removed_priced.json')
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    json.dump(gone, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+    prev = json.load(open(out, encoding='utf-8')) if os.path.exists(out) else []
+    seen = {(o['org'], o['date'], o['name']) for o in prev}
+    prev += [o for o in gone if (o['org'], o['date'], o['name']) not in seen]   # append, never overwrite
+    json.dump(prev, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
     print('saved', out)
 
 
