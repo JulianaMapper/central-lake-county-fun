@@ -135,6 +135,8 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
     '60156': [42.1947, -88.3665],          # Lake in the Hills
     '60169': [42.0493, -88.1065],          # Hoffman Estates (Palatine PL North Hoffman)
     '60093': [42.1054, -87.7535],          # Winnetka (FPCC Tower Road / Skokie Lagoons)
+    '60173': [42.0581, -88.0482],   # Schaumburg IL (zippopotam, 2026-10-10)
+    '60193': [42.0144, -88.0935],   # Schaumburg IL (zippopotam, 2026-10-10)
 }
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.

@@ -12,3 +12,4 @@ grayslake-village.ndjson | 2026-12-05 | Village of Grayslake | Grayslake Farmers
 grayslake-village.ndjson | 2026-12-12 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
 buffalogrove-village.ndjson | 2026-10-30 | Village of Buffalo Grove | Trick-or-Treat Trail | already live under Buffalo Grove Park District
 grayslake-village.ndjson | 2026-10-10 | Grayslake Area Chamber of Commerce / Village Center | Birthday Boo Bash | already live under The Sapling School
+gap2-gurnee-village.ndjson | 2026-10-31/2026-11-20 | Village of Gurnee | Trick-or-Treat; Holiday Lights at Welton Plaza | already live as 'Gurnee (community trick-or-treat hours)' / same event as Gurnee Park District Holiday Lights
