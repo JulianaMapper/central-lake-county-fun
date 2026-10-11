@@ -247,8 +247,8 @@ def main():
 
     # 5b. take-home kits the Crafts tab didn't catch. KIT_RE mirrors the one in
     # index.html (search "const KIT_RE") — keep the two in sync.
-    KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take\s*(and|&|-)?\s*make|take\s*home craft|"
-                        r"to[\s-]go\b|stem kit|little play box|\bkit\b|project of the week", re.I)
+    KIT_RE = re.compile(r"(grab|reg)\s*(and|&|'n'|n)\s*go|craft bags?|pick[\s-]?up period|take\s*(and|&|-)?\s*make|take[\s-]*home craft|"
+                        r"to[\s-]go\b|stem kit|science in a bag|little play box|\bkits?\b|project of the week", re.I)
     kitish = re.compile(r"\bkits?\b|\bbags?\b|to[\s-]?go|take[\s-]?home|grab|pick[\s-]?up", re.I)
     missed = sorted({"%s @ %s" % (e["name"], e["org"]) for e in upcoming
                      if all_day_ish(e) and e.get("type") != "Museums"

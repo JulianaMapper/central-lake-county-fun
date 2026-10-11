@@ -1,0 +1,14 @@
+wheeling-pd.ndjson | 2026-10-11 | Wheeling Park District | Fall Fishing Fest | same event as Northbrook PD row (Wood Oaks Green Park)
+warren-township.ndjson | 2026-10-18 | Warren Special Recreation Association (WSRA) | WSRA Trunk or Treat | same event as Wildwood PD Trunk-Or-Treat (Warren Twp Center, 1-3 PM)
+cooklib.ndjson | 2026-10-25 | Cook Memorial Public Library District | Libertyville Trunk or Treat | bookmobile stop AT the Libertyville PRD Adler Park trunk-or-treat
+grayslake-village.ndjson | 2026-10-17 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-10-24 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-10-31 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-11-07 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-11-14 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-11-21 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-11-28 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-12-05 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+grayslake-village.ndjson | 2026-12-12 | Village of Grayslake | Grayslake Farmers Market - Fall Market | already live as org Grayslake Farmers Market: Grayslake Fall Farmers Market
+buffalogrove-village.ndjson | 2026-10-30 | Village of Buffalo Grove | Trick-or-Treat Trail | already live under Buffalo Grove Park District
+grayslake-village.ndjson | 2026-10-10 | Grayslake Area Chamber of Commerce / Village Center | Birthday Boo Bash | already live under The Sapling School

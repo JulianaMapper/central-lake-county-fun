@@ -124,6 +124,17 @@ NEW_ZIP_CENTROIDS = {                     # Census geocoder, Public_AR_Current b
     '60142': [42.169124, -88.425285],     # Huntley
     # Nominatim postcode centroid, 2026-08-25
     '60005': [42.063467, -87.982421],      # Arlington Heights
+    # zippopotam.us ZCTA centroids, 2026-10-10 (Wisconsin border pass + new IL sites)
+    '53139': [42.7012, -88.118],           # Kansasville, WI (Brighton Dale Park)
+    '53142': [42.556, -87.8705],           # Kenosha (Pleasant Prairie side)
+    '53143': [42.5617, -87.8301],          # Kenosha (lakefront)
+    '53144': [42.6058, -87.8762],          # Kenosha (UW-Parkside / Somers side)
+    '53181': [42.5232, -88.2573],          # Twin Lakes, WI
+    '60037': [42.2097, -87.8056],          # Fort Sheridan / Highwood area
+    '60152': [42.2442, -88.6074],          # Marengo
+    '60156': [42.1947, -88.3665],          # Lake in the Hills
+    '60169': [42.0493, -88.1065],          # Hoffman Estates (Palatine PL North Hoffman)
+    '60093': [42.1054, -87.7535],          # Winnetka (FPCC Tower Road / Skokie Lagoons)
 }
 # org -> (zip, drive-time minutes). Drive times marked EST are estimates from
 # straight-line distance; the others reuse a same-town value already in ORG_DRIVE.
