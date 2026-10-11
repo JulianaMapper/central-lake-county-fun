@@ -411,7 +411,7 @@ def main():
             # 'Check website' is honest, and it does NOT match the site's
             # /free/i "Free only" filter, so an unpriced event is never advertised
             # as free — it just doesn't appear when someone filters for free things.
-            'cost': (r.get('cost') or '').strip() or 'Check website',
+            'cost': (r.get('cost') or '').strip() or 'Cost unconfirmed – check website',
             'reg': derive_reg(r.get('reg')),
             'regStatus': '',
             'url': r.get('url', ''),

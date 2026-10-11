@@ -10,7 +10,8 @@ Removes upcoming events whose `cost` states a price, EXCEPT:
   * homeschool events (CLAUDE.md 2026-08-04: homeschool keeps its real price)
   * anything whose cost STARTS with "Free" (free entry with optional paid extras, "Free for
     residents / $5 non-resident", "Free (Early Bird $10 or a new toy)") — the event is free
-  * blank / "Check website" costs (price unknown is not a price)
+  * blank / "Check website" / "Cost unconfirmed" costs (price unknown is not a price)
+  * events whose LOWEST stated price is under $10 (Juliana, 2026-10-10)
 Past events are left alone. The removed rows are written to
 intake/<date>/_removed_priced.json so a mistake is one `git checkout` / re-add away.
 
@@ -25,10 +26,23 @@ INDEX = os.path.join(ROOT, 'index.html')
 PRICE = re.compile(r'\$\s?\d|\b(paid|fee|admission|ticket)\b|\d+\s*/\s*\d+', re.I)
 
 
+CHEAP_OK = 10.0   # Juliana 2026-10-10: "we are ok with prices under $10"
+
+
+def lowest_price(c):
+    """Lowest positive dollar amount in a cost string, or None. ($0 tiers are ignored.)"""
+    a = [float(x.replace(',', '')) for x in re.findall(r'\$\s?(\d[\d,]*(?:\.\d+)?)', c or '')]
+    a = [x for x in a if x > 0]
+    return min(a) if a else None
+
+
 def is_priced(e):
     c = (e.get('cost') or '').strip()
-    if not c or re.match(r'free\b', c, re.I):
+    if not c or re.match(r'free\b', c, re.I) or re.match(r'cost unconfirmed', c, re.I):
         return False
+    low = lowest_price(c)
+    if low is not None and low < CHEAP_OK:
+        return False            # under $10 is fine: "$5 res / $7 non-res", "$8/$10", "$1 per person"
     return bool(PRICE.search(c))
 
 
