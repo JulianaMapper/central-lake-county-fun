@@ -29,6 +29,7 @@ FAIL blocks the push. WARN is informational — read it, then decide.
 
 Exit codes: 0 = clean (warnings allowed), 1 = at least one FAIL, 2 = probe error.
 """
+import datetime
 import io
 import json
 import os
@@ -331,6 +332,34 @@ def main():
     if near:
         fail("%d near-duplicate events (run tools/dedupe_events.py), e.g. %r"
              % (len(near), [EV[i]["name"] for i in near[0]]))
+
+    # Same event under two hosts or reworded titles (Holiday Lights / Luces Festivas
+    # vs Holiday Lights at Welton Plaza; Buffalo Grove PD + Village both listing
+    # Diwali). Same date + start time + zip, titles >=75% the same words after
+    # folding accents. WARN, not FAIL: co-hosted events are a judgment call
+    # (keep the host with the official URL, copy notes across). Museums excluded.
+    import unicodedata, collections as _c
+    TODAY_ISO = datetime.date.today().isoformat()
+    from dedupe_events import start_minute
+    def _toks(n):
+        n = unicodedata.normalize("NFKD", n or "").encode("ascii", "ignore").decode().lower()
+        n = re.sub(r"[^a-z0-9]+", " ", n)
+        return set(n.split()) - {"the", "a", "an", "and", "of", "at", "in", "for", "with", "to", "on"}
+    _g = _c.defaultdict(list)
+    for e in EV:
+        if e.get("zip") and e.get("type") != "Museums" and e["date"] >= TODAY_ISO:
+            _g[(e["date"], start_minute(e.get("time")), e["zip"])].append(e)
+    _fuzzy = []
+    for rows in _g.values():
+        for i in range(len(rows)):
+            for j in range(i + 1, len(rows)):
+                a, b = _toks(rows[i]["name"]), _toks(rows[j]["name"])
+                if a and b and len(a & b) / len(a | b) >= 0.75 and rows[i]["name"] != rows[j]["name"] or (
+                        a and a == b and rows[i]["org"] != rows[j]["org"]):
+                    _fuzzy.append(rows[i]["date"] + " " + rows[i]["name"] + " ~ " + rows[j]["org"] + ": " + rows[j]["name"])
+    if _fuzzy:
+        warn("%d probable same-event pairs under different titles/orgs (merge by hand):\n%s"
+             % (len(_fuzzy), "\n".join("      " + x for x in _fuzzy[:15])))
 
     report()
 
