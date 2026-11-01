@@ -1,0 +1,206 @@
+[
+ {
+  "name": "Pioneer Tree Farm",
+  "town": "McHenry, IL",
+  "address": "4614 N Pioneer Rd, McHenry, IL 60051",
+  "lat": 42.3932,
+  "lng": -88.2771,
+  "url": "https://www.pioneertreefarm.com/",
+  "season": "Christmas trees: Nov 27 \u2013 Dec 6, 2026 (Fri 11/27, Sat\u2013Sun 11/28\u201329, Sat\u2013Sun 12/5\u20136)",
+  "hours": "Gate 9:00am\u20134:00pm",
+  "admission": "Any tree $100 (cash or check only). Free entry; free coffee and cocoa in the warming house.",
+  "attractions": [
+   "Cut-your-own (organic)",
+   "Hayrides",
+   "Candle dipping",
+   "Chickens",
+   "Dutch oven demo",
+   "Campfire",
+   "Warming house"
+  ],
+  "freeEntry": true,
+  "driveMin": 18,
+  "notes": "Organically grown since 1973; volunteers from Environmental Defenders of McHenry County. 2026 dates and $100 price are from the farm's own page.",
+  "source": "https://www.pioneertreefarm.com/"
+ },
+ {
+  "name": "Ben's Christmas Tree Farm",
+  "town": "Harvard, IL",
+  "address": "7719 Ryan Rd, Harvard, IL 60033",
+  "lat": 42.4373,
+  "lng": -88.6922,
+  "url": "https://benstreefarm.com/",
+  "season": "Christmas trees: opens Nov 27, 2026 (weekend calendar on site)",
+  "hours": "9:00am\u20134:30pm / 10:00am\u20134:30pm depending on day (see farm calendar)",
+  "admission": "Firs & spruces from $98 ($15/ft, 6.5' min); pines from $52 ($8/ft, 6.5' min). Saws, twine and wagon rides into the fields are free.",
+  "attractions": [
+   "Choose-and-cut",
+   "Free wagon rides",
+   "Fraser firs (pesticide-free)",
+   "Santa and horse-drawn wagon rides typically 10am\u20133pm"
+  ],
+  "freeEntry": true,
+  "driveMin": 48,
+  "notes": "Farthest on the list (~34 mi, needs the 40 mi filter). Certified Naturally Grown. Santa and horse-drawn rides are 'typically' available, not guaranteed; specific Santa dates not confirmed.",
+  "source": "https://benstreefarm.com/"
+ },
+ {
+  "name": "Richardson Christmas Trees (Richardson Adventure Farm)",
+  "town": "Spring Grove, IL",
+  "address": "9407 Richardson Rd, Spring Grove, IL 60081",
+  "lat": 42.4638,
+  "lng": -88.2284,
+  "url": "https://richardsonadventurefarm.com/",
+  "season": "Christmas trees: UNCONFIRMED for 2026. 2025 ran Nov 28 \u2013 Dec 21 (day after Thanksgiving); expect Fri Nov 27, 2026",
+  "hours": "2025: daily 9:00am\u20136:00pm",
+  "admission": "2025: cut-your-own roughly $79\u2013$95+ tax in older reports, $95\u2013$300 in a 2025 listing. 2026 prices unconfirmed.",
+  "attractions": [
+   "Cut-your-own",
+   "Free wagon ride to fields (weekends, 2025)",
+   "Hot cocoa/coffee"
+  ],
+  "freeEntry": null,
+  "driveMin": 18,
+  "notes": "The farm's site was bot-blocked (Cloudflare) for me, so nothing here is from its 2026 page. Same farm as the Fall Fun entry 'Richardson Adventure Farm'.",
+  "source": "https://www.shawlocal.com/lake-county-journal/2025/11/27/richardson-christmas-tree-farm-opens-nov-28"
+ },
+ {
+  "name": "Kroll's Farm Christmas Trees",
+  "town": "Waukegan, IL",
+  "address": "13236 W Townline Rd, Waukegan, IL 60087",
+  "lat": 42.414,
+  "lng": -87.8892,
+  "url": "https://www.krollsfarm.com/christmas-trees",
+  "season": "Christmas trees: UNCONFIRMED for 2026. 2025 opened Fri Nov 28 and ran daily until sold out",
+  "hours": "2025: open 7 days until sold out",
+  "admission": "2025: roughly $13\u2013$15 per foot, pre-cut. 2026 prices unconfirmed.",
+  "attractions": [
+   "Pre-cut trees",
+   "Handmade wreaths, swags, roping",
+   "Porch planters",
+   "Holiday porch planter classes (paid)"
+  ],
+  "freeEntry": null,
+  "driveMin": 13,
+  "notes": "Pre-cut lot, not cut-your-own. Farm page still showing 2025 Christmas info. No Santa or hayrides mentioned.",
+  "source": "https://www.krollsfarm.com/christmas-trees"
+ },
+ {
+  "name": "Sullivan Family Christmas Tree Farm",
+  "town": "Lake Villa, IL",
+  "address": "24774 W Petite Lake Rd, Lake Villa, IL 60046",
+  "lat": 42.43,
+  "lng": -88.1164,
+  "url": "https://www.facebook.com/pages/Sullivan-Family-Tree-Farm/172927979401575",
+  "season": "Christmas trees: UNCONFIRMED for 2026 (2025 listing: Fri\u2013Sun 9am\u20134pm, ~Nov 29 \u2013 Dec 23). Call before going.",
+  "hours": "UNCONFIRMED",
+  "admission": "Reported one price for any size; amount unconfirmed",
+  "attractions": [
+   "Cut-your-own (20 acres)",
+   "Hayrides",
+   "Gift shop",
+   "Leashed dogs welcome"
+  ],
+  "freeEntry": null,
+  "driveMin": 10,
+  "notes": "Closest cut-your-own to Grayslake. Facebook-only; I could not read a 2026 post. Phone 847-949-0172.",
+  "source": "https://pickyourownchristmastree.org/ILxmaschicago.php"
+ },
+ {
+  "name": "Gengel Tree Farm",
+  "town": "Lake Villa, IL",
+  "address": "38614 N Fairfield Rd, Lake Villa, IL 60046",
+  "lat": 42.4244,
+  "lng": -88.107,
+  "url": "https://www.facebook.com/GengelTreeFarm/",
+  "season": "Christmas trees: UNCONFIRMED for 2026 (2025 listing: weekends 8am\u20134pm, Thanksgiving through ~Dec 16). Call before going.",
+  "hours": "UNCONFIRMED",
+  "admission": "Unconfirmed",
+  "attractions": [
+   "Cut-your-own",
+   "Scotch pine, white pine, Douglas fir",
+   "Wreaths and roping",
+   "Homemade cookies"
+  ],
+  "freeEntry": null,
+  "driveMin": 9,
+  "notes": "Facebook-only. Phone 847-356-5661. Nothing 2026-specific found.",
+  "source": "https://pickyourownchristmastree.org/ILxmaschicago.php"
+ },
+ {
+  "name": "Grandpa's Christmas Tree Farm",
+  "town": "Woodstock, IL",
+  "address": "13614 IL Route 176, Woodstock, IL 60098",
+  "lat": 42.2551,
+  "lng": -88.4606,
+  "url": "https://grandpastreefarm.com/",
+  "season": "Christmas trees: UNCONFIRMED for 2026. Site still shows 2025: Nov 28\u201330, Dec 6\u20137, Dec 13\u201314",
+  "hours": "2025: 9:00am\u20133:30pm, weekends only",
+  "admission": "2025: all trees $95 incl. tax. 2026 price unconfirmed.",
+  "attractions": [
+   "Cut-your-own",
+   "Tractor hayrides",
+   "Free hot chocolate",
+   "Saws and twine provided"
+  ],
+  "freeEntry": null,
+  "driveMin": 32,
+  "notes": "Site header says 2025 dates; site says 'dates are subject to change'.",
+  "source": "https://grandpastreefarm.com/"
+ },
+ {
+  "name": "Oney's Tree Farm",
+  "town": "Woodstock, IL",
+  "address": "16608 US Hwy 14, Woodstock, IL 60098",
+  "lat": 42.3396,
+  "lng": -88.5196,
+  "url": "https://oneystreefarm.net/",
+  "season": "Christmas trees: Nov 28 \u2013 Dec 21 per farm site footer (year not stated; Nov 28 is a 2025 date, so treat as UNCONFIRMED for 2026)",
+  "hours": "9am\u20135pm, closed Sundays (per site)",
+  "admission": "Unconfirmed",
+  "attractions": [
+   "Trees",
+   "Garden center"
+  ],
+  "freeEntry": null,
+  "driveMin": 35,
+  "notes": "Footer says '2026 All Rights Reserved' but the Nov 28 date matches 2025's calendar. Verify.",
+  "source": "https://oneystreefarm.net/"
+ },
+ {
+  "name": "Bill's Friendly Evergreen Tree Farm",
+  "town": "McHenry, IL",
+  "address": "3102 Miller Rd, McHenry, IL 60051",
+  "lat": 42.4151,
+  "lng": -88.2674,
+  "url": "https://www.facebook.com/billstreefarm",
+  "season": "Christmas trees: UNCONFIRMED for 2026 (2025 listing: Sat\u2013Sun 9am\u20134pm from Thanksgiving to Christmas). Call before going.",
+  "hours": "UNCONFIRMED",
+  "admission": "Unconfirmed",
+  "attractions": [
+   "Cut-your-own"
+  ],
+  "freeEntry": null,
+  "driveMin": 18,
+  "notes": "Facebook-only. Phone 847-525-9809. Nothing 2026-specific found.",
+  "source": "https://pickyourownchristmastree.org/ILxmaschicago-McHenry-Boone.php"
+ },
+ {
+  "name": "Pine-Apple Farm",
+  "town": "Cary, IL",
+  "address": "309 Three Oaks Rd, Cary, IL 60013",
+  "lat": 42.2197,
+  "lng": -88.2041,
+  "url": "https://www.facebook.com/profile.php?id=100063083117746",
+  "season": "Christmas trees: UNCONFIRMED for 2026 (2025 listing: Fri after Thanksgiving through first 2 December weekends). Call before going.",
+  "hours": "UNCONFIRMED (2025: Sat\u2013Sun 9am\u20134pm)",
+  "admission": "Unconfirmed",
+  "attractions": [
+   "Cut-your-own"
+  ],
+  "freeEntry": null,
+  "driveMin": 17,
+  "notes": "Facebook-only. Phone 847-639-3248.",
+  "source": "https://pickyourownchristmastree.org/ILxmaschicago-McHenry-Boone.php"
+ }
+]

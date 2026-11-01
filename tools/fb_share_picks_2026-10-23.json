@@ -1,0 +1,153 @@
+{
+ "kicker": "FREE FALL FUN · LAKE COUNTY & NEARBY",
+ "title": [
+  "Free Fall Fun",
+  "Within 12 Miles of Grayslake"
+ ],
+ "nature_title": "🎃 Halloween night, Sat Oct 31:",
+ "nature": "Most towns hold community trick-or-treat hours that afternoon or evening. Find your town’s hours on the site.",
+ "footer_line": "Hundreds more events, plus a 🗺️ park map & playgrounds ⭐ and indoor play areas",
+ "footer_url": "fun.julianamapper.com",
+ "events": [
+  {
+   "date": "2026-10-23",
+   "time": "1:00pm",
+   "emoji": "👻",
+   "name": "Spooky STEAM",
+   "place": "Wauconda Library"
+  },
+  {
+   "date": "2026-10-23",
+   "time": "4:30pm",
+   "emoji": "🦇",
+   "name": "Fremont Fear Factor",
+   "place": "Fremont Library"
+  },
+  {
+   "date": "2026-10-23",
+   "time": "5:00pm",
+   "emoji": "🧙",
+   "name": "Wicked Wonderland",
+   "place": "Lake Forest Recreation Center"
+  },
+  {
+   "date": "2026-10-23",
+   "time": "5:30pm",
+   "emoji": "🎬",
+   "name": "Movie in the Barn: Monsters, Inc.",
+   "place": "Hawthorn Woods Village Hall"
+  },
+  {
+   "date": "2026-10-24",
+   "time": "10:00am",
+   "emoji": "🍂",
+   "name": "Fall Fest",
+   "place": "Elawa Farm, Lake Forest"
+  },
+  {
+   "date": "2026-10-24",
+   "time": "11:00am",
+   "emoji": "🎃",
+   "name": "Harvest Fest: Fire District Open House & Trick-or-Treat",
+   "place": "Round Lake"
+  },
+  {
+   "date": "2026-10-24",
+   "time": "11:00am",
+   "emoji": "🎃",
+   "name": "Treat the Streets",
+   "place": "Downtown Antioch"
+  },
+  {
+   "date": "2026-10-24",
+   "time": "1:00pm",
+   "emoji": "🎡",
+   "name": "Grayslake Fall Fest",
+   "place": "Central Park, Grayslake"
+  },
+  {
+   "date": "2026-10-24",
+   "time": "1:00pm",
+   "emoji": "🍬",
+   "name": "Halloween Trick or Treat Trail",
+   "place": "Bowen Park, Waukegan"
+  },
+  {
+   "date": "2026-10-25",
+   "time": "1:00pm",
+   "emoji": "🧪",
+   "name": "Pumpkin Slime (grades K–5, family)",
+   "place": "Aspen Drive Library, Vernon Hills"
+  },
+  {
+   "date": "2026-10-25",
+   "time": "1:00pm",
+   "emoji": "🍬",
+   "name": "Trick or Treat on Main Street",
+   "place": "Downtown Wauconda"
+  },
+  {
+   "date": "2026-10-30",
+   "time": "11:00am",
+   "emoji": "🍬",
+   "name": "Trick-or-Treat on MainStreet",
+   "place": "Downtown Libertyville"
+  },
+  {
+   "date": "2026-10-30",
+   "time": "4:00pm",
+   "emoji": "🎃",
+   "name": "BooVille Celebration",
+   "place": "Avon Township, Round Lake Park"
+  },
+  {
+   "date": "2026-10-30",
+   "time": "4:00pm",
+   "emoji": "🍬",
+   "name": "Halloween Trail of Treats",
+   "place": "Shiloh Park, Zion"
+  },
+  {
+   "date": "2026-10-30",
+   "time": "5:00pm",
+   "emoji": "🎃",
+   "name": "Boo Bash (costume parade)",
+   "place": "North Park, Lincolnshire"
+  },
+  {
+   "date": "2026-10-31",
+   "time": "11:00am",
+   "emoji": "🍬",
+   "name": "Trick-or-Treat at Hawthorn Mall (to 1pm)",
+   "place": "Vernon Hills"
+  },
+  {
+   "date": "2026-10-31",
+   "time": "11:00am",
+   "emoji": "🐸",
+   "name": "Halloween Bog Tours (also 1pm, 4:30pm)",
+   "place": "Volo Bog"
+  },
+  {
+   "date": "2026-10-31",
+   "time": "1:00pm",
+   "emoji": "👻",
+   "name": "Foxy’s Hair-Raising Halloween Bash",
+   "place": "Fox Lake Library"
+  },
+  {
+   "date": "2026-11-01",
+   "time": "11:00am",
+   "emoji": "🐸",
+   "name": "Halloween Bog Tours (also 1pm)",
+   "place": "Volo Bog"
+  },
+  {
+   "date": "2026-11-01",
+   "time": "1:00pm",
+   "emoji": "💀",
+   "name": "Día de Muertos Community Celebration",
+   "place": "Waukegan"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "Cook Memorial": ["open", "Policy: most programs open to cardholders and non-cardholders alike; some may be limited to CMPLD cardholders (stated on the event)."],
+  "Fremont": ["open", "No restriction stated on this class. Fremont marks restricted classes \"Fremont cardholders only\"."],
+  "Warren-Newport": ["open", "Policy: some programs may be restricted to WNPLD cardholders; none currently are."],
+  "Lake Villa": ["open", "Everyone is welcome to register for our programs, a library card is not required."],
+  "Round Lake Area": ["open", "Policy: only certain high-demand, small programs are limited to RLAPL cardholders; none currently are."],
+  "Waukegan": ["open", "Policy: programs open to the public; Waukegan may require a card for a specific program."],
+  "Zion-Benton": ["open", "All programs are open to the public."],
+  "Ela Area": ["priority", "Programs are open to the general public; cardholders may be given registration preference for high-demand programs."],
+  "Highland Park": ["open", "Programs are generally open to all interested persons."],
+  "Northbrook": ["open", "Policy: certain high-demand, small programs are limited to Northbrook cardholders (stated on the event). CCS patrons, including Grayslake, are already in its system."],
+  "Indian Trails": ["open", "Policy: in limited circumstances registration may be limited to Indian Trails cardholders (stated on the event)."],
+  "Mount Prospect": ["priority", "Programs open to all; cardholders may be given registration preference for high-demand programs."],
+  "Algonquin": ["open", "Policy: Algonquin may require its card for a specific program (stated on the event)."]
+}
