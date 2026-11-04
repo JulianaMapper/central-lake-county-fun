@@ -316,6 +316,9 @@ def main():
         "DuSable Black History Museum": "https://dusablemuseum.org/visitor/",
         "Swedish American Museum": "https://swedishamericanmuseum.org/hours-admission",
         "American Writers Museum": "https://americanwritersmuseum.org/chicago-museum-free-days/",
+        "Milwaukee Public Museum": "https://www.mpm.edu/programs/kohls-thank-you-thursday",
+        "Betty Brinn Children's Museum": "https://bbcmkids.org/access-days",
+        "Milwaukee County Zoo": "https://milwaukeezoo.org/visit/upcoming-events/",
     }
     ending = sorted((d, v) for v, (n, d) in last.items() if n >= 4 and today <= d < soon)
     if ending:
